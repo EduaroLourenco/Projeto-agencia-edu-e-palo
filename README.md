@@ -1,48 +1,46 @@
-# Zap-Commerce
+# Edu & Paloma — Agência + Zap-Commerce
 
-Catálogo digital de atacado para lojistas de moda (pensado para a Rua 44, Goiânia) que calcula o preço de atacado em tempo real e fecha o pedido pronto no WhatsApp do lojista. Baseado na especificação técnica original, com um diferencial de posicionamento validado por pesquisa de mercado: nenhum concorrente genérico (FácilZap, Lojazap, Gopage, ZAX) modela o **ônibus de excursão de compras** como método de entrega nativo — esse é o comportamento real de quem vem do interior comprar na 44.
+Duas coisas neste workspace:
 
-Este é um sistema full-stack **funcional**, não uma maquete: front-end React consumindo uma API NestJS real, com banco de dados, autenticação por senha com hash e upload de imagens de verdade.
+1. **`agencia/`** — o site institucional da agência (o produto principal): página única, chamativa, com os módulos de serviço, como funciona, cases e contato via WhatsApp.
+2. **`zap-commerce/` + `zap-commerce-api/`** — um sistema full-stack **funcional** (não maquete) de catálogo de atacado com pedido no WhatsApp, usado como case/portfólio dentro do site da agência (seção "Cases").
 
-## Como rodar
+## Como rodar tudo
 
 Pré-requisito: Node.js 18+.
 
 ```bash
-npm run setup   # instala as duas apps, roda a migration e semeia a loja de demonstração
-npm run dev     # sobe API (porta 3001) e front-end (porta 5173) juntos
+npm run setup   # instala as três apps, roda a migration e semeia a loja de demonstração
+npm run dev     # sobe site da agência (5174), API (3001) e vitrine Zap-Commerce (5173) juntos
 ```
 
-Depois abra `http://localhost:5173`:
-
-- **Vitrine de demonstração:** `/bella-atacado`
-- **Painel do lojista:** `/bella-atacado/admin` (senha: `1234`)
-- **Criar uma loja nova:** pela home, ou acessando `/qualquer-nome/admin` direto
-
-Se preferir rodar cada parte manualmente:
-
-```bash
-# terminal 1
-cd zap-commerce-api
-cp .env.example .env
-npm install
-npm run db:migrate
-npm run db:seed
-npm run start:dev
-
-# terminal 2
-cd zap-commerce
-npm install
-npm run dev
-```
+- **Site da agência:** `http://localhost:5174`
+- **Vitrine de demonstração (case):** `http://localhost:5173/bella-atacado`
+- **Painel do lojista:** `http://localhost:5173/bella-atacado/admin` (senha: `1234`)
 
 ## Arquitetura
 
 ```
 tst code/
-├── zap-commerce/        front-end (React 19 + TypeScript + Vite + Tailwind v4)
-└── zap-commerce-api/    back-end (NestJS + Prisma + SQLite local)
+├── agencia/              site institucional da agência (React + Vite + Tailwind v4 + Framer Motion)
+├── zap-commerce/          front-end do case (React + TypeScript + Vite + Tailwind v4)
+└── zap-commerce-api/      back-end do case (NestJS + Prisma + SQLite local)
 ```
+
+## `agencia/` — site institucional
+
+Página única, tema escuro com gradiente violeta/ciano, animações de entrada ao rolar a página (Framer Motion). Toda a copy é editável em **`agencia/src/data/content.ts`** — nome da agência, número de WhatsApp, módulos de serviço, etapas do processo — sem precisar mexer nos componentes.
+
+- **Hero** — proposta de valor + mockup estilizado do produto + CTA de WhatsApp.
+- **Módulos** (`#modulos`) — os 4 serviços como cards independentes: Comércio no WhatsApp, Sites & Sistemas sob Medida, Marketing Digital, Consultoria & Automação.
+- **Como funciona** (`#como-funciona`) — as 5 etapas do processo, do diagnóstico ao suporte.
+- **Case** (`#case`) — o Zap-Commerce como prova de trabalho, com link para a vitrine rodando de verdade.
+- **Quem somos** (`#quem-somos`) — texto genérico da dupla (troque por bio real quando quiser).
+- **CTA final + rodapé** — WhatsApp e email.
+
+Para trocar o nome, número de WhatsApp e textos: edite `agencia/src/data/content.ts`. Para trocar as cores: os tokens estão em `agencia/src/index.css` (`--color-violet-*`, `--color-lime-*`, `--color-cyan-400`).
+
+## `zap-commerce/` + `zap-commerce-api/` — o case
 
 ### Front-end — `zap-commerce/`
 
