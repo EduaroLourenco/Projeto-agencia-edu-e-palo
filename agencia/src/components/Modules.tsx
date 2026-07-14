@@ -2,6 +2,7 @@ import { Check, Code2, Megaphone, MessageCircle, Workflow } from "lucide-react";
 import type { ReactNode } from "react";
 import { MODULOS, type Modulo } from "../data/content";
 import { Reveal } from "./Reveal";
+import { TiltCard } from "./TiltCard";
 
 const ICONES: Record<string, ReactNode> = {
   "comercio-whatsapp": <MessageCircle size={22} />,
@@ -35,29 +36,31 @@ export function Modules() {
           {MODULOS.map((m, i) => {
             const cor = CORES[m.cor];
             return (
-              <Reveal key={m.id} delay={i * 0.08}>
-                <article
-                  className={`group h-full rounded-3xl border border-white/10 bg-surface p-7 transition-colors ${cor.ring}`}
-                >
-                  <div className="flex items-start justify-between">
-                    <span className={`flex h-11 w-11 items-center justify-center rounded-xl ${cor.bg} ${cor.text}`}>
-                      {ICONES[m.id]}
-                    </span>
-                    <span className="font-display text-3xl font-extrabold text-white/10">{m.numero}</span>
-                  </div>
+              <Reveal key={m.id} delay={i * 0.08} className="h-full">
+                <TiltCard className="h-full">
+                  <article
+                    className={`h-full rounded-3xl border border-white/10 bg-surface p-7 transition-colors ${cor.ring}`}
+                  >
+                    <div className="flex items-start justify-between">
+                      <span className={`flex h-11 w-11 items-center justify-center rounded-xl ${cor.bg} ${cor.text}`}>
+                        {ICONES[m.id]}
+                      </span>
+                      <span className="font-display text-3xl font-extrabold text-white/10">{m.numero}</span>
+                    </div>
 
-                  <h3 className="mt-5 font-display text-xl font-bold text-white">{m.titulo}</h3>
-                  <p className="mt-2.5 text-sm leading-relaxed text-white/55">{m.resumo}</p>
+                    <h3 className="mt-5 font-display text-xl font-bold text-white">{m.titulo}</h3>
+                    <p className="mt-2.5 text-sm leading-relaxed text-white/55">{m.resumo}</p>
 
-                  <ul className="mt-5 flex flex-col gap-2.5 border-t border-white/10 pt-5">
-                    {m.itens.map((item) => (
-                      <li key={item} className="flex items-start gap-2.5 text-sm text-white/70">
-                        <Check size={15} className={`mt-0.5 shrink-0 ${cor.text}`} />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </article>
+                    <ul className="mt-5 flex flex-col gap-2.5 border-t border-white/10 pt-5">
+                      {m.itens.map((item) => (
+                        <li key={item} className="flex items-start gap-2.5 text-sm text-white/70">
+                          <Check size={15} className={`mt-0.5 shrink-0 ${cor.text}`} />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </article>
+                </TiltCard>
               </Reveal>
             );
           })}

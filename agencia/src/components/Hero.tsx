@@ -2,13 +2,15 @@ import { motion } from "framer-motion";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { linkWhatsApp } from "../data/content";
 import { PhoneMockup } from "./PhoneMockup";
+import { MagneticButton } from "./MagneticButton";
+import { Counter } from "./Counter";
 
 export function Hero() {
   return (
     <section id="top" className="relative overflow-hidden pb-20 pt-32 sm:pt-40">
       <div className="grid-fade pointer-events-none absolute inset-0 top-0 h-[700px]" />
-      <div className="glow-violet pointer-events-none absolute -top-40 left-1/2 h-[600px] w-[600px] -translate-x-1/2 rounded-full" />
-      <div className="glow-cyan pointer-events-none absolute right-0 top-60 h-[400px] w-[400px] rounded-full" />
+      <div className="glow-violet animate-drift pointer-events-none absolute -top-40 left-1/2 h-[600px] w-[600px] -translate-x-1/2 rounded-full" />
+      <div className="glow-cyan animate-drift-slow pointer-events-none absolute right-0 top-60 h-[400px] w-[400px] rounded-full" />
 
       <div className="relative mx-auto grid max-w-6xl grid-cols-1 items-center gap-14 px-5 lg:grid-cols-2">
         <div>
@@ -48,15 +50,15 @@ export function Hero() {
             transition={{ duration: 0.7, delay: 0.3 }}
             className="mt-9 flex flex-col gap-3 sm:flex-row"
           >
-            <a
+            <MagneticButton
               href={linkWhatsApp()}
               target="_blank"
               rel="noreferrer"
-              className="group flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-bold text-ink transition-transform hover:scale-[1.03]"
+              className="group flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-bold text-ink"
             >
               Falar no WhatsApp
               <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
-            </a>
+            </MagneticButton>
             <a
               href="#modulos"
               className="flex items-center justify-center gap-2 rounded-full border border-white/15 px-7 py-3.5 text-sm font-bold text-white transition-colors hover:bg-white/5"
@@ -72,16 +74,22 @@ export function Hero() {
             className="mt-12 flex items-center gap-8 border-t border-white/10 pt-6 text-white/40"
           >
             <div>
-              <p className="font-display text-2xl font-bold text-white">4</p>
+              <p className="font-display text-2xl font-bold text-white">
+                <Counter to={4} />
+              </p>
               <p className="text-xs">módulos de serviço</p>
             </div>
             <div>
-              <p className="font-display text-2xl font-bold text-white">1</p>
-              <p className="text-xs">time cuidando de tudo</p>
+              <p className="font-display text-2xl font-bold text-white">
+                <Counter to={5} />
+              </p>
+              <p className="text-xs">etapas até o ar</p>
             </div>
             <div>
-              <p className="font-display text-2xl font-bold text-white">0</p>
-              <p className="text-xs">enrolação no processo</p>
+              <p className="font-display text-2xl font-bold text-white">
+                <Counter to={100} suffix="%" />
+              </p>
+              <p className="text-xs">sob medida, sem molde</p>
             </div>
           </motion.div>
         </div>
@@ -92,7 +100,9 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="flex justify-center lg:justify-end"
         >
-          <PhoneMockup />
+          <div className="animate-float">
+            <PhoneMockup />
+          </div>
         </motion.div>
       </div>
     </section>

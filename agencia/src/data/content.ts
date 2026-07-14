@@ -113,3 +113,67 @@ export const ETAPAS: Etapa[] = [
     descricao: "Acompanhamento pós-lançamento pra ajustar, melhorar e crescer junto com você.",
   },
 ];
+
+export interface Diferencial {
+  titulo: string;
+  descricao: string;
+  destaque?: boolean;
+}
+
+export const DIFERENCIAIS: Diferencial[] = [
+  {
+    titulo: "Um time, todos os módulos",
+    descricao:
+      "Você não precisa contratar uma agência pra cada parte do problema. A gente cuida do sistema, do site, do marketing e da automação — tudo conversando entre si, do mesmo jeito que o Zap-Commerce nasceu.",
+    destaque: true,
+  },
+  {
+    titulo: "Processo transparente",
+    descricao: "Prazo e investimento combinados antes de começar. Sem letra miúda, sem surpresa na fatura.",
+  },
+  {
+    titulo: "Sem contrato eterno",
+    descricao: "Você contrata o módulo que resolve o problema de agora. Quando parar de fazer sentido, para.",
+  },
+  {
+    titulo: "Feito sob medida",
+    descricao: "Nada de template genérico — cada sistema nasce do seu processo real, não do que já vem pronto.",
+  },
+  {
+    titulo: "Suporte de verdade",
+    descricao: "Depois que vai pro ar, a gente continua por perto pra ajustar o que precisar.",
+  },
+];
+
+export interface PerguntaFrequente {
+  pergunta: string;
+  resposta: string;
+}
+
+export const FAQ: PerguntaFrequente[] = [
+  {
+    pergunta: "Quanto custa um projeto?",
+    resposta:
+      "Depende do módulo e do tamanho do problema. Depois do diagnóstico, você recebe uma proposta fechada — sem surpresa depois.",
+  },
+  {
+    pergunta: "Quanto tempo leva?",
+    resposta:
+      "Projetos como o Zap-Commerce saem do papel em poucas semanas. A gente sempre define um prazo claro já na proposta.",
+  },
+  {
+    pergunta: "Preciso contratar todos os módulos?",
+    resposta:
+      "Não. Cada módulo funciona sozinho. Muita gente começa com um e expande depois, conforme o negócio cresce.",
+  },
+  {
+    pergunta: "Vocês atendem só o setor de moda e atacado?",
+    resposta:
+      "Não — o Zap-Commerce é um case específico, mas construímos sistemas, sites e automações pra qualquer negócio que precise vender melhor online.",
+  },
+  {
+    pergunta: "E depois que o site ou sistema vai pro ar?",
+    resposta:
+      "A gente continua por perto: ajustes, melhorias e suporte fazem parte do processo, não são um custo escondido à parte.",
+  },
+];

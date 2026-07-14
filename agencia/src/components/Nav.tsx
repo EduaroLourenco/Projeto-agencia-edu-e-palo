@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { AGENCIA, linkWhatsApp } from "../data/content";
+import { MagneticButton } from "./MagneticButton";
 
 const LINKS = [
   { href: "#modulos", label: "Serviços" },
@@ -11,6 +12,23 @@ const LINKS = [
 
 export function Nav() {
   const [aberto, setAberto] = useState(false);
+  const [secaoAtiva, setSecaoAtiva] = useState("");
+
+  useEffect(() => {
+    const ids = LINKS.map((l) => l.href.slice(1));
+    const elementos = ids.map((id) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visivel = entries.find((e) => e.isIntersecting);
+        if (visivel) setSecaoAtiva(`#${visivel.target.id}`);
+      },
+      { rootMargin: "-45% 0px -45% 0px" },
+    );
+
+    elementos.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/5 bg-ink/70 backdrop-blur-lg">
@@ -29,21 +47,26 @@ export function Nav() {
             <a
               key={l.href}
               href={l.href}
-              className="text-sm font-medium text-white/60 transition-colors hover:text-white"
+              className={`relative text-sm font-medium transition-colors ${
+                secaoAtiva === l.href ? "text-white" : "text-white/60 hover:text-white"
+              }`}
             >
               {l.label}
+              {secaoAtiva === l.href && (
+                <span className="absolute -bottom-1.5 left-0 h-[2px] w-full rounded-full bg-gradient-to-r from-violet-400 to-cyan-400" />
+              )}
             </a>
           ))}
         </nav>
 
-        <a
+        <MagneticButton
           href={linkWhatsApp()}
           target="_blank"
           rel="noreferrer"
           className="hidden rounded-full bg-white px-5 py-2.5 text-sm font-bold text-ink transition-transform hover:scale-105 md:block"
         >
           Falar no WhatsApp
-        </a>
+        </MagneticButton>
 
         <button
           onClick={() => setAberto((v) => !v)}
