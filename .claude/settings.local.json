@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Program Files/**)",
+      "Bash(where pandoc *)",
+      "Bash(node -e ' *)"
+    ]
+  }
+}

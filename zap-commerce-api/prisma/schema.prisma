@@ -1,0 +1,54 @@
+// Schema modelado para rodar em SQLite localmente sem nenhuma conta externa.
+// Para produção, troque o datasource para Postgres (ex: Supabase) - os models
+// não mudam, só o provider e a DATABASE_URL.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Loja {
+  id                 String   @id @default(cuid())
+  slug               String   @unique
+  nomeLoja           String
+  aberto             Boolean  @default(true)
+  whatsappNumero     String
+  mensagemSaudacao   String   @default("Oi! Recebi seu pedido, já te confirmo o estoque 💕")
+  senhaHash          String
+  regraAtacadoTipo   String   @default("quantidade")
+  regraAtacadoMinimo Float    @default(6)
+  corDestaque        String   @default("#f22e69")
+  criadoEm           DateTime @default(now())
+
+  pontosRetirada PontoRetirada[]
+  produtos       Produto[]
+}
+
+model PontoRetirada {
+  id        String  @id @default(cuid())
+  lojaId    String
+  loja      Loja    @relation(fields: [lojaId], references: [id], onDelete: Cascade)
+  tipo      String
+  nome      String
+  descricao String?
+}
+
+model Produto {
+  id                String   @id @default(cuid())
+  lojaId            String
+  loja              Loja     @relation(fields: [lojaId], references: [id], onDelete: Cascade)
+  nome              String
+  precoVarejo       Float
+  precoAtacado      Float
+  categoriasJson    String
+  tamanhosJson      String
+  imageUrl          String
+  instagramReelsUrl String?
+  isUltimasPecas    Boolean  @default(false)
+  isAtivo           Boolean  @default(true)
+  criadoEm          DateTime @default(now())
+}

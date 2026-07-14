@@ -1,0 +1,19 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "zap-commerce",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--", "--port", "5173"],
+      "cwd": "zap-commerce",
+      "port": 5173
+    },
+    {
+      "name": "zap-commerce-api",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "start:dev"],
+      "cwd": "zap-commerce-api",
+      "port": 3001
+    }
+  ]
+}

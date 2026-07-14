@@ -1,0 +1,13 @@
+{
+  "name": "zap-commerce-monorepo",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "concurrently -n API,WEB -c blue,magenta \"npm run start:dev --prefix zap-commerce-api\" \"npm run dev --prefix zap-commerce\"",
+    "setup": "npm install --prefix zap-commerce-api && npm install --prefix zap-commerce && npm run --prefix zap-commerce-api db:migrate && npm run --prefix zap-commerce-api db:seed",
+    "build": "npm run build --prefix zap-commerce-api && npm run build --prefix zap-commerce"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

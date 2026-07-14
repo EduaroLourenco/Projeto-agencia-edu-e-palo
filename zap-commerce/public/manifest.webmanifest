@@ -1,0 +1,12 @@
+{
+  "name": "Zap-Commerce",
+  "short_name": "Zap-Commerce",
+  "description": "Catálogo de atacado com pedido pronto no WhatsApp",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#faf7f5",
+  "theme_color": "#f22e69",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
