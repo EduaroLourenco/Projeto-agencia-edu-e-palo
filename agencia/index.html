@@ -3,19 +3,73 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#05050a" />
+
+    <title>Edu & Paloma — Agência Digital | Sistemas, sites e marketing em Goiânia</title>
     <meta
       name="description"
-      content="Edu & Paloma — agência digital que transforma negócios locais em operações online: catálogos com pedido no WhatsApp, sites sob medida, marketing digital e automação."
+      content="Edu & Paloma — agência digital que transforma negócios locais em operações online: catálogos com pedido no WhatsApp, sites sob medida, marketing digital e automação. Atendemos Goiânia e região."
     />
+
+    <!-- Open Graph / WhatsApp / Facebook -->
+    <!-- Troque https://eduepaloma.com.br pelo domínio real ao publicar -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:url" content="https://eduepaloma.com.br/" />
+    <meta property="og:site_name" content="Edu & Paloma — Agência Digital" />
+    <meta property="og:title" content="Edu & Paloma — Agência Digital" />
+    <meta
+      property="og:description"
+      content="Catálogos com pedido no WhatsApp, sites sob medida, marketing digital e automação — pra negócios de Goiânia que querem vender mais online."
+    />
+    <meta property="og:image" content="https://eduepaloma.com.br/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Edu & Paloma — Agência Digital" />
+    <meta
+      name="twitter:description"
+      content="Catálogos com pedido no WhatsApp, sites sob medida, marketing digital e automação — pra negócios de Goiânia que querem vender mais online."
+    />
+    <meta name="twitter:image" content="https://eduepaloma.com.br/og-image.png" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <title>Edu & Paloma — Agência Digital</title>
+
+    <!-- Structured data — ajuda o Google a entender que isso é um negócio local -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ProfessionalService",
+        "name": "Edu & Paloma — Agência Digital",
+        "description": "Agência digital especializada em catálogos com pedido no WhatsApp, sites sob medida, marketing digital e automação para negócios locais.",
+        "areaServed": {
+          "@type": "City",
+          "name": "Goiânia"
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Goiânia",
+          "addressRegion": "GO",
+          "addressCountry": "BR"
+        },
+        "sameAs": [
+          "https://instagram.com/eduepaloma.dev",
+          "https://linkedin.com/company/eduepaloma"
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

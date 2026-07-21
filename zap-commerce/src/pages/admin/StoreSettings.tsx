@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { LojaConfig, PontoRetirada, TipoPontoRetirada } from "../../types";
-import { atualizarLoja } from "../../lib/api";
+import { ApiError, atualizarLoja } from "../../lib/api";
+import { ErrorToast } from "../../components/ErrorToast";
 
 const ROTULOS: Record<TipoPontoRetirada, string> = {
   maos: "Retirada em Mãos",
@@ -24,6 +25,7 @@ export function StoreSettings({
   const [rascunho, setRascunho] = useState<LojaConfig>(loja);
   const [salvando, setSalvando] = useState(false);
   const [salvo, setSalvo] = useState(false);
+  const [erroApi, setErroApi] = useState<string | null>(null);
 
   async function salvar() {
     setSalvando(true);
@@ -32,6 +34,10 @@ export function StoreSettings({
       setSalvo(true);
       onMudou();
       setTimeout(() => setSalvo(false), 1800);
+    } catch (e) {
+      setErroApi(
+        e instanceof ApiError ? e.message : "Não foi possível salvar. Confira sua conexão e tente de novo.",
+      );
     } finally {
       setSalvando(false);
     }
@@ -56,9 +62,9 @@ export function StoreSettings({
   }
 
   return (
-    <div className="flex flex-col gap-6 px-4 pb-28 pt-4">
+    <div className="flex flex-col gap-6 px-4 pb-28 pt-4 lg:max-w-2xl lg:px-0 lg:pb-8 lg:pt-0">
       <section className="flex flex-col gap-3">
-        <h2 className="font-display text-base font-bold">Dados da loja</h2>
+        <h2 className="font-display text-base font-bold lg:text-xl">Dados da loja</h2>
         <label className="flex items-center justify-between rounded-xl border border-black/10 px-3.5 py-3 text-sm font-medium">
           Loja aberta para pedidos
           <input
@@ -165,6 +171,8 @@ export function StoreSettings({
       >
         {salvando ? "Salvando..." : salvo ? "Configurações salvas ✓" : "Salvar configurações"}
       </button>
+
+      <ErrorToast mensagem={erroApi} onFechar={() => setErroApi(null)} />
     </div>
   );
 }

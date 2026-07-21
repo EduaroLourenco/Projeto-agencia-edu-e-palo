@@ -29,8 +29,44 @@ export function CartDrawer({
   return (
     <BottomSheet aberto={aberto} onFechar={onFechar} titulo="Sua Sacola">
       {linhas.length === 0 ? (
-        <div className="px-5 py-14 text-center text-sm text-ink/40">
-          Sua sacola está vazia. Volte e escolha suas peças favoritas!
+        <div className="flex flex-col items-center justify-center gap-4 px-5 py-16 text-center">
+          {/* Ícone ilustrado da sacola vazia */}
+          <div className="relative flex h-20 w-20 items-center justify-center rounded-full bg-brand-50">
+            <svg
+              viewBox="0 0 64 64"
+              fill="none"
+              className="h-10 w-10"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M20 20h24l-3 22H23L20 20z"
+                stroke="#f22e69"
+                strokeWidth="2.5"
+                strokeLinejoin="round"
+                fill="none"
+              />
+              <path
+                d="M26 20c0-3.314 2.686-6 6-6s6 2.686 6 6"
+                stroke="#f22e69"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                fill="none"
+              />
+              <circle cx="27" cy="47" r="2" fill="#f22e69" />
+              <circle cx="37" cy="47" r="2" fill="#f22e69" />
+            </svg>
+            {/* Estrelinhas decorativas */}
+            <span className="absolute -right-1 -top-1 text-base">✨</span>
+          </div>
+          <div>
+            <p className="font-display text-base font-bold text-ink">Sacola vazia por enquanto</p>
+            <p className="mt-1 text-sm text-ink/50">
+              Escolha suas peças favoritas e adicione aqui.
+            </p>
+          </div>
+          <p className="rounded-xl bg-brand-50 px-4 py-2.5 text-xs font-semibold text-brand-600">
+            👆 Deslize para baixo e explore a vitrine
+          </p>
         </div>
       ) : (
         <>

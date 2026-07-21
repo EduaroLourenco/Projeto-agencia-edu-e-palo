@@ -1,9 +1,11 @@
 import { Reveal } from "./Reveal";
+import { DUPLA, AGENCIA } from "../data/content";
+import { Globe, ExternalLink } from "lucide-react";
 
-const DUPLA = [
-  { iniciais: "E", papel: "Estratégia & Produto" },
-  { iniciais: "P", papel: "Design & Experiência" },
-];
+const ESPECIALIDADES: Record<string, string[]> = {
+  E: ["NestJS", "React", "Prisma", "PostgreSQL"],
+  P: ["Figma", "Tailwind", "UI/UX", "Framer Motion"],
+};
 
 export function About() {
   return (
@@ -25,18 +27,76 @@ export function About() {
             seu negócio, a outra cuida de como fica bonito, rápido e fácil de usar. No fim, o que
             chega pra você é um sistema pensado de ponta a ponta — não um pedaço solto.
           </p>
+
+          <div className="mt-7 flex items-center gap-3">
+            <span className="rounded-full border border-yellow-400/20 bg-yellow-400/8 px-3 py-1.5 text-xs font-semibold text-yellow-300">
+              📍 Goiânia, GO
+            </span>
+            <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold text-white/50">
+              Atendemos presencial e remoto
+            </span>
+          </div>
+
+          {/* Redes sociais da agência */}
+          <div className="mt-6 flex items-center gap-3">
+            <a
+              href={AGENCIA.instagram}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3.5 py-2 text-xs font-semibold text-white/60 transition-colors hover:border-white/20 hover:text-white"
+            >
+              <Globe size={13} />
+              Instagram
+            </a>
+            <a
+              href={AGENCIA.linkedin}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3.5 py-2 text-xs font-semibold text-white/60 transition-colors hover:border-white/20 hover:text-white"
+            >
+              <ExternalLink size={13} />
+              LinkedIn
+            </a>
+          </div>
         </Reveal>
 
-        <Reveal delay={0.1} className="flex justify-center gap-6 lg:justify-end">
+        <Reveal delay={0.1} className="flex flex-col gap-5 lg:items-end">
           {DUPLA.map((pessoa) => (
             <div
               key={pessoa.iniciais}
-              className="flex w-40 flex-col items-center gap-4 rounded-3xl border border-white/10 bg-surface p-6 text-center"
+              className="group flex w-full flex-col gap-4 rounded-3xl border border-white/10 bg-surface p-6 transition-all hover:border-white/20 lg:max-w-sm"
             >
-              <span className="flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-violet-500 to-cyan-400 font-display text-2xl font-extrabold text-ink">
-                {pessoa.iniciais}
-              </span>
-              <p className="text-xs font-medium text-white/55">{pessoa.papel}</p>
+              <div className="flex items-center gap-4">
+                <span
+                  className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br ${pessoa.cor} font-display text-xl font-extrabold text-ink`}
+                >
+                  {pessoa.iniciais}
+                </span>
+                <div>
+                  <p className="font-display text-base font-bold text-white">{pessoa.nome}</p>
+                  <p className="text-xs font-semibold text-white/50">{pessoa.papel}</p>
+                </div>
+              </div>
+              <p className="text-xs leading-relaxed text-white/45">{pessoa.bio}</p>
+
+              {/* Tags de especialidade */}
+              <div className="flex flex-wrap gap-1.5">
+                {ESPECIALIDADES[pessoa.iniciais]?.map((tag) => (
+                  <span
+                    key={tag}
+                    className="rounded-md border border-white/8 bg-white/5 px-2 py-0.5 text-[11px] font-semibold text-white/50"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+
+              {/* Case destaque */}
+              <div className="flex items-center gap-2 border-t border-white/8 pt-4">
+                <span className="h-1.5 w-1.5 rounded-full bg-lime-400" />
+                <span className="text-[11px] text-white/40">Zap-Commerce · 2024</span>
+                <ExternalLink size={10} className="ml-auto text-white/20 transition-colors group-hover:text-white/40" />
+              </div>
             </div>
           ))}
         </Reveal>

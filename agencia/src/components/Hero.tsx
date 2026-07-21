@@ -1,16 +1,37 @@
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { linkWhatsApp } from "../data/content";
 import { PhoneMockup } from "./PhoneMockup";
 import { MagneticButton } from "./MagneticButton";
 import { Counter } from "./Counter";
+import { rastrear } from "../lib/analytics";
 
 export function Hero() {
+  const ref = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
+  const yBlobs = useTransform(scrollYProgress, [0, 1], [0, 120]);
+  const yMockup = useTransform(scrollYProgress, [0, 1], [0, 60]);
+  const opacityHero = useTransform(scrollYProgress, [0, 0.8], [1, 0.2]);
+
   return (
-    <section id="top" className="relative overflow-hidden pb-20 pt-32 sm:pt-40">
+    <motion.section
+      ref={ref}
+      id="top"
+      style={{ opacity: opacityHero }}
+      className="relative overflow-hidden pb-20 pt-32 sm:pt-40"
+    >
       <div className="grid-fade pointer-events-none absolute inset-0 top-0 h-[700px]" />
-      <div className="glow-violet animate-drift pointer-events-none absolute -top-40 left-1/2 h-[600px] w-[600px] -translate-x-1/2 rounded-full" />
-      <div className="glow-cyan animate-drift-slow pointer-events-none absolute right-0 top-60 h-[400px] w-[400px] rounded-full" />
+      <motion.div
+        style={{ y: yBlobs }}
+        className="glow-violet animate-drift pointer-events-none absolute -top-40 left-1/2 h-[600px] w-[600px] -translate-x-1/2 rounded-full"
+      />
+      <motion.div
+        style={{ y: yBlobs }}
+        className="glow-cyan animate-drift-slow pointer-events-none absolute right-0 top-60 h-[400px] w-[400px] rounded-full"
+      />
+      {/* Glow amarelo Goiânia */}
+      <div className="pointer-events-none absolute bottom-0 left-1/4 h-[300px] w-[300px] -translate-x-1/2 rounded-full opacity-20" style={{ background: "radial-gradient(circle, rgba(250,204,21,0.5) 0%, transparent 70%)" }} />
 
       <div className="relative mx-auto grid max-w-6xl grid-cols-1 items-center gap-14 px-5 lg:grid-cols-2">
         <div>
@@ -18,10 +39,20 @@ export function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-semibold text-violet-300"
+            className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-semibold text-violet-300"
           >
             <Sparkles size={14} />
             Sistemas, sites e marketing sob um teto só
+          </motion.div>
+
+          {/* Badge Goiânia */}
+          <motion.div
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.15 }}
+            className="mb-6 inline-flex items-center gap-1.5 rounded-full border border-yellow-400/30 bg-yellow-400/10 px-3.5 py-1 text-xs font-semibold text-yellow-300"
+          >
+            🟡 Especialistas em Goiânia
           </motion.div>
 
           <motion.h1
@@ -54,6 +85,7 @@ export function Hero() {
               href={linkWhatsApp()}
               target="_blank"
               rel="noreferrer"
+              onClick={() => rastrear("whatsapp_click", { origem: "hero" })}
               className="group flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-bold text-ink"
             >
               Falar no WhatsApp
@@ -75,7 +107,7 @@ export function Hero() {
           >
             <div>
               <p className="font-display text-2xl font-bold text-white">
-                <Counter to={4} />
+                <Counter to={8} />
               </p>
               <p className="text-xs">módulos de serviço</p>
             </div>
@@ -98,6 +130,7 @@ export function Hero() {
           initial={{ opacity: 0, scale: 0.92, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
+          style={{ y: yMockup }}
           className="flex justify-center lg:justify-end"
         >
           <div className="animate-float">
@@ -105,6 +138,6 @@ export function Hero() {
           </div>
         </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 }

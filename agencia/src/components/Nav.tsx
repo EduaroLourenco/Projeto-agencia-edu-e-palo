@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { AGENCIA, linkWhatsApp } from "../data/content";
 import { MagneticButton } from "./MagneticButton";
+import { rastrear } from "../lib/analytics";
 
 const LINKS = [
   { href: "#modulos", label: "Serviços" },
-  { href: "#como-funciona", label: "Como funciona" },
+  { href: "#setores", label: "Setores" },
   { href: "#case", label: "Cases" },
+  { href: "#depoimentos", label: "Depoimentos" },
   { href: "#quem-somos", label: "Quem somos" },
 ];
 
@@ -29,6 +32,13 @@ export function Nav() {
     elementos.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
   }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = aberto ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [aberto]);
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/5 bg-ink/70 backdrop-blur-lg">
@@ -63,44 +73,78 @@ export function Nav() {
           href={linkWhatsApp()}
           target="_blank"
           rel="noreferrer"
+          onClick={() => rastrear("whatsapp_click", { origem: "nav_desktop" })}
           className="hidden rounded-full bg-white px-5 py-2.5 text-sm font-bold text-ink transition-transform hover:scale-105 md:block"
         >
           Falar no WhatsApp
         </MagneticButton>
 
         <button
-          onClick={() => setAberto((v) => !v)}
+          onClick={() => setAberto(true)}
           className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/5 text-white md:hidden"
-          aria-label="Menu"
+          aria-label="Abrir menu"
         >
-          {aberto ? <X size={18} /> : <Menu size={18} />}
+          <Menu size={18} />
         </button>
       </div>
 
-      {aberto && (
-        <div className="border-t border-white/5 bg-ink px-5 pb-6 pt-2 md:hidden">
-          <nav className="flex flex-col gap-1">
-            {LINKS.map((l) => (
-              <a
-                key={l.href}
-                href={l.href}
-                onClick={() => setAberto(false)}
-                className="rounded-lg px-2 py-3 text-sm font-medium text-white/70 hover:bg-white/5 hover:text-white"
-              >
-                {l.label}
-              </a>
-            ))}
-            <a
-              href={linkWhatsApp()}
-              target="_blank"
-              rel="noreferrer"
-              className="mt-2 rounded-full bg-white px-5 py-3 text-center text-sm font-bold text-ink"
+      <AnimatePresence>
+        {aberto && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => setAberto(false)}
+              className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm md:hidden"
+            />
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", stiffness: 320, damping: 34 }}
+              className="fixed inset-y-0 right-0 z-50 flex w-[78%] max-w-xs flex-col border-l border-white/10 bg-surface px-6 py-6 md:hidden"
             >
-              Falar no WhatsApp
-            </a>
-          </nav>
-        </div>
-      )}
+              <div className="flex items-center justify-between">
+                <span className="font-display text-sm font-bold text-white">Menu</span>
+                <button
+                  onClick={() => setAberto(false)}
+                  aria-label="Fechar menu"
+                  className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/5 text-white"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+
+              <nav className="mt-8 flex flex-col gap-1">
+                {LINKS.map((l) => (
+                  <a
+                    key={l.href}
+                    href={l.href}
+                    onClick={() => setAberto(false)}
+                    className={`rounded-lg px-3 py-3 text-base font-medium ${
+                      secaoAtiva === l.href ? "bg-white/5 text-white" : "text-white/70"
+                    }`}
+                  >
+                    {l.label}
+                  </a>
+                ))}
+              </nav>
+
+              <a
+                href={linkWhatsApp()}
+                target="_blank"
+                rel="noreferrer"
+                onClick={() => rastrear("whatsapp_click", { origem: "nav_mobile" })}
+                className="mt-auto rounded-full bg-white px-5 py-3.5 text-center text-sm font-bold text-ink"
+              >
+                Falar no WhatsApp
+              </a>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

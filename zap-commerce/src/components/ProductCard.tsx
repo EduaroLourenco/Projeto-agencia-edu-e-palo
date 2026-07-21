@@ -7,11 +7,15 @@ import { VideoEmbed } from "./VideoEmbed";
 export function ProductCard({
   produto,
   atacadoAtivo,
+  prioritario = false,
   onAdicionar,
+  onAbrirZoom,
 }: {
   produto: Produto;
   atacadoAtivo: boolean;
+  prioritario?: boolean;
   onAdicionar: (tamanho: string, quantidade: number) => void;
+  onAbrirZoom?: (produto: Produto) => void;
 }) {
   const [tamanho, setTamanho] = useState(produto.tamanhosDisponiveis[0]);
   const [quantidade, setQuantidade] = useState(1);
@@ -32,14 +36,20 @@ export function ProductCard({
         {produto.instagramReelsUrl ? (
           <VideoEmbed url={produto.instagramReelsUrl} imagemCapa={resolveImageUrl(produto.imageUrl)} />
         ) : (
-          <div className="aspect-[4/5] w-full overflow-hidden">
+          <button
+            type="button"
+            onClick={() => onAbrirZoom?.(produto)}
+            className="block aspect-[4/5] w-full overflow-hidden"
+            aria-label={`Ampliar foto de ${produto.nome}`}
+          >
             <img
               src={resolveImageUrl(produto.imageUrl)}
-              loading="lazy"
+              loading={prioritario ? "eager" : "lazy"}
+              fetchPriority={prioritario ? "high" : "auto"}
               alt={produto.nome}
               className="h-full w-full object-cover"
             />
-          </div>
+          </button>
         )}
 
         {produto.isUltimasPecas && (

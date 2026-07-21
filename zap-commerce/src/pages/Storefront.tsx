@@ -3,13 +3,19 @@ import { Link, useParams } from "react-router-dom";
 import { CartProvider, useCart } from "../context/CartContext";
 import { Header } from "../components/Header";
 import { CategoryFilter } from "../components/CategoryFilter";
+import { SecondaryFilters } from "../components/SecondaryFilters";
 import { WholesaleProgressBar } from "../components/WholesaleProgressBar";
 import { ProductGrid } from "../components/ProductGrid";
 import { CartDrawer } from "../components/CartDrawer";
 import { CheckoutSheet } from "../components/CheckoutSheet";
+import { SkeletonStorefront } from "../components/SkeletonStorefront";
+import { StickyCartBar } from "../components/StickyCartBar";
+import { ImageZoomModal } from "../components/ImageZoomModal";
 import { calcularResumoPedido } from "../lib/pedido";
 import { useLoja } from "../hooks/useLoja";
 import { useProdutos } from "../hooks/useProdutos";
+import { rastrear } from "../lib/analytics";
+import type { Produto } from "../types";
 
 function StorefrontInner() {
   const { slug = "" } = useParams();
@@ -18,9 +24,13 @@ function StorefrontInner() {
   const { itens, adicionarItem, atualizarQuantidade, totalPecas, limparCarrinho } = useCart();
 
   const [categoria, setCategoria] = useState("Todas");
+  const [termoBusca, setTermoBusca] = useState("");
+  const [tamanhoFiltro, setTamanhoFiltro] = useState<string | null>(null);
+  const [somenteUltimasPecas, setSomenteUltimasPecas] = useState(false);
   const [carrinhoAberto, setCarrinhoAberto] = useState(false);
   const [checkoutAberto, setCheckoutAberto] = useState(false);
   const [pedidoConfirmado, setPedidoConfirmado] = useState(false);
+  const [produtoZoom, setProdutoZoom] = useState<Produto | null>(null);
 
   const categorias = useMemo(() => {
     const set = new Set<string>();
@@ -28,12 +38,31 @@ function StorefrontInner() {
     return Array.from(set);
   }, [produtos]);
 
-  const produtosFiltrados = useMemo(
+  const produtosDaCategoria = useMemo(
     () =>
       produtos.filter(
-        (p) => p.isAtivo && (categoria === "Todas" || p.categorias.includes(categoria)),
+        (p) =>
+          p.isAtivo &&
+          (categoria === "Todas" || p.categorias.includes(categoria)) &&
+          (termoBusca === "" || p.nome.toLowerCase().includes(termoBusca.toLowerCase())),
       ),
-    [produtos, categoria],
+    [produtos, categoria, termoBusca],
+  );
+
+  const tamanhosDisponiveis = useMemo(() => {
+    const set = new Set<string>();
+    produtosDaCategoria.forEach((p) => p.tamanhosDisponiveis.forEach((t) => set.add(t)));
+    return Array.from(set);
+  }, [produtosDaCategoria]);
+
+  const produtosFiltrados = useMemo(
+    () =>
+      produtosDaCategoria.filter(
+        (p) =>
+          (!tamanhoFiltro || p.tamanhosDisponiveis.includes(tamanhoFiltro)) &&
+          (!somenteUltimasPecas || p.isUltimasPecas),
+      ),
+    [produtosDaCategoria, tamanhoFiltro, somenteUltimasPecas],
   );
 
   const resumo = useMemo(
@@ -42,11 +71,7 @@ function StorefrontInner() {
   );
 
   if (loja === undefined) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <p className="text-sm text-ink/40">Carregando vitrine...</p>
-      </div>
-    );
+    return <SkeletonStorefront />;
   }
 
   if (loja === null) {
@@ -64,10 +89,20 @@ function StorefrontInner() {
   }
 
   return (
-    <div className="mx-auto flex min-h-screen max-w-md flex-col bg-paper pb-8">
-      <Header loja={loja} totalPecas={totalPecas} onAbrirSacola={() => setCarrinhoAberto(true)} />
+    <div
+      className="mx-auto flex min-h-screen max-w-md flex-col bg-paper pb-8 lg:my-6 lg:min-h-[calc(100vh-3rem)] lg:rounded-3xl lg:shadow-2xl lg:shadow-black/10 lg:ring-1 lg:ring-black/5"
+    >
+      <Header loja={loja} totalPecas={totalPecas} onAbrirSacola={() => setCarrinhoAberto(true)} onBuscar={setTermoBusca} />
 
       <CategoryFilter categorias={categorias} ativa={categoria} onSelecionar={setCategoria} />
+
+      <SecondaryFilters
+        tamanhos={tamanhosDisponiveis}
+        tamanhoAtivo={tamanhoFiltro}
+        somenteUltimasPecas={somenteUltimasPecas}
+        onSelecionarTamanho={setTamanhoFiltro}
+        onAlternarUltimasPecas={() => setSomenteUltimasPecas((v) => !v)}
+      />
 
       {itens.length === 0 && (
         <div className="px-4 pb-1">
@@ -87,19 +122,37 @@ function StorefrontInner() {
       <ProductGrid
         produtos={produtosFiltrados}
         atacadoAtivo={resumo?.atacadoAtivo ?? false}
-        onAdicionar={(produto, tamanho, quantidade) =>
-          adicionarItem(produto.id, tamanho, quantidade)
-        }
+        onAdicionar={(produto, tamanho, quantidade) => {
+          adicionarItem(produto.id, tamanho, quantidade);
+          rastrear("add_to_cart", { produto: produto.nome, tamanho, quantidade });
+        }}
+        onAbrirZoom={(produto) => {
+          setProdutoZoom(produto);
+          rastrear("zoom_produto", { produto: produto.nome });
+        }}
       />
 
-      <div className="fixed inset-x-0 bottom-4 z-20 mx-auto w-full max-w-md px-4">
-        <Link
-          to={`/${slug}/admin`}
-          className="pointer-events-auto ml-auto block w-fit rounded-full bg-white/90 px-3 py-1.5 text-[11px] font-semibold text-ink/50 shadow backdrop-blur"
-        >
-          Sou lojista →
-        </Link>
-      </div>
+      {totalPecas === 0 && (
+        <div className="fixed inset-x-0 bottom-4 z-20 mx-auto w-full max-w-md px-4">
+          <Link
+            to={`/${slug}/admin`}
+            className="pointer-events-auto ml-auto block w-fit rounded-full bg-white/90 px-3 py-1.5 text-[11px] font-semibold text-ink/50 shadow backdrop-blur"
+          >
+            Sou lojista →
+          </Link>
+        </div>
+      )}
+
+      {resumo && (
+        <StickyCartBar
+          totalPecas={totalPecas}
+          subtotal={resumo.subtotal}
+          atacadoAtivo={resumo.atacadoAtivo}
+          onAbrirSacola={() => setCarrinhoAberto(true)}
+        />
+      )}
+
+      <ImageZoomModal produto={produtoZoom} onFechar={() => setProdutoZoom(null)} />
 
       {resumo && (
         <CartDrawer
@@ -114,6 +167,7 @@ function StorefrontInner() {
           onIrParaCheckout={() => {
             setCarrinhoAberto(false);
             setCheckoutAberto(true);
+            rastrear("checkout_aberto", { totalPecas, subtotal: resumo.subtotal });
           }}
         />
       )}
@@ -130,6 +184,7 @@ function StorefrontInner() {
           onPedidoEnviado={() => {
             setCheckoutAberto(false);
             setPedidoConfirmado(true);
+            rastrear("pedido_enviado", { totalPecas, subtotal: resumo.subtotal });
             limparCarrinho();
             setTimeout(() => setPedidoConfirmado(false), 4000);
           }}

@@ -2,11 +2,18 @@
 
 export const AGENCIA = {
   nome: "Edu & Paloma",
-  tagline: "Agência Digital",
+  tagline: "Agência Digital · Goiânia",
+  cidade: "Goiânia",
   whatsapp: "5562999999999",
   mensagemPadrao: "Oi! Vi o site de vocês e quero entender como posso digitalizar meu negócio.",
   email: "contato@eduepaloma.com.br",
+  instagram: "https://instagram.com/eduepaloma.dev",
+  linkedin: "https://linkedin.com/company/eduepaloma",
 };
+
+// Em produção, defina VITE_ZAP_COMMERCE_URL no .env apontando para o domínio publicado do case.
+export const ZAP_COMMERCE_URL =
+  import.meta.env.VITE_ZAP_COMMERCE_URL || "http://localhost:5173/bella-atacado";
 
 export function linkWhatsApp(mensagem = AGENCIA.mensagemPadrao) {
   return `https://wa.me/${AGENCIA.whatsapp}?text=${encodeURIComponent(mensagem)}`;
@@ -77,6 +84,62 @@ export const MODULOS: Modulo[] = [
       "Treinamento da equipe pra usar o que foi construído",
     ],
     cor: "violet",
+  },
+  {
+    id: "vida-noturna",
+    numero: "05",
+    titulo: "Vida Noturna & Eventos",
+    resumo:
+      "Digitaliza a portaria e as reservas de baladas e eventos em Goiânia. Lista VIP com QR Code, mapa de lounges interativo e painel de check-in no celular do segurança.",
+    itens: [
+      "Lista VIP com QR Code gerado na hora",
+      "Mapa visual de lounges e mesas (livre/ocupado)",
+      "Check-in pelo celular do segurança (câmera + validação)",
+      "Exportação da lista para planilha ou WhatsApp",
+    ],
+    cor: "cyan",
+  },
+  {
+    id: "agendamento",
+    numero: "06",
+    titulo: "Agendamento Sem WhatsApp",
+    resumo:
+      "Para salões, clínicas de estética e oficinas: o cliente agenda online enquanto você atende. Sem parar para responder mensagem, sem horário duplo.",
+    itens: [
+      "Vitrine de serviços com preço e duração",
+      "Calendário com horários disponíveis em tempo real",
+      "Integração gratuita com Google Agenda",
+      "Confirmação automática via WhatsApp para o cliente",
+    ],
+    cor: "lime",
+  },
+  {
+    id: "alimentacao",
+    numero: "07",
+    titulo: "Alimentação Sem Taxa de Delivery",
+    resumo:
+      "Cardápio digital com carrinho e cálculo de frete por CEP — ideal para distribuidoras de bebidas e lanchonetes que querem fugir das altas taxas do iFood.",
+    itens: [
+      "Cardápio por categorias com fotos e preços",
+      "Carrinho em tempo real com total atualizado",
+      "Cálculo de entrega por CEP e bairro de Goiânia",
+      "Painel de pedidos estilo Kanban (Recebido → Entregue)",
+    ],
+    cor: "violet",
+  },
+  {
+    id: "logistica-44",
+    numero: "08",
+    titulo: "Logística da Região da 44",
+    resumo:
+      "Conecta lojistas da 44 com revendedores do interior de Goiás. Rastreamento de fardos por excursão ou transportadora, notificação automática para o comprador.",
+    itens: [
+      "Registro digital de despacho (bilhete eletrônico)",
+      "Rastreamento por número de celular",
+      "Painel de manifestos de carga para guias de excursão",
+      "Notificação automática via WhatsApp a cada status",
+    ],
+    cor: "cyan",
   },
 ];
 
@@ -175,5 +238,84 @@ export const FAQ: PerguntaFrequente[] = [
     pergunta: "E depois que o site ou sistema vai pro ar?",
     resposta:
       "A gente continua por perto: ajustes, melhorias e suporte fazem parte do processo, não são um custo escondido à parte.",
+  },
+];
+
+export interface Nicho {
+  emoji: string;
+  nome: string;
+  descricao: string;
+}
+
+export const NICHOS: Nicho[] = [
+  { emoji: "👗", nome: "Moda & Atacado", descricao: "Lojas da Rua 44 e atacadistas" },
+  { emoji: "🍺", nome: "Distribuidoras", descricao: "Bebidas, alimentos e mercearias" },
+  { emoji: "✂️", nome: "Salões & Estética", descricao: "Agendamento sem WhatsApp" },
+  { emoji: "🎉", nome: "Baladas & Eventos", descricao: "Lista VIP e reserva de lounge" },
+  { emoji: "🔧", nome: "Oficinas & Auto", descricao: "Agendamento e orçamento digital" },
+  { emoji: "🚌", nome: "Logística Interior", descricao: "Excursões e frete da 44" },
+  { emoji: "🍔", nome: "Lanchonetes", descricao: "Cardápio e delivery sem taxa" },
+  { emoji: "🏥", nome: "Clínicas & Saúde", descricao: "Agenda e prontuário simples" },
+];
+
+export interface Depoimento {
+  nome: string;
+  negocio: string;
+  texto: string;
+  iniciais: string;
+  cor: "violet" | "lime" | "cyan";
+}
+
+// ⚠️ Placeholder: depoimentos fictícios pra ilustrar o layout. Troque por
+// depoimentos reais de clientes (com autorização deles) antes de publicar.
+export const DEPOIMENTOS: Depoimento[] = [
+  {
+    nome: "Renata Souza",
+    negocio: "Bella Modas — Atacado, Goiânia",
+    texto:
+      "Antes eu perdia pedido todo dia porque cliente mandava foto solta no grupo. Agora eles entram na vitrine, montam a sacola e o pedido já chega formatado pra mim. Virou rotina.",
+    iniciais: "RS",
+    cor: "violet",
+  },
+  {
+    nome: "Diego Almeida",
+    negocio: "Distribuidora Almeida — Bebidas",
+    texto:
+      "Achei que era complicado. Em duas semanas tava no ar, sem custo de iFood, sem percentual. O cliente digita o CEP e já sabe o frete. Simples assim.",
+    iniciais: "DA",
+    cor: "cyan",
+  },
+  {
+    nome: "Carla Mendes",
+    negocio: "Studio CM — Estética, Setor Bueno",
+    texto:
+      "Parei de ficar no celular respondendo 'que horas tem?' entre atendimento. O cliente já abre o site, vê os horários e agenda. Liberou minha cabeça pra trabalhar.",
+    iniciais: "CM",
+    cor: "lime",
+  },
+];
+
+export interface MembroDupla {
+  iniciais: string;
+  nome: string;
+  papel: string;
+  bio: string;
+  cor: string;
+}
+
+export const DUPLA: MembroDupla[] = [
+  {
+    iniciais: "E",
+    nome: "Eduardo",
+    papel: "Estratégia & Produto",
+    bio: "Transforma o problema do negócio em um sistema que realmente funciona. Cuida de arquitetura, back-end e de garantir que o que sai do ar entrega resultado.",
+    cor: "from-violet-500 to-cyan-400",
+  },
+  {
+    iniciais: "P",
+    nome: "Paloma",
+    papel: "Design & Experiência",
+    bio: "Garante que o sistema seja bonito, rápido e fácil de usar — do primeiro acesso ao checkout. Interface que converte, não só que imprime.",
+    cor: "from-cyan-400 to-lime-400",
   },
 ];
