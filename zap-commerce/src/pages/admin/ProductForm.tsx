@@ -93,8 +93,8 @@ export function ProductForm({
           </label>
           {erroImagem && <p className="mt-1 text-[11px] text-brand-600">{erroImagem}</p>}
           <p className="mt-1 text-[11px] text-ink/35">
-            A foto sobe direto para o servidor da API; em produção esse upload vai para a
-            Cloudinary sem passar pelo seu backend.
+            Foto de até 2MB — fica salva direto no banco de dados. Pra fotos maiores e otimização
+            automática, o próximo passo é conectar a Cloudinary.
           </p>
         </div>
 

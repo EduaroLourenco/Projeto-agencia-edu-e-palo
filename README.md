@@ -7,10 +7,11 @@ Duas coisas neste workspace:
 
 ## Como rodar tudo
 
-Pré-requisito: Node.js 18+.
+Pré-requisito: Node.js 18+ e um banco Postgres (veja "Banco de dados" abaixo — é grátis e leva 2 minutos).
 
 ```bash
-npm run setup   # instala as três apps, roda a migration e semeia a loja de demonstração
+cd zap-commerce-api && cp .env.example .env   # preencha DATABASE_URL antes de continuar
+npm run setup   # instala as três apps, sincroniza o schema e semeia a loja de demonstração
 npm run dev     # sobe site da agência (5174), API (3001) e vitrine Zap-Commerce (5173) juntos
 ```
 
@@ -18,13 +19,22 @@ npm run dev     # sobe site da agência (5174), API (3001) e vitrine Zap-Commerc
 - **Vitrine de demonstração (case):** `http://localhost:5173/bella-atacado`
 - **Painel do lojista:** `http://localhost:5173/bella-atacado/admin` (senha: `1234`)
 
+### Banco de dados
+
+O back-end roda como função serverless no Vercel, sem disco persistente — por isso usa Postgres, não SQLite. Use o mesmo banco pra desenvolver local e pra produção:
+
+- **Vercel Postgres:** no dashboard do Vercel → seu projeto → aba **Storage** → **Create Database** → Postgres. Copia a `DATABASE_URL` gerada.
+- **ou Supabase:** [supabase.com](https://supabase.com) → New Project → Settings → Database → copia a "Connection string" (modo URI).
+
+Cole a URL em `zap-commerce-api/.env` (arquivo não versionado).
+
 ## Arquitetura
 
 ```
 tst code/
 ├── agencia/              site institucional da agência (React + Vite + Tailwind v4 + Framer Motion)
 ├── zap-commerce/          front-end do case (React + TypeScript + Vite + Tailwind v4)
-└── zap-commerce-api/      back-end do case (NestJS + Prisma + SQLite local)
+└── zap-commerce-api/      back-end do case (NestJS + Prisma + Postgres), com handler serverless em api/index.ts
 ```
 
 ## `agencia/` — site institucional
@@ -52,50 +62,47 @@ SPA mobile-first, sem framework de estado externo (Context API + hooks já resol
 
 ### Back-end — `zap-commerce-api/`
 
-NestJS com Prisma sobre SQLite local (zero contas externas para rodar). Os *models* já são o desenho final — trocar para Postgres em produção é só mudar o `provider` do datasource.
+NestJS com Prisma sobre Postgres. Roda local com `npm run start:dev` (via `src/main.ts`, `app.listen`) e em produção como função serverless no Vercel (via `api/index.ts`, que reaproveita a mesma configuração através de `src/create-app.ts` — nenhuma rota muda entre os dois modos).
 
 - `POST /auth/registrar`, `POST /auth/login` — cria/autentica uma loja, devolve JWT (senha com hash `bcrypt`).
 - `GET /lojas/:slug` (pública) / `PATCH /lojas/me` (autenticada) — configuração da loja e pontos de entrega.
 - `GET /produtos/loja/:slug` (pública, só ativos) / `GET /produtos/me` + `POST` + `PUT /:id` + `DELETE /:id` (autenticadas) — CRUD de produtos, sempre escopado por loja (multi-tenant).
-- `POST /upload` (autenticada) — recebe a foto e devolve a URL. Hoje salva em disco local (`uploads/`) e serve como estático; é o ponto exato onde entra o fluxo de assinatura direta da Cloudinary da especificação original.
+- `POST /upload` (autenticada) — recebe a foto (até 2MB), converte pra base64 e devolve como `data:` URL, guardada direto na coluna `imageUrl` do produto. Sem disco, sem serviço externo — funciona em função serverless. Pra evoluir pra Cloudinary depois (upload sem limite de tamanho, otimização de imagem), só o `UploadController` muda.
 
 ## Deploy no Vercel
 
-Este é um monorepo com 3 pastas — no Vercel cada front-end vira **um projeto separado**, apontando para uma subpasta do mesmo repositório GitHub. O back-end **não** entra no Vercel (veja o motivo logo abaixo).
+Este é um monorepo com 3 pastas — no Vercel cada uma vira **um projeto separado**, apontando para uma subpasta do mesmo repositório GitHub.
 
-### 1. `agencia/` (site institucional)
+### 1. `zap-commerce-api/` (o back-end) — publique primeiro
 
-- Novo projeto no Vercel → import do repositório → **Root Directory: `agencia`**
-- Vercel detecta Vite automaticamente (build `npm run build`, saída `dist/`)
-- Variáveis de ambiente do projeto (Settings → Environment Variables):
-  - `VITE_ZAP_COMMERCE_URL` → domínio publicado do Zap-Commerce (ex: `https://zap-commerce.vercel.app/bella-atacado`)
-  - `VITE_GA_MEASUREMENT_ID` → opcional, se for usar Google Analytics
+- Novo projeto no Vercel → import do repositório → **Root Directory: `zap-commerce-api`**
+- Variáveis de ambiente (Settings → Environment Variables):
+  - `DATABASE_URL` → a connection string do Postgres (ver "Banco de dados" acima)
+  - `JWT_SECRET` → gere com `openssl rand -hex 32`
+- O build usa o script `vercel-build` (`prisma generate && prisma db push && nest build`) — já sincroniza o schema no banco a cada deploy, não precisa rodar nada manual
+- Depois de publicado, copia a URL do projeto (ex: `https://zap-commerce-api.vercel.app`) — os dois front-ends abaixo precisam dela
+- **Depois do primeiro deploy**, rode `npm run db:seed` localmente apontando pro mesmo `DATABASE_URL` de produção pra criar a loja de demonstração
 
 ### 2. `zap-commerce/` (a vitrine)
 
 - Novo projeto no Vercel → mesmo repositório → **Root Directory: `zap-commerce`**
 - Já incluí `zap-commerce/vercel.json` com a regra de rewrite necessária — sem ela, links diretos tipo `/bella-atacado` dariam 404 ao atualizar a página, porque o React Router cuida dessas rotas no navegador, não o servidor
-- Variável de ambiente obrigatória: `VITE_API_URL` → URL do back-end publicado (ver item 3)
+- Variável de ambiente obrigatória: `VITE_API_URL` → a URL do projeto do passo 1
 
-### 3. `zap-commerce-api/` (o back-end) — não vai pro Vercel
+### 3. `agencia/` (site institucional)
 
-Vercel roda funções serverless sem estado: cada execução pode acontecer numa instância diferente, então o SQLite (`dev.db`, um arquivo local) não persiste entre requisições — os dados somem. Duas opções:
+- Novo projeto no Vercel → mesmo repositório → **Root Directory: `agencia`**
+- Variáveis de ambiente:
+  - `VITE_ZAP_COMMERCE_URL` → domínio publicado do Zap-Commerce (passo 2) + `/bella-atacado`
+  - `VITE_GA_MEASUREMENT_ID` → opcional, se for usar Google Analytics
 
-- **Mais simples:** publicar em [Render](https://render.com) ou [Fly.io](https://fly.io) como um serviço "web" normal (roda continuamente, SQLite funciona igual roda aqui). Zero mudança de código — é só apontar o comando de start pro `dist/main.js` depois do `npm run build`.
-- **Se quiser tudo no Vercel:** precisa trocar o SQLite por um Postgres hospedado (Supabase ou Neon, ambos com camada gratuita) e adaptar o `main.ts` para exportar um handler serverless. Me avisa se preferir esse caminho que eu preparo a migração.
+## Caminho de evolução
 
-## Caminho para produção (stack de custo zero da especificação)
-
-Nada aqui exige reescrever telas — só trocar a infraestrutura por baixo:
-
-| Camada | Hoje (local) | Produção | Como trocar |
-|---|---|---|---|
-| Front-end | Vite dev server | Vercel ou Netlify | `npm run build` em `zap-commerce/`, apontar o deploy para a pasta `dist/` |
-| Back-end | `nest start` local | Render ou Fly.io | `npm run build` em `zap-commerce-api/`, rodar `dist/main.js` |
-| Banco de dados | SQLite (`dev.db`) | Supabase (Postgres) | trocar `provider = "sqlite"` por `"postgresql"` em `prisma/schema.prisma` e apontar `DATABASE_URL` |
-| Fotos | disco local (`uploads/`) | Cloudinary | trocar `UploadController` pelo fluxo de assinatura (o front pede a assinatura à API, o celular do lojista envia a foto direto pra Cloudinary — o backend nunca processa o arquivo) |
-| Segredo do JWT | valor fixo de dev | variável de ambiente forte | gerar com `openssl rand -hex 32` e setar `JWT_SECRET` no ambiente de produção |
-| CORS | `origin: true` (aberto) | restrito | em `main.ts`, trocar por `origin: 'https://seu-dominio.com'` |
+| Camada | Hoje | Próximo passo natural |
+|---|---|---|
+| Fotos de produto | base64 direto no banco (até 2MB) | Cloudinary — sem limite de tamanho, otimização automática de imagem |
+| CORS | `origin: true` (aberto) | restringir para o domínio real: em `src/create-app.ts`, trocar por `origin: 'https://seu-dominio.com'` |
+| Migrations | `prisma db push` (sincroniza direto) | `prisma migrate dev` pra ter histórico de migrations versionado |
 
 ## O que fica pronto para o próximo passo
 

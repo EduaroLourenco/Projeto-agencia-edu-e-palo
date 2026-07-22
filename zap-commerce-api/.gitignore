@@ -35,13 +35,9 @@ yarn-error.log*
 # dotenv environment variable files
 .env
 
-# banco local (recriado via `npm run db:migrate && npm run db:seed`)
-prisma/dev.db
-prisma/dev.db-journal
-
-# fotos enviadas localmente pelo lojista
-uploads/*
-!uploads/.gitkeep
-
 # prisma 7 client output (não usado neste projeto, prisma 5)
 /generated/prisma
+
+# banco SQLite (não usado mais — o projeto roda em Postgres, ver README)
+prisma/dev.db
+prisma/dev.db-journal

@@ -1,13 +1,13 @@
-// Schema modelado para rodar em SQLite localmente sem nenhuma conta externa.
-// Para produção, troque o datasource para Postgres (ex: Supabase) - os models
-// não mudam, só o provider e a DATABASE_URL.
+// Postgres (Vercel Postgres / Neon / Supabase) — necessário porque o back-end
+// roda como função serverless no Vercel, sem disco persistente. Para rodar
+// contra um Postgres local em vez disso, basta trocar a DATABASE_URL.
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
