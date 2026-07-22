@@ -59,6 +59,31 @@ NestJS com Prisma sobre SQLite local (zero contas externas para rodar). Os *mode
 - `GET /produtos/loja/:slug` (pública, só ativos) / `GET /produtos/me` + `POST` + `PUT /:id` + `DELETE /:id` (autenticadas) — CRUD de produtos, sempre escopado por loja (multi-tenant).
 - `POST /upload` (autenticada) — recebe a foto e devolve a URL. Hoje salva em disco local (`uploads/`) e serve como estático; é o ponto exato onde entra o fluxo de assinatura direta da Cloudinary da especificação original.
 
+## Deploy no Vercel
+
+Este é um monorepo com 3 pastas — no Vercel cada front-end vira **um projeto separado**, apontando para uma subpasta do mesmo repositório GitHub. O back-end **não** entra no Vercel (veja o motivo logo abaixo).
+
+### 1. `agencia/` (site institucional)
+
+- Novo projeto no Vercel → import do repositório → **Root Directory: `agencia`**
+- Vercel detecta Vite automaticamente (build `npm run build`, saída `dist/`)
+- Variáveis de ambiente do projeto (Settings → Environment Variables):
+  - `VITE_ZAP_COMMERCE_URL` → domínio publicado do Zap-Commerce (ex: `https://zap-commerce.vercel.app/bella-atacado`)
+  - `VITE_GA_MEASUREMENT_ID` → opcional, se for usar Google Analytics
+
+### 2. `zap-commerce/` (a vitrine)
+
+- Novo projeto no Vercel → mesmo repositório → **Root Directory: `zap-commerce`**
+- Já incluí `zap-commerce/vercel.json` com a regra de rewrite necessária — sem ela, links diretos tipo `/bella-atacado` dariam 404 ao atualizar a página, porque o React Router cuida dessas rotas no navegador, não o servidor
+- Variável de ambiente obrigatória: `VITE_API_URL` → URL do back-end publicado (ver item 3)
+
+### 3. `zap-commerce-api/` (o back-end) — não vai pro Vercel
+
+Vercel roda funções serverless sem estado: cada execução pode acontecer numa instância diferente, então o SQLite (`dev.db`, um arquivo local) não persiste entre requisições — os dados somem. Duas opções:
+
+- **Mais simples:** publicar em [Render](https://render.com) ou [Fly.io](https://fly.io) como um serviço "web" normal (roda continuamente, SQLite funciona igual roda aqui). Zero mudança de código — é só apontar o comando de start pro `dist/main.js` depois do `npm run build`.
+- **Se quiser tudo no Vercel:** precisa trocar o SQLite por um Postgres hospedado (Supabase ou Neon, ambos com camada gratuita) e adaptar o `main.ts` para exportar um handler serverless. Me avisa se preferir esse caminho que eu preparo a migração.
+
 ## Caminho para produção (stack de custo zero da especificação)
 
 Nada aqui exige reescrever telas — só trocar a infraestrutura por baixo:
