@@ -1,14 +1,18 @@
-// Postgres (Vercel Postgres / Neon / Supabase) — necessário porque o back-end
-// roda como função serverless no Vercel, sem disco persistente. Para rodar
-// contra um Postgres local em vez disso, basta trocar a DATABASE_URL.
+// Postgres (Neon, via integração Vercel) — necessário porque o back-end roda
+// como função serverless no Vercel, sem disco persistente.
+//
+// DATABASE_URL = conexão pooled (pgbouncer) — usada em runtime pelas funções.
+// DIRECT_URL   = conexão direta, sem pooling — usada só por `prisma db push`
+//                e migrations, que não funcionam bem atrás de um pooler.
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model Loja {
