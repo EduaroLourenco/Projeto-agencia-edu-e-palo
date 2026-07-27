@@ -29,7 +29,7 @@ export function ContactCTA() {
   const pronto = nome.trim().length > 1 && setor;
 
   return (
-    <section className="relative py-24 sm:py-32">
+    <section className="relative overflow-hidden py-24 sm:py-32">
       <div className="glow-violet animate-drift pointer-events-none absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-50" />
 
       <div className="relative mx-auto max-w-5xl px-5">

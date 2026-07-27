@@ -103,25 +103,25 @@ export function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.7, delay: 0.45 }}
-            className="mt-12 flex items-center gap-8 border-t border-white/10 pt-6 text-white/40"
+            className="mt-12 flex items-center gap-4 border-t border-white/10 pt-6 text-white/40 sm:gap-8"
           >
             <div>
-              <p className="font-display text-2xl font-bold text-white">
+              <p className="font-display text-xl font-bold text-white sm:text-2xl">
                 <Counter to={8} />
               </p>
-              <p className="text-xs">módulos de serviço</p>
+              <p className="text-[11px] sm:text-xs">módulos de serviço</p>
             </div>
             <div>
-              <p className="font-display text-2xl font-bold text-white">
+              <p className="font-display text-xl font-bold text-white sm:text-2xl">
                 <Counter to={5} />
               </p>
-              <p className="text-xs">etapas até o ar</p>
+              <p className="text-[11px] sm:text-xs">etapas até o ar</p>
             </div>
             <div>
-              <p className="font-display text-2xl font-bold text-white">
+              <p className="font-display text-xl font-bold text-white sm:text-2xl">
                 <Counter to={100} suffix="%" />
               </p>
-              <p className="text-xs">sob medida, sem molde</p>
+              <p className="text-[11px] sm:text-xs">sob medida, sem molde</p>
             </div>
           </motion.div>
         </div>

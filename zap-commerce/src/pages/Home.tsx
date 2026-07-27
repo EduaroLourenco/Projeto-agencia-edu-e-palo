@@ -11,7 +11,7 @@ import {
   Package,
 } from "lucide-react";
 import { slugify } from "../lib/slug";
-import { TENANT_DEMO } from "../lib/constants";
+import { AGENCIA_URL, TENANT_DEMO } from "../lib/constants";
 
 const FEATURES = [
   {
@@ -209,7 +209,7 @@ export function Home() {
         <p className="text-[11px] text-ink/30">
           Sistema desenvolvido por{" "}
           <a
-            href="http://localhost:5174"
+            href={AGENCIA_URL}
             target="_blank"
             rel="noreferrer"
             className="font-semibold text-ink/50 underline decoration-ink/20 underline-offset-2 hover:text-ink"
