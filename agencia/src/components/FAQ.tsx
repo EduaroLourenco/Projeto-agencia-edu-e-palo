@@ -47,7 +47,7 @@ export function FAQ() {
                       transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                       className="overflow-hidden"
                     >
-                      <p className="pb-6 pr-10 text-sm leading-relaxed text-white/60">{item.resposta}</p>
+                      <p className="pb-6 pr-4 text-sm leading-relaxed text-white/60 sm:pr-10">{item.resposta}</p>
                     </motion.div>
                   )}
                 </AnimatePresence>

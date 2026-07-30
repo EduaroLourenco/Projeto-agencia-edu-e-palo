@@ -43,11 +43,11 @@ export function Nav() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/5 bg-ink/70 backdrop-blur-lg">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4">
-        <a href="#top" className="flex items-center gap-2">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 to-cyan-400 font-display text-sm font-bold text-ink">
+        <a href="#top" className="flex min-w-0 items-center gap-2">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 to-cyan-400 font-display text-sm font-bold text-ink">
             EP
           </span>
-          <span className="font-display text-sm font-bold tracking-tight text-white">
+          <span className="truncate font-display text-sm font-bold tracking-tight text-white">
             {AGENCIA.nome}
           </span>
         </a>

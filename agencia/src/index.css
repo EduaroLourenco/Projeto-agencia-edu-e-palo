@@ -30,9 +30,12 @@ html, body, #root {
   height: 100%;
 }
 
-html, body {
+/* Só no body (nunca em html junto) — colocar overflow-x em html também tira
+   o navegador do modo "propaga overflow do body pro viewport" e faz o body
+   virar um scroller interno próprio, quebrando window.scrollY (usado por
+   ScrollProgress, BackToTop e ScrollDepthTracker). */
+body {
   overflow-x: hidden;
-  width: 100%;
 }
 
 @layer base {

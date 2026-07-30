@@ -149,12 +149,12 @@ export function StoreSettings({
             </button>
           </div>
         ))}
-        <div className="flex gap-2">
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
           {(["maos", "excursao", "correios"] as TipoPontoRetirada[]).map((t) => (
             <button
               key={t}
               onClick={() => adicionarPonto(t)}
-              className="flex-1 rounded-lg border border-dashed border-black/20 py-2 text-xs font-semibold text-ink/60"
+              className="rounded-lg border border-dashed border-black/20 py-2 text-xs font-semibold text-ink/60"
             >
               + {ROTULOS[t]}
             </button>
