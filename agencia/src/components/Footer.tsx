@@ -1,13 +1,14 @@
+import { Link } from "react-router-dom";
 import { Globe, ExternalLink, MessageCircle, Share2 } from "lucide-react";
 import { AGENCIA, linkWhatsApp } from "../data/content";
 import { rastrear } from "../lib/analytics";
 
 const LINKS_NAV = [
-  { href: "#modulos", label: "Serviços" },
-  { href: "#setores", label: "Setores" },
-  { href: "#case", label: "Cases" },
-  { href: "#depoimentos", label: "Depoimentos" },
-  { href: "#quem-somos", label: "Quem somos" },
+  { href: "/servicos", label: "Serviços" },
+  { href: "/#setores", label: "Setores" },
+  { href: "/#case", label: "Cases" },
+  { href: "/#depoimentos", label: "Depoimentos" },
+  { href: "/#quem-somos", label: "Quem somos" },
 ];
 
 const REDES = [
@@ -41,16 +42,16 @@ export function Footer() {
         <div className="flex flex-col gap-10 sm:flex-row sm:items-start sm:justify-between">
           {/* Logo + tagline */}
           <div className="flex flex-col gap-3">
-            <a href="#top" className="flex items-center gap-2">
+            <Link to="/" className="flex items-center gap-2">
               <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-cyan-400 font-display text-sm font-bold text-ink shadow-lg shadow-violet-500/20">
                 EP
               </span>
               <span className="font-display text-base font-bold text-white">{AGENCIA.nome}</span>
-            </a>
+            </Link>
             <p className="text-xs text-white/40">{AGENCIA.tagline}</p>
             <p className="mt-1 flex items-center gap-1.5 text-xs text-white/30">
               <span className="h-1.5 w-1.5 rounded-full bg-yellow-400/70" />
-              Feito em Goiânia, GO 🟡
+              Feito em Goiânia, GO
             </p>
           </div>
 

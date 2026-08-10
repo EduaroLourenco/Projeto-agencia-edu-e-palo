@@ -72,8 +72,36 @@ export const MODULOS: Modulo[] = [
     cor: "lime",
   },
   {
-    id: "consultoria-automacao",
+    id: "marketplace-ecommerce",
     numero: "04",
+    titulo: "Marketplace & E-commerce",
+    resumo:
+      "Colocamos sua loja ou indústria para vender nos principais canais digitais, com estratégia de performance por trás de cada anúncio publicado.",
+    itens: [
+      "Digitalização de lojas e indústrias para venda online",
+      "Implementação de loja própria e presença nos principais marketplaces (Mercado Livre, Shopee, Amazon, TikTok Shop e outros)",
+      "Estratégias de performance para aumento de vendas e lucratividade",
+      "Consultoria de operação e capacitação em e-commerce, tráfego e redes sociais, com toda a infraestrutura necessária para executar",
+    ],
+    cor: "violet",
+  },
+  {
+    id: "financas",
+    numero: "05",
+    titulo: "Finanças",
+    resumo:
+      "Visibilidade financeira real: conectamos a operação do dia a dia aos números que mostram se o negócio está saudável — e onde pode lucrar mais.",
+    itens: [
+      "Controle de caixa com registro automatizado de entradas, saídas e fluxo diário integrado à operação",
+      "Gestão de ordens de serviço (OS) e faturamento, com vínculo direto entre a execução de vendas/serviços e os relatórios financeiros",
+      "Relatórios gerenciais e dashboards para análise de lucratividade, desempenho e tomada de decisão",
+      "Controle de contas a receber e a pagar para acompanhamento da saúde financeira do negócio",
+    ],
+    cor: "cyan",
+  },
+  {
+    id: "consultoria-automacao",
+    numero: "06",
     titulo: "Consultoria & Automação",
     resumo:
       "A gente entra, mapeia onde seu processo trava, e automatiza o que hoje consome seu tempo — planilha, mensagem repetida, controle manual.",
@@ -83,11 +111,11 @@ export const MODULOS: Modulo[] = [
       "Integração entre as ferramentas do seu negócio",
       "Treinamento da equipe pra usar o que foi construído",
     ],
-    cor: "violet",
+    cor: "lime",
   },
   {
     id: "vida-noturna",
-    numero: "05",
+    numero: "07",
     titulo: "Vida Noturna & Eventos",
     resumo:
       "Digitaliza a portaria e as reservas de baladas e eventos em Goiânia. Lista VIP com QR Code, mapa de lounges interativo e painel de check-in no celular do segurança.",
@@ -101,7 +129,7 @@ export const MODULOS: Modulo[] = [
   },
   {
     id: "agendamento",
-    numero: "06",
+    numero: "08",
     titulo: "Agendamento Sem WhatsApp",
     resumo:
       "Para salões, clínicas de estética e oficinas: o cliente agenda online enquanto você atende. Sem parar para responder mensagem, sem horário duplo.",
@@ -115,7 +143,7 @@ export const MODULOS: Modulo[] = [
   },
   {
     id: "alimentacao",
-    numero: "07",
+    numero: "09",
     titulo: "Alimentação Sem Taxa de Delivery",
     resumo:
       "Cardápio digital com carrinho e cálculo de frete por CEP — ideal para distribuidoras de bebidas e lanchonetes que querem fugir das altas taxas do iFood.",
@@ -129,7 +157,7 @@ export const MODULOS: Modulo[] = [
   },
   {
     id: "logistica-44",
-    numero: "08",
+    numero: "10",
     titulo: "Logística da Região da 44",
     resumo:
       "Conecta lojistas da 44 com revendedores do interior de Goiás. Rastreamento de fardos por excursão ou transportadora, notificação automática para o comprador.",
@@ -242,20 +270,20 @@ export const FAQ: PerguntaFrequente[] = [
 ];
 
 export interface Nicho {
-  emoji: string;
+  id: string;
   nome: string;
   descricao: string;
 }
 
 export const NICHOS: Nicho[] = [
-  { emoji: "👗", nome: "Moda & Atacado", descricao: "Lojas da Rua 44 e atacadistas" },
-  { emoji: "🍺", nome: "Distribuidoras", descricao: "Bebidas, alimentos e mercearias" },
-  { emoji: "✂️", nome: "Salões & Estética", descricao: "Agendamento sem WhatsApp" },
-  { emoji: "🎉", nome: "Baladas & Eventos", descricao: "Lista VIP e reserva de lounge" },
-  { emoji: "🔧", nome: "Oficinas & Auto", descricao: "Agendamento e orçamento digital" },
-  { emoji: "🚌", nome: "Logística Interior", descricao: "Excursões e frete da 44" },
-  { emoji: "🍔", nome: "Lanchonetes", descricao: "Cardápio e delivery sem taxa" },
-  { emoji: "🏥", nome: "Clínicas & Saúde", descricao: "Agenda e prontuário simples" },
+  { id: "moda", nome: "Moda & Atacado", descricao: "Lojas da Rua 44 e atacadistas" },
+  { id: "distribuidoras", nome: "Distribuidoras", descricao: "Bebidas, alimentos e mercearias" },
+  { id: "estetica", nome: "Salões & Estética", descricao: "Agendamento sem WhatsApp" },
+  { id: "eventos", nome: "Baladas & Eventos", descricao: "Lista VIP e reserva de lounge" },
+  { id: "oficinas", nome: "Oficinas & Auto", descricao: "Agendamento e orçamento digital" },
+  { id: "logistica", nome: "Logística Interior", descricao: "Excursões e frete da 44" },
+  { id: "lanchonetes", nome: "Lanchonetes", descricao: "Cardápio e delivery sem taxa" },
+  { id: "saude", nome: "Clínicas & Saúde", descricao: "Agenda e prontuário simples" },
 ];
 
 export interface Depoimento {
@@ -266,7 +294,7 @@ export interface Depoimento {
   cor: "violet" | "lime" | "cyan";
 }
 
-// ⚠️ Placeholder: depoimentos fictícios pra ilustrar o layout. Troque por
+// Placeholder: depoimentos fictícios pra ilustrar o layout. Troque por
 // depoimentos reais de clientes (com autorização deles) antes de publicar.
 export const DEPOIMENTOS: Depoimento[] = [
   {
@@ -301,21 +329,25 @@ export interface MembroDupla {
   papel: string;
   bio: string;
   cor: string;
+  linkedin: string;
 }
 
 export const DUPLA: MembroDupla[] = [
   {
     iniciais: "E",
-    nome: "Eduardo",
-    papel: "Estratégia & Produto",
-    bio: "Transforma o problema do negócio em um sistema que realmente funciona. Cuida de arquitetura, back-end e de garantir que o que sai do ar entrega resultado.",
+    nome: "Eduardo Luiz Lourenço",
+    papel: "E-commerce & Engenharia de Software",
+    bio: "Coordenador de e-commerce com experiência prática em marketplaces (Mercado Livre, Amazon, Shopee) e formação em Engenharia de Software. Lidera integrações de ERP e API, automação de operação e desenvolvimento full stack — sempre com foco em rentabilidade e escala.",
     cor: "from-violet-500 to-cyan-400",
+    linkedin:
+      "https://www.linkedin.com/in/eduardo-louren%C3%A7o-7a5739260?utm_source=share_via&utm_content=profile&utm_medium=member_ios",
   },
   {
     iniciais: "P",
-    nome: "Paloma",
-    papel: "Design & Experiência",
-    bio: "Garante que o sistema seja bonito, rápido e fácil de usar — do primeiro acesso ao checkout. Interface que converte, não só que imprime.",
+    nome: "Paloma Amaral",
+    papel: "Finanças & Business Intelligence",
+    bio: "Atua na gestão financeira e administrativa com foco em Business Intelligence: fluxo de caixa, conciliação bancária, automação de processos e dashboards gerenciais para tomada de decisão. Em formação em Engenharia de Software, une dados, tecnologia e finanças.",
     cor: "from-cyan-400 to-lime-400",
+    linkedin: "https://www.linkedin.com/in/palomadias028",
   },
 ];

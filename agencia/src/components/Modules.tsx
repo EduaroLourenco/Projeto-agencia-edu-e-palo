@@ -8,8 +8,12 @@ import {
   UtensilsCrossed,
   Truck,
   Workflow,
+  Store,
+  Wallet,
+  ArrowRight,
 } from "lucide-react";
 import type { ReactNode } from "react";
+import { Link } from "react-router-dom";
 import { MODULOS, type Modulo } from "../data/content";
 import { Reveal } from "./Reveal";
 import { TiltCard } from "./TiltCard";
@@ -18,6 +22,8 @@ const ICONES: Record<string, ReactNode> = {
   "comercio-whatsapp": <MessageCircle size={22} />,
   "sites-sistemas": <Code2 size={22} />,
   "marketing-digital": <Megaphone size={22} />,
+  "marketplace-ecommerce": <Store size={22} />,
+  "financas": <Wallet size={22} />,
   "consultoria-automacao": <Workflow size={22} />,
   "vida-noturna": <Music2 size={22} />,
   "agendamento": <CalendarDays size={22} />,
@@ -46,7 +52,14 @@ const CORES: Record<Modulo["cor"], { bg: string; text: string; ring: string; glo
   },
 };
 
-const CORE_MODULES = ["comercio-whatsapp", "sites-sistemas", "marketing-digital", "consultoria-automacao"];
+const CORE_MODULES = [
+  "comercio-whatsapp",
+  "sites-sistemas",
+  "marketing-digital",
+  "marketplace-ecommerce",
+  "financas",
+  "consultoria-automacao",
+];
 
 export function Modules() {
   const coreModules = MODULOS.filter((m) => CORE_MODULES.includes(m.id));
@@ -149,6 +162,19 @@ export function Modules() {
             );
           })}
         </div>
+
+        {/* CTA pra página completa de serviços */}
+        <Reveal>
+          <div className="mt-14 flex justify-center">
+            <Link
+              to="/servicos"
+              className="flex items-center gap-2 rounded-full border border-white/15 px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-white/5"
+            >
+              Ver todos os serviços
+              <ArrowRight size={16} />
+            </Link>
+          </div>
+        </Reveal>
       </div>
     </section>
   );

@@ -1,5 +1,27 @@
+import {
+  Shirt,
+  Beer,
+  Scissors,
+  PartyPopper,
+  Wrench,
+  Bus,
+  UtensilsCrossed,
+  HeartPulse,
+} from "lucide-react";
+import type { ReactNode } from "react";
 import { NICHOS } from "../data/content";
 import { Reveal } from "./Reveal";
+
+const ICONES: Record<string, ReactNode> = {
+  moda: <Shirt size={22} />,
+  distribuidoras: <Beer size={22} />,
+  estetica: <Scissors size={22} />,
+  eventos: <PartyPopper size={22} />,
+  oficinas: <Wrench size={22} />,
+  logistica: <Bus size={22} />,
+  lanchonetes: <UtensilsCrossed size={22} />,
+  saude: <HeartPulse size={22} />,
+};
 
 export function Nichos() {
   return (
@@ -27,7 +49,9 @@ export function Nichos() {
                 <div className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
                   style={{ background: "radial-gradient(circle at 50% 0%, rgba(139,92,246,0.08) 0%, transparent 70%)" }}
                 />
-                <span className="block text-3xl">{nicho.emoji}</span>
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 text-cyan-300">
+                  {ICONES[nicho.id]}
+                </span>
                 <p className="mt-3 font-display text-sm font-bold text-white">{nicho.nome}</p>
                 <p className="mt-1 text-xs text-white/45 leading-relaxed">{nicho.descricao}</p>
               </div>

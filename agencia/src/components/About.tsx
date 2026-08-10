@@ -1,10 +1,10 @@
 import { Reveal } from "./Reveal";
 import { DUPLA, AGENCIA } from "../data/content";
-import { Globe, ExternalLink } from "lucide-react";
+import { Globe, ExternalLink, MapPin } from "lucide-react";
 
 const ESPECIALIDADES: Record<string, string[]> = {
-  E: ["NestJS", "React", "Prisma", "PostgreSQL"],
-  P: ["Figma", "Tailwind", "UI/UX", "Framer Motion"],
+  E: ["React", "NestJS", "Marketplaces", "ERP & API"],
+  P: ["SQL", "Power BI", "Python", "Fluxo de Caixa"],
 };
 
 export function About() {
@@ -17,20 +17,22 @@ export function About() {
             Uma dupla, um objetivo: sistema que funciona e resultado que aparece.
           </h2>
           <p className="mt-5 text-white/60">
-            Somos uma dupla que decidiu juntar design, código e visão de negócio pra resolver um
-            problema bem específico: negócios que vendem muito bem no boca a boca, mas travam na
-            hora de escalar online. A gente entra exatamente nesse ponto — sem prometer mágica,
-            sem contrato eterno, só sistema que funciona de verdade.
+            Somos uma dupla que decidiu juntar engenharia de software, dados e visão de negócio pra
+            resolver um problema bem específico: negócios que vendem muito bem no boca a boca, mas
+            travam na hora de escalar online. A gente entra exatamente nesse ponto — sem prometer
+            mágica, sem contrato eterno, só sistema que funciona de verdade.
           </p>
           <p className="mt-4 text-white/60">
-            Cada projeto passa pelas duas mãos: uma cuida da estratégia e do que faz sentido pro
-            seu negócio, a outra cuida de como fica bonito, rápido e fácil de usar. No fim, o que
-            chega pra você é um sistema pensado de ponta a ponta — não um pedaço solto.
+            Cada projeto passa pelas duas mãos: um cuida da estratégia comercial, dos marketplaces e
+            da engenharia por trás do sistema; a outra cuida das finanças, dos processos e dos dados
+            que mostram se o negócio está saudável. No fim, o que chega pra você é um sistema pensado
+            de ponta a ponta — do código ao caixa.
           </p>
 
           <div className="mt-7 flex items-center gap-3">
-            <span className="rounded-full border border-yellow-400/20 bg-yellow-400/8 px-3 py-1.5 text-xs font-semibold text-yellow-300">
-              📍 Goiânia, GO
+            <span className="flex items-center gap-1.5 rounded-full border border-yellow-400/20 bg-yellow-400/8 px-3 py-1.5 text-xs font-semibold text-yellow-300">
+              <MapPin size={12} />
+              Goiânia, GO
             </span>
             <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold text-white/50">
               Atendemos presencial e remoto
@@ -91,11 +93,19 @@ export function About() {
                 ))}
               </div>
 
-              {/* Case destaque */}
+              {/* Case + LinkedIn */}
               <div className="flex items-center gap-2 border-t border-white/8 pt-4">
                 <span className="h-1.5 w-1.5 rounded-full bg-lime-400" />
                 <span className="text-[11px] text-white/40">Zap-Commerce · 2024</span>
-                <ExternalLink size={10} className="ml-auto text-white/20 transition-colors group-hover:text-white/40" />
+                <a
+                  href={pessoa.linkedin}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="ml-auto flex items-center gap-1 text-[11px] font-semibold text-white/40 transition-colors hover:text-white"
+                >
+                  <ExternalLink size={12} />
+                  LinkedIn
+                </a>
               </div>
             </div>
           ))}

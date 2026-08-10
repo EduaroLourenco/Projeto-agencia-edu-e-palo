@@ -1,3 +1,5 @@
+import { ShoppingBag, Tag, ArrowRight } from "lucide-react";
+
 export function PhoneMockup() {
   return (
     <div className="relative mx-auto w-[260px] select-none sm:w-[300px]">
@@ -16,8 +18,8 @@ export function PhoneMockup() {
               </span>
               <span className="text-xs font-semibold text-white">Loja da Ana</span>
             </div>
-            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/10 text-[10px] text-white">
-              🛍️
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/10 text-white">
+              <ShoppingBag size={12} />
             </span>
           </div>
 
@@ -29,13 +31,14 @@ export function PhoneMockup() {
             </div>
           </div>
 
-          <div className="mx-4 mb-3 rounded-lg bg-lime-400/10 px-2.5 py-2 text-[10px] font-semibold text-lime-300">
-            🎉 Preço de atacado liberado
+          <div className="mx-4 mb-3 flex items-center gap-1.5 rounded-lg bg-lime-400/10 px-2.5 py-2 text-[10px] font-semibold text-lime-300">
+            <Tag size={11} />
+            Preço de atacado liberado
           </div>
 
           <div className="mx-4 mb-4 flex items-center justify-between rounded-xl bg-[#25D366] px-3 py-2.5">
             <span className="text-[11px] font-bold text-white">Finalizar no WhatsApp</span>
-            <span className="text-white">→</span>
+            <ArrowRight size={14} className="text-white" />
           </div>
         </div>
       </div>

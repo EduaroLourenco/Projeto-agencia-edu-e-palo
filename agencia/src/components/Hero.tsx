@@ -52,7 +52,8 @@ export function Hero() {
             transition={{ duration: 0.5, delay: 0.15 }}
             className="mb-6 inline-flex items-center gap-1.5 rounded-full border border-yellow-400/30 bg-yellow-400/10 px-3.5 py-1 text-xs font-semibold text-yellow-300"
           >
-            🟡 Especialistas em Goiânia
+            <span className="h-1.5 w-1.5 rounded-full bg-yellow-400" />
+            Especialistas em Goiânia
           </motion.div>
 
           <motion.h1
