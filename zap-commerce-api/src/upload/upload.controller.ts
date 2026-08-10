@@ -13,6 +13,11 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 const LIMITE_ARQUIVO = 2 * 1024 * 1024; // 2MB — mantém a resposta (base64) dentro
 // do limite de payload de funções serverless (Vercel: ~4.5MB).
 
+// Raster apenas — image/svg+xml fica de fora de propósito: é o único formato de
+// imagem capaz de embutir <script>, e o mimetype do multipart é informado pelo
+// cliente, então não dá pra confiar nele sozinho pra liberar SVG.
+const TIPOS_ACEITOS = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/gif']);
+
 /**
  * Em produção "de verdade" este endpoint viraria o fluxo de assinatura da
  * Cloudinary: o front pede uma signature aqui, e o celular do lojista envia
@@ -32,8 +37,8 @@ export class UploadController {
       storage: memoryStorage(),
       limits: { fileSize: LIMITE_ARQUIVO },
       fileFilter: (_req, file, cb) => {
-        if (!file.mimetype.startsWith('image/')) {
-          cb(new BadRequestException('Envie apenas arquivos de imagem.'), false);
+        if (!TIPOS_ACEITOS.has(file.mimetype)) {
+          cb(new BadRequestException('Envie apenas JPEG, PNG, WEBP ou GIF.'), false);
           return;
         }
         cb(null, true);

@@ -31,7 +31,7 @@ export function Testimonials() {
           </h2>
         </Reveal>
 
-        <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-3">
+        <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {DEPOIMENTOS.map((dep, i) => {
             const cor = CORES[dep.cor];
             return (
@@ -62,7 +62,7 @@ export function Testimonials() {
 
         {/* Social proof bar */}
         <Reveal delay={0.2}>
-          <div className="mt-12 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 rounded-2xl border border-white/8 bg-surface/50 px-6 py-5 text-center">
+          <div className="mt-12 grid grid-cols-2 gap-x-4 gap-y-5 rounded-2xl border border-white/8 bg-surface/50 px-6 py-5 text-center sm:flex sm:flex-wrap sm:items-center sm:justify-center sm:gap-x-8 sm:gap-y-3">
             <div>
               <p className="font-display text-2xl font-extrabold text-white">R$0</p>
               <p className="text-xs text-white/45">taxa de plataforma</p>

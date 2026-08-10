@@ -78,7 +78,8 @@ Este é um monorepo com 3 pastas — no Vercel cada uma vira **um projeto separa
 - Novo projeto no Vercel → import do repositório → **Root Directory: `zap-commerce-api`**
 - Variáveis de ambiente (Settings → Environment Variables):
   - `DATABASE_URL` → a connection string do Postgres (ver "Banco de dados" acima)
-  - `JWT_SECRET` → gere com `openssl rand -hex 32`
+  - `JWT_SECRET` → gere com `openssl rand -hex 32` (obrigatório — a API recusa subir sem essa variável)
+  - `ALLOWED_ORIGINS` → opcional. Domínios extras (além de `*.vercel.app` e dos dois front-ends já publicados) liberados no CORS, separados por vírgula — só precisa se publicar em domínio próprio
 - O build usa o script `vercel-build` (`prisma generate && prisma db push && nest build`) — já sincroniza o schema no banco a cada deploy, não precisa rodar nada manual
 - Depois de publicado, copia a URL do projeto (ex: `https://zap-commerce-api.vercel.app`) — os dois front-ends abaixo precisam dela
 - **Depois do primeiro deploy**, rode `npm run db:seed` localmente apontando pro mesmo `DATABASE_URL` de produção pra criar a loja de demonstração
@@ -88,6 +89,7 @@ Este é um monorepo com 3 pastas — no Vercel cada uma vira **um projeto separa
 - Novo projeto no Vercel → mesmo repositório → **Root Directory: `zap-commerce`**
 - Já incluí `zap-commerce/vercel.json` com a regra de rewrite necessária — sem ela, links diretos tipo `/bella-atacado` dariam 404 ao atualizar a página, porque o React Router cuida dessas rotas no navegador, não o servidor
 - Variável de ambiente obrigatória: `VITE_API_URL` → a URL do projeto do passo 1
+- Variável opcional: `VITE_AGENCIA_URL` → domínio publicado do site institucional (`agencia/`), usado no link do rodapé "Sistema desenvolvido por..."
 
 ### 3. `agencia/` (site institucional)
 

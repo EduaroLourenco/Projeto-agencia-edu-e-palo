@@ -14,7 +14,10 @@ export function StickyCartBar({
   if (totalPecas === 0) return null;
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-20 mx-auto w-full max-w-md animate-slide-up px-4 pb-4">
+    <div
+      className="fixed inset-x-0 bottom-0 z-20 mx-auto w-full max-w-md animate-slide-up px-4"
+      style={{ paddingBottom: "max(1rem, env(safe-area-inset-bottom))" }}
+    >
       <button
         onClick={onAbrirSacola}
         className="flex w-full items-center justify-between rounded-2xl bg-ink px-4 py-3.5 text-white shadow-xl shadow-black/20 transition-transform active:scale-[0.98]"

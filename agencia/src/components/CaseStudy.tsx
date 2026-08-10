@@ -14,7 +14,7 @@ const RESULTADOS = [
 
 export function CaseStudy() {
   return (
-    <section id="case" className="relative py-24 sm:py-32">
+    <section id="case" className="relative overflow-hidden py-24 sm:py-32">
       <div className="glow-lime pointer-events-none absolute left-0 top-1/3 h-[400px] w-[400px] -translate-x-1/2 rounded-full opacity-60" />
 
       <div className="relative mx-auto max-w-6xl px-5">

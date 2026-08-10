@@ -1,4 +1,6 @@
 import { Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
@@ -8,8 +10,18 @@ import { ProdutosModule } from './produtos/produtos.module';
 import { UploadModule } from './upload/upload.module';
 
 @Module({
-  imports: [PrismaModule, AuthModule, LojasModule, ProdutosModule, UploadModule],
+  imports: [
+    // Limite geral (o storage em memória do throttler é por instância — em
+    // serverless cada função "fria" começa com contador zerado, mas ainda barra
+    // abuso automatizado sustentado dentro de uma mesma instância aquecida).
+    ThrottlerModule.forRoot([{ ttl: 60_000, limit: 60 }]),
+    PrismaModule,
+    AuthModule,
+    LojasModule,
+    ProdutosModule,
+    UploadModule,
+  ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, { provide: APP_GUARD, useClass: ThrottlerGuard }],
 })
 export class AppModule {}

@@ -39,6 +39,8 @@ model PontoRetirada {
   tipo      String
   nome      String
   descricao String?
+
+  @@index([lojaId])
 }
 
 model Produto {
@@ -55,4 +57,6 @@ model Produto {
   isUltimasPecas    Boolean  @default(false)
   isAtivo           Boolean  @default(true)
   criadoEm          DateTime @default(now())
+
+  @@index([lojaId, isAtivo])
 }
