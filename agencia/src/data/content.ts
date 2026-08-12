@@ -1,19 +1,24 @@
 // Copy de exemplo — troque à vontade. Números/nomes são placeholders.
 
 export const AGENCIA = {
-  nome: "Edu & Paloma",
-  tagline: "Agência Digital · Goiânia",
+  nome: "Sigma",
+  nomeCompleto: "Sigma Consultoria, Assessoria e Serviços",
+  iniciais: "S",
+  tagline: "Consultoria, Assessoria e Serviços · Goiânia",
   cidade: "Goiânia",
-  whatsapp: "5562999999999",
+  whatsapp: "5516994447044",
   mensagemPadrao: "Oi! Vi o site de vocês e quero entender como posso digitalizar meu negócio.",
-  email: "contato@eduepaloma.com.br",
-  instagram: "https://instagram.com/eduepaloma.dev",
-  linkedin: "https://linkedin.com/company/eduepaloma",
+  email: "contato@sigmaconsultoria.com.br",
+  instagram: "https://instagram.com/sigma.consultoria",
+  linkedin: "https://linkedin.com/company/sigma-consultoria",
 };
 
 // Em produção, defina VITE_ZAP_COMMERCE_URL no .env apontando para o domínio publicado do case.
 export const ZAP_COMMERCE_URL =
   import.meta.env.VITE_ZAP_COMMERCE_URL || "http://localhost:5173/bella-atacado";
+
+// Vídeo real do catálogo funcionando, usado no mockup de celular do case.
+export const VIDEO_DEMO = "/demo-catalogo.mp4";
 
 export function linkWhatsApp(mensagem = AGENCIA.mensagemPadrao) {
   return `https://wa.me/${AGENCIA.whatsapp}?text=${encodeURIComponent(mensagem)}`;
@@ -320,6 +325,53 @@ export const DEPOIMENTOS: Depoimento[] = [
       "Parei de ficar no celular respondendo 'que horas tem?' entre atendimento. O cliente já abre o site, vê os horários e agenda. Liberou minha cabeça pra trabalhar.",
     iniciais: "CM",
     cor: "lime",
+  },
+];
+
+/* ------------------------------------------------------------------ */
+/* CONVERSAS REAIS — prints de WhatsApp como prova social               */
+/* ------------------------------------------------------------------ */
+
+export interface Conversa {
+  id: string;
+  etiqueta: string;
+  titulo: string;
+  descricao: string;
+  cor: "violet" | "lime" | "cyan";
+  /**
+   * Print em `public/conversas/`. Vazio ("") mostra o espaço reservado.
+   * Antes de publicar: borre número, foto e nome completo de quem aparece.
+   */
+  imagem: string;
+}
+
+export const CONVERSAS: Conversa[] = [
+  {
+    id: "cliente-aprovando",
+    etiqueta: "Depoimento",
+    titulo: "“Chegou mais 4 pedidos sem eu precisar calcular nada”",
+    descricao:
+      "Cliente na manhã seguinte ao site entrar no ar. Antes ele perdia cerca de 2 pedidos por semana porque o pessoal mandava foto solta e ele esquecia de responder.",
+    cor: "lime",
+    imagem: "/conversas/cliente-aprovando.jpg",
+  },
+  {
+    id: "lead-salao",
+    etiqueta: "Lead pelo site",
+    titulo: "Salão de beleza chegando pelo site",
+    descricao:
+      "“Muita mulherada me manda mensagem perguntando da minha agenda, querem saber se tenho hora vaga.” O site trouxe o contato; a agenda online resolve a dor.",
+    cor: "violet",
+    imagem: "/conversas/lead-salao.jpg",
+  },
+  {
+    id: "pedido-formatado",
+    etiqueta: "Sistema funcionando",
+    titulo: "Pedido do catálogo chegando pronto",
+    descricao:
+      "O cliente monta a sacola no catálogo e o pedido cai formatado no WhatsApp do lojista — itens, regra de preço, total e forma de entrega. Sem digitar nada.",
+    cor: "cyan",
+    imagem: "/conversas/pedido-formatado.jpg",
   },
 ];
 

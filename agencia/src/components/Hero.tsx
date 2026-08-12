@@ -45,17 +45,6 @@ export function Hero() {
             Sistemas, sites e marketing sob um teto só
           </motion.div>
 
-          {/* Badge Goiânia */}
-          <motion.div
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.15 }}
-            className="mb-6 inline-flex items-center gap-1.5 rounded-full border border-yellow-400/30 bg-yellow-400/10 px-3.5 py-1 text-xs font-semibold text-yellow-300"
-          >
-            <span className="h-1.5 w-1.5 rounded-full bg-yellow-400" />
-            Especialistas em Goiânia
-          </motion.div>
-
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -71,9 +60,10 @@ export function Hero() {
             transition={{ duration: 0.7, delay: 0.2 }}
             className="mt-6 max-w-lg text-base leading-relaxed text-white/60 sm:text-lg"
           >
-            Construímos catálogos com pedido pelo WhatsApp, sites e sistemas sob medida, marketing
-            digital e automação — pra negócios que vendem bem no boca a boca e querem parar de
-            perder pedido em mensagem solta no grupo.
+            Construímos catálogos digitais, sites e sistemas sob medida, SaaS, e-commerce e
+            estratégia de marketplace, consultoria financeira e automação com IA — pra negócios
+            que vendem bem no boca a boca e querem parar de perder pedido em mensagem solta no
+            grupo.
           </motion.p>
 
           <motion.div
@@ -135,7 +125,7 @@ export function Hero() {
           className="flex justify-center lg:justify-end"
         >
           <div className="animate-float">
-            <PhoneMockup />
+            <PhoneMockup comVideo />
           </div>
         </motion.div>
       </div>

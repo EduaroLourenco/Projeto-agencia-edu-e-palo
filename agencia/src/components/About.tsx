@@ -96,7 +96,7 @@ export function About() {
               {/* Case + LinkedIn */}
               <div className="flex items-center gap-2 border-t border-white/8 pt-4">
                 <span className="h-1.5 w-1.5 rounded-full bg-lime-400" />
-                <span className="text-[11px] text-white/40">Zap-Commerce · 2024</span>
+                <span className="text-[11px] text-white/40">Fundadores da Sigma · 2024</span>
                 <a
                   href={pessoa.linkedin}
                   target="_blank"

@@ -4,7 +4,7 @@ import { TiltCard } from "./TiltCard";
 
 export function Differentiators() {
   return (
-    <section className="relative py-24 sm:py-32">
+    <section id="diferenciais" className="relative py-24 sm:py-32">
       <div className="mx-auto max-w-6xl px-5">
         <Reveal>
           <p className="text-xs font-bold uppercase tracking-widest text-violet-400">Por que a gente</p>

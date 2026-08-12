@@ -8,12 +8,12 @@ export function FAQ() {
   const [aberta, setAberta] = useState<number | null>(0);
 
   return (
-    <section className="relative border-y border-white/5 bg-surface/40 py-24 sm:py-32">
+    <section id="faq" className="relative border-y border-white/5 bg-surface/40 py-24 sm:py-32">
       <div className="mx-auto max-w-3xl px-5">
         <Reveal className="text-center">
           <p className="text-xs font-bold uppercase tracking-widest text-lime-400">Perguntas frequentes</p>
           <h2 className="mt-3 font-display text-3xl font-extrabold tracking-tight sm:text-4xl">
-            Antes de mandar mensagem, talvez isso já responda.
+            Tudo que você precisa saber antes de começar.
           </h2>
         </Reveal>
 
