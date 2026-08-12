@@ -55,6 +55,12 @@ body {
     font-family: var(--font-display);
   }
 
+  /* O header é fixed: sem isso, um clique no menu rola a seção pra baixo
+     do cabeçalho e esconde o título logo abaixo dele. */
+  section[id] {
+    scroll-margin-top: 6rem;
+  }
+
   ::selection {
     background: var(--color-violet-500);
     color: white;

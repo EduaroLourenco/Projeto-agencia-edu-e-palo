@@ -5,9 +5,15 @@ import { rastrear } from "../lib/analytics";
 
 const LINKS_NAV = [
   { href: "/servicos", label: "Serviços" },
-  { href: "/#setores", label: "Setores" },
-  { href: "/#case", label: "Cases" },
+  { href: "/#case", label: "Case" },
+  { href: "/#outros-projetos", label: "Projetos" },
   { href: "/#depoimentos", label: "Depoimentos" },
+  { href: "/#conversas", label: "Na prática" },
+  { href: "/#modulos", label: "Módulos" },
+  { href: "/#setores", label: "Setores" },
+  { href: "/#diferenciais", label: "Diferenciais" },
+  { href: "/#como-funciona", label: "Como funciona" },
+  { href: "/#faq", label: "FAQ" },
   { href: "/#quem-somos", label: "Quem somos" },
 ];
 
@@ -44,7 +50,7 @@ export function Footer() {
           <div className="flex flex-col gap-3">
             <Link to="/" className="flex items-center gap-2">
               <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-cyan-400 font-display text-sm font-bold text-ink shadow-lg shadow-violet-500/20">
-                EP
+                {AGENCIA.iniciais}
               </span>
               <span className="font-display text-base font-bold text-white">{AGENCIA.nome}</span>
             </Link>

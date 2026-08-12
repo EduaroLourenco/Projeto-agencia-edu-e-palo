@@ -1,8 +1,33 @@
 import { ShoppingBag, Tag, ArrowRight } from "lucide-react";
+import { VIDEO_DEMO } from "../data/content";
 
-export function PhoneMockup() {
+/**
+ * Mockup de celular. Com `comVideo`, mostra o vídeo real do catálogo
+ * funcionando (VIDEO_DEMO); sem ele, mostra a tela estática de exemplo.
+ * O vídeo fica só num lugar da página pra não tocar duplicado.
+ */
+export function PhoneMockup({ comVideo = false }: { comVideo?: boolean }) {
+  if (comVideo && VIDEO_DEMO) {
+    return (
+      <div className="relative mx-auto w-[260px] select-none sm:w-[300px]">
+        <div className="absolute -inset-6 -z-10 rounded-[3rem] bg-violet-500/20 blur-3xl" />
+        <div className="rounded-[2.5rem] border border-white/10 bg-surface-2 p-3 shadow-2xl shadow-black/60">
+          <video
+            src={VIDEO_DEMO}
+            autoPlay
+            muted
+            loop
+            playsInline
+            aria-label="Demonstração do catálogo digital funcionando"
+            className="aspect-[384/832] w-full rounded-[1.75rem] bg-ink object-cover"
+          />
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="relative mx-auto w-[260px] select-none sm:w-[300px]">
+    <div aria-hidden className="relative mx-auto w-[260px] select-none sm:w-[300px]">
       <div className="absolute -inset-6 -z-10 rounded-[3rem] bg-violet-500/20 blur-3xl" />
       <div className="rounded-[2.5rem] border border-white/10 bg-surface-2 p-3 shadow-2xl shadow-black/60">
         <div className="overflow-hidden rounded-[1.75rem] bg-ink">

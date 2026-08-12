@@ -119,9 +119,9 @@ const CORE_MODULES = [
 
 export function ServicosPage() {
   useEffect(() => {
-    document.title = "Serviços — Edu & Paloma | Agência Digital";
+    document.title = "Serviços — Sigma | Consultoria, Assessoria e Serviços";
     return () => {
-      document.title = "Edu & Paloma — Agência Digital | Sistemas, sites e marketing em Goiânia";
+      document.title = "Sigma — Consultoria, Assessoria e Serviços | Sistemas, sites e marketing digital";
     };
   }, []);
 

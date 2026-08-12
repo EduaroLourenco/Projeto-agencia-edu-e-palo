@@ -7,6 +7,7 @@ import { HowItWorks } from "../components/HowItWorks";
 import { CaseStudy } from "../components/CaseStudy";
 import { OutrosProjetos } from "../components/OutrosProjetos";
 import { Testimonials } from "../components/Testimonials";
+import { ConversasReais } from "../components/ConversasReais";
 import { FAQ } from "../components/FAQ";
 import { About } from "../components/About";
 import { ContactCTA } from "../components/ContactCTA";
@@ -19,6 +20,7 @@ export function HomePage() {
       <CaseStudy />
       <OutrosProjetos />
       <Testimonials />
+      <ConversasReais />
       <Modules />
       <Nichos />
       <Differentiators />
