@@ -1,11 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { ChevronDown, Menu, X } from "lucide-react";
 import { AGENCIA, linkWhatsApp } from "../data/content";
 import { MagneticButton } from "./MagneticButton";
 import { rastrear } from "../lib/analytics";
 
+// Todos os links, na ordem real das seções na página — usados pro cálculo
+// de seção ativa e pro menu mobile (lista única, sem agrupar).
 const LINKS = [
   { href: "/servicos", label: "Serviços" },
   { href: "/#case", label: "Case" },
@@ -20,6 +22,12 @@ const LINKS = [
   { href: "/#quem-somos", label: "Quem somos" },
 ];
 
+// No desktop, só os 5 mais importantes ficam sempre visíveis — o resto
+// entra num "Mais" pra não virar uma fileira quebrando linha.
+const PRINCIPAIS_HREFS = ["/servicos", "/#case", "/#modulos", "/#depoimentos", "/#quem-somos"];
+const LINKS_PRINCIPAIS = LINKS.filter((l) => PRINCIPAIS_HREFS.includes(l.href));
+const LINKS_MAIS = LINKS.filter((l) => !PRINCIPAIS_HREFS.includes(l.href));
+
 function isActiveLink(href: string, pathname: string, secaoAtiva: string) {
   if (!href.includes("#")) return pathname === href;
   return pathname === "/" && href.split("#")[1] === secaoAtiva;
@@ -27,8 +35,10 @@ function isActiveLink(href: string, pathname: string, secaoAtiva: string) {
 
 export function Nav() {
   const [aberto, setAberto] = useState(false);
+  const [maisAberto, setMaisAberto] = useState(false);
   const [secaoAtiva, setSecaoAtiva] = useState("");
   const { pathname } = useLocation();
+  const maisRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (pathname !== "/") {
@@ -90,6 +100,25 @@ export function Nav() {
     };
   }, [aberto]);
 
+  // Fecha o dropdown "Mais" ao clicar fora ou rolar a página.
+  useEffect(() => {
+    if (!maisAberto) return;
+    function fechar(e: MouseEvent) {
+      if (maisRef.current && !maisRef.current.contains(e.target as Node)) setMaisAberto(false);
+    }
+    function fecharAoRolar() {
+      setMaisAberto(false);
+    }
+    document.addEventListener("mousedown", fechar);
+    window.addEventListener("scroll", fecharAoRolar, { passive: true });
+    return () => {
+      document.removeEventListener("mousedown", fechar);
+      window.removeEventListener("scroll", fecharAoRolar);
+    };
+  }, [maisAberto]);
+
+  const algumDoMaisAtivo = LINKS_MAIS.some((l) => isActiveLink(l.href, pathname, secaoAtiva));
+
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/5 bg-ink/70 backdrop-blur-lg">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4">
@@ -102,14 +131,14 @@ export function Nav() {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-4 xl:flex">
-          {LINKS.map((l) => {
+        <nav className="hidden items-center gap-7 lg:flex">
+          {LINKS_PRINCIPAIS.map((l) => {
             const ativo = isActiveLink(l.href, pathname, secaoAtiva);
             return (
               <a
                 key={l.href}
                 href={l.href}
-                className={`relative text-sm font-medium transition-colors ${
+                className={`relative whitespace-nowrap text-sm font-medium transition-colors ${
                   ativo ? "text-white" : "text-white/60 hover:text-white"
                 }`}
               >
@@ -120,6 +149,49 @@ export function Nav() {
               </a>
             );
           })}
+
+          <div ref={maisRef} className="relative">
+            <button
+              onClick={() => setMaisAberto((v) => !v)}
+              className={`relative flex items-center gap-1 whitespace-nowrap text-sm font-medium transition-colors ${
+                algumDoMaisAtivo || maisAberto ? "text-white" : "text-white/60 hover:text-white"
+              }`}
+            >
+              Mais
+              <ChevronDown size={14} className={`transition-transform ${maisAberto ? "rotate-180" : ""}`} />
+              {algumDoMaisAtivo && (
+                <span className="absolute -bottom-1.5 left-0 h-[2px] w-full rounded-full bg-gradient-to-r from-violet-400 to-cyan-400" />
+              )}
+            </button>
+
+            <AnimatePresence>
+              {maisAberto && (
+                <motion.div
+                  initial={{ opacity: 0, y: -6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  transition={{ duration: 0.15 }}
+                  className="absolute right-0 top-full mt-3 w-52 rounded-2xl border border-white/10 bg-surface p-2 shadow-2xl shadow-black/50"
+                >
+                  {LINKS_MAIS.map((l) => {
+                    const ativo = isActiveLink(l.href, pathname, secaoAtiva);
+                    return (
+                      <a
+                        key={l.href}
+                        href={l.href}
+                        onClick={() => setMaisAberto(false)}
+                        className={`block rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+                          ativo ? "bg-white/8 text-white" : "text-white/65 hover:bg-white/5 hover:text-white"
+                        }`}
+                      >
+                        {l.label}
+                      </a>
+                    );
+                  })}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </nav>
 
         <MagneticButton
@@ -127,14 +199,14 @@ export function Nav() {
           target="_blank"
           rel="noreferrer"
           onClick={() => rastrear("whatsapp_click", { origem: "nav_desktop" })}
-          className="hidden rounded-full bg-white px-5 py-2.5 text-sm font-bold text-ink transition-transform hover:scale-105 xl:block"
+          className="hidden rounded-full bg-white px-5 py-2.5 text-sm font-bold text-ink transition-transform hover:scale-105 lg:block"
         >
           Falar no WhatsApp
         </MagneticButton>
 
         <button
           onClick={() => setAberto(true)}
-          className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/5 text-white xl:hidden"
+          className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/5 text-white lg:hidden"
           aria-label="Abrir menu"
         >
           <Menu size={18} />
@@ -150,14 +222,14 @@ export function Nav() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
               onClick={() => setAberto(false)}
-              className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm xl:hidden"
+              className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden"
             />
             <motion.div
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", stiffness: 320, damping: 34 }}
-              className="fixed inset-y-0 right-0 z-50 flex w-[78%] max-w-xs flex-col border-l border-white/10 bg-surface px-6 py-6 xl:hidden"
+              className="fixed inset-y-0 right-0 z-50 flex w-[78%] max-w-xs flex-col border-l border-white/10 bg-surface px-6 py-6 lg:hidden"
             >
               <div className="flex items-center justify-between">
                 <span className="font-display text-sm font-bold text-white">Menu</span>
@@ -170,7 +242,7 @@ export function Nav() {
                 </button>
               </div>
 
-              <nav className="mt-8 flex flex-col gap-1">
+              <nav className="mt-8 flex flex-col gap-1 overflow-y-auto">
                 {LINKS.map((l) => {
                   const ativo = isActiveLink(l.href, pathname, secaoAtiva);
                   return (
@@ -193,7 +265,7 @@ export function Nav() {
                 target="_blank"
                 rel="noreferrer"
                 onClick={() => rastrear("whatsapp_click", { origem: "nav_mobile" })}
-                className="mt-auto rounded-full bg-white px-5 py-3.5 text-center text-sm font-bold text-ink"
+                className="mt-6 rounded-full bg-white px-5 py-3.5 text-center text-sm font-bold text-ink"
               >
                 Falar no WhatsApp
               </a>
