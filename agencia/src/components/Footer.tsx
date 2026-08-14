@@ -4,14 +4,12 @@ import { AGENCIA, linkWhatsApp } from "../data/content";
 import { rastrear } from "../lib/analytics";
 
 const LINKS_NAV = [
+  { href: "/#setores", label: "Seu setor" },
+  { href: "/#modulos", label: "Módulos" },
   { href: "/servicos", label: "Serviços" },
   { href: "/#case", label: "Case" },
   { href: "/#outros-projetos", label: "Projetos" },
-  { href: "/#depoimentos", label: "Depoimentos" },
   { href: "/#conversas", label: "Na prática" },
-  { href: "/#modulos", label: "Módulos" },
-  { href: "/#setores", label: "Setores" },
-  { href: "/#diferenciais", label: "Diferenciais" },
   { href: "/#como-funciona", label: "Como funciona" },
   { href: "/#faq", label: "FAQ" },
   { href: "/#quem-somos", label: "Quem somos" },

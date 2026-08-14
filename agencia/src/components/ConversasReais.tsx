@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ImageIcon, MessageCircle, X, ZoomIn } from "lucide-react";
 import { CONVERSAS, type Conversa } from "../data/content";
 import { Reveal } from "./Reveal";
+import { Carousel } from "./Carousel";
 
 // Conversa é prova → um único acento, sem rodízio de cor por card.
 const CORES: Record<Conversa["cor"], { bg: string; text: string; borda: string }> = {
@@ -50,12 +51,14 @@ export function ConversasReais() {
           </p>
         </Reveal>
 
-        <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {CONVERSAS.map((c, i) => {
+        {/* Carrossel, não pilha: empilhados no celular os 3 prints altos
+            custavam 3 telas de rolagem só nesta seção. */}
+        <Carousel ariaLabel="Conversas reais de clientes" className="mt-12">
+          {CONVERSAS.map((c) => {
             const cor = CORES[c.cor];
             const temImagem = c.imagem && !semImagem.includes(c.id);
             return (
-              <Reveal key={c.id} delay={i * 0.08} className="h-full">
+              <div key={c.id} className="w-[80%] shrink-0 snap-center sm:w-[46%] lg:w-[31%]">
                 <figure
                   className={`flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-surface transition-colors ${cor.borda}`}
                 >
@@ -100,10 +103,35 @@ export function ConversasReais() {
                     <p className="mt-2.5 text-sm leading-relaxed text-white/60">{c.descricao}</p>
                   </figcaption>
                 </figure>
-              </Reveal>
+              </div>
             );
           })}
-        </div>
+        </Carousel>
+
+        {/* Números da operação — ficavam presos na seção de depoimentos. */}
+        <Reveal delay={0.2}>
+          <div className="mt-12 grid grid-cols-2 gap-x-4 gap-y-5 rounded-2xl border border-white/8 bg-surface/50 px-6 py-5 text-center sm:flex sm:flex-wrap sm:items-center sm:justify-center sm:gap-x-10 sm:gap-y-3">
+            <div>
+              <p className="font-display text-2xl font-extrabold text-white">R$0</p>
+              <p className="text-xs text-white/50">taxa de plataforma</p>
+            </div>
+            <div className="hidden h-8 w-px bg-white/10 sm:block" />
+            <div>
+              <p className="font-display text-2xl font-extrabold text-white">100%</p>
+              <p className="text-xs text-white/50">no WhatsApp do cliente</p>
+            </div>
+            <div className="hidden h-8 w-px bg-white/10 sm:block" />
+            <div>
+              <p className="font-display text-2xl font-extrabold text-white">10</p>
+              <p className="text-xs text-white/50">setores atendidos</p>
+            </div>
+            <div className="hidden h-8 w-px bg-white/10 sm:block" />
+            <div>
+              <p className="font-display text-2xl font-extrabold text-white">semanas</p>
+              <p className="text-xs text-white/50">do papo ao sistema no ar</p>
+            </div>
+          </div>
+        </Reveal>
       </div>
 
       {/* Portal: fora do <main>, que tem z-index próprio e prenderia o overlay
