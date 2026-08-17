@@ -1,7 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Check,
   ArrowRight,
+  ChevronDown,
+  Search,
+  X,
   Code2,
   Megaphone,
   MessageCircle,
@@ -49,11 +52,11 @@ import type { ReactNode } from "react";
 import { MODULOS, linkWhatsApp } from "../data/content";
 import { CATEGORIAS_SERVICOS, RESUMOS_SERVICOS } from "../data/servicos";
 import { Reveal } from "../components/Reveal";
-import { TiltCard } from "../components/TiltCard";
 import { MagneticButton } from "../components/MagneticButton";
 import { rastrear } from "../lib/analytics";
 
-const ICONES_MODULO: Record<string, ReactNode> = {
+const ICONES: Record<string, ReactNode> = {
+  // módulos
   "comercio-whatsapp": <MessageCircle size={20} />,
   "sites-sistemas": <Code2 size={20} />,
   "marketing-digital": <Megaphone size={20} />,
@@ -64,9 +67,7 @@ const ICONES_MODULO: Record<string, ReactNode> = {
   agendamento: <CalendarDays size={20} />,
   alimentacao: <UtensilsCrossed size={20} />,
   "logistica-44": <Truck size={20} />,
-};
-
-const ICONES_EXTRA: Record<string, ReactNode> = {
+  // serviços especializados
   "search-check": <SearchCheck size={20} />,
   "layout-dashboard": <LayoutDashboard size={20} />,
   "refresh-cw": <RefreshCw size={20} />,
@@ -102,22 +103,106 @@ const ICONES_EXTRA: Record<string, ReactNode> = {
   "trending-up": <TrendingUp size={20} />,
 };
 
-const CORES: Record<"violet" | "lime" | "cyan", { bg: string; text: string; ring: string }> = {
-  violet: { bg: "bg-violet-500/15", text: "text-violet-300", ring: "hover:border-violet-500/40" },
-  lime: { bg: "bg-lime-500/15", text: "text-lime-300", ring: "hover:border-lime-500/40" },
-  cyan: { bg: "bg-cyan-400/15", text: "text-cyan-300", ring: "hover:border-cyan-400/40" },
-};
+interface ItemCatalogo {
+  id: string;
+  icone: string;
+  titulo: string;
+  resumo: string;
+  itens: string[];
+  categoriaId: string;
+  categoriaNome: string;
+}
 
-const CORE_MODULES = [
-  "comercio-whatsapp",
-  "sites-sistemas",
-  "marketing-digital",
-  "marketplace-ecommerce",
-  "financas",
-  "consultoria-automacao",
+/**
+ * Catálogo achatado numa lista só. Antes a página era uma pilha de seções
+ * fixas (25 telas de rolagem, sem índice); agora tudo vira uma coleção
+ * filtrável, então o visitante chega no que interessa em 1 clique.
+ */
+const CATALOGO: ItemCatalogo[] = [
+  ...MODULOS.map((m) => ({
+    id: m.id,
+    icone: m.id,
+    titulo: m.titulo,
+    resumo: RESUMOS_SERVICOS[m.id] ?? m.resumo,
+    itens: m.itens,
+    categoriaId: "modulos",
+    categoriaNome: "Módulos principais",
+  })),
+  ...CATEGORIAS_SERVICOS.flatMap((c) =>
+    c.servicos.map((s) => ({
+      id: s.id,
+      icone: s.icone,
+      titulo: s.titulo,
+      resumo: s.resumo,
+      itens: s.itens,
+      categoriaId: c.id,
+      categoriaNome: c.titulo,
+    })),
+  ),
 ];
 
+const CATEGORIAS = [
+  { id: "modulos", nome: "Módulos principais" },
+  ...CATEGORIAS_SERVICOS.map((c) => ({ id: c.id, nome: c.titulo })),
+];
+
+function normalizar(texto: string) {
+  return texto
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, ""); // tira acento: buscar "financas" acha "Finanças"
+}
+
+function CartaoServico({ item }: { item: ItemCatalogo }) {
+  const [aberto, setAberto] = useState(false);
+
+  return (
+    <article className="flex h-full flex-col rounded-3xl border border-white/10 bg-surface p-6 transition-colors hover:border-violet-500/40">
+      <div className="flex items-start justify-between gap-3">
+        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-violet-500/15 text-violet-300">
+          {ICONES[item.icone]}
+        </span>
+        <span className="rounded-full border border-white/8 bg-white/5 px-2.5 py-1 text-[10px] font-semibold text-white/55">
+          {item.categoriaNome}
+        </span>
+      </div>
+
+      <h3 className="mt-4 font-display text-base font-bold leading-snug text-white">{item.titulo}</h3>
+      <p className="mt-2 flex-1 text-sm leading-relaxed text-white/60">{item.resumo}</p>
+
+      {/* Os 126 bullets da página ficavam todos abertos ao mesmo tempo.
+          Agora só abrem quando o visitante pede. */}
+      <button
+        onClick={() => setAberto((v) => !v)}
+        aria-expanded={aberto}
+        className="mt-5 flex items-center gap-1.5 self-start text-sm font-bold text-violet-300 transition-colors hover:text-violet-200"
+      >
+        {aberto ? "Ocultar detalhes" : "O que inclui"}
+        <ChevronDown size={14} className={`transition-transform ${aberto ? "rotate-180" : ""}`} />
+      </button>
+
+      {aberto && (
+        <ul className="mt-4 flex flex-col gap-2 border-t border-white/10 pt-4">
+          {item.itens.map((i) => (
+            <li key={i} className="flex items-start gap-2 text-xs leading-relaxed text-white/65">
+              <Check size={13} className="mt-0.5 shrink-0 text-violet-300" />
+              {i}
+            </li>
+          ))}
+        </ul>
+      )}
+    </article>
+  );
+}
+
+/** Quantos cards aparecem antes do "ver mais" — segura a primeira dobra. */
+const LOTE = 12;
+
 export function ServicosPage() {
+  const [categoria, setCategoria] = useState("todos");
+  const [busca, setBusca] = useState("");
+  const [limite, setLimite] = useState(LOTE);
+
   useEffect(() => {
     document.title = "Serviços — Sigma | Consultoria, Assessoria e Serviços";
     return () => {
@@ -125,187 +210,168 @@ export function ServicosPage() {
     };
   }, []);
 
-  const coreModules = MODULOS.filter((m) => CORE_MODULES.includes(m.id));
-  const nicheModules = MODULOS.filter((m) => !CORE_MODULES.includes(m.id));
-  const totalServicos =
-    MODULOS.length + CATEGORIAS_SERVICOS.reduce((acc, c) => acc + c.servicos.length, 0);
+  const visiveis = useMemo(() => {
+    const termo = normalizar(busca.trim());
+    return CATALOGO.filter((item) => {
+      if (categoria !== "todos" && item.categoriaId !== categoria) return false;
+      if (!termo) return true;
+      const alvo = normalizar(`${item.titulo} ${item.resumo} ${item.itens.join(" ")} ${item.categoriaNome}`);
+      return alvo.includes(termo);
+    });
+  }, [categoria, busca]);
+
+  // Trocar de filtro recomeça a contagem — senão o "ver mais" de um filtro
+  // anterior vaza pro próximo e a lista abre já gigante.
+  useEffect(() => {
+    setLimite(LOTE);
+  }, [categoria, busca]);
+
+  const filtrando = categoria !== "todos" || busca.trim().length > 0;
+  const mostrados = visiveis.slice(0, limite);
+  const restantes = visiveis.length - mostrados.length;
 
   return (
     <div className="pb-24 pt-32 sm:pt-40">
-      {/* Header */}
-      <section className="relative overflow-hidden pb-16">
-        <div className="grid-fade pointer-events-none absolute inset-0 top-0 h-[500px]" />
-        <div className="relative mx-auto max-w-4xl px-5 text-center">
+      {/* Cabeçalho */}
+      <section className="relative overflow-hidden pb-10">
+        <div className="grid-fade pointer-events-none absolute inset-0 top-0 h-[420px]" />
+        <div className="relative mx-auto max-w-3xl px-5 text-center">
           <Reveal>
-            <p className="text-xs font-bold uppercase tracking-widest text-violet-400">
-              Todos os serviços
-            </p>
+            <p className="text-xs font-bold uppercase tracking-widest text-violet-400">Todos os serviços</p>
             <h1 className="mt-3 font-display text-4xl font-extrabold tracking-tight sm:text-5xl">
-              Cada parte do seu negócio digital, num só lugar.
+              Ache o que resolve o seu problema.
             </h1>
-            <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-white/60 sm:text-lg">
-              Dos módulos principais aos serviços especializados de dados, marca, automação e
-              sistemas — {totalServicos} frentes de trabalho pra resolver o que hoje trava seu
-              negócio online. Contrate o que resolve o problema de agora, sem pacote fechado.
+            <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-white/60">
+              São {CATALOGO.length} frentes de trabalho. Filtre pela área ou busque pelo que está travando seu
+              negócio hoje — não precisa ler tudo.
             </p>
-            <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Barra de filtro — gruda no topo pra o visitante nunca "se perder" na lista */}
+      <div className="sticky top-[68px] z-30 border-y border-white/8 bg-ink/85 py-4 backdrop-blur-lg">
+        <div className="mx-auto max-w-6xl px-5">
+          <div className="relative">
+            <Search size={16} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-white/40" />
+            <input
+              value={busca}
+              onChange={(e) => setBusca(e.target.value)}
+              placeholder="Buscar: estoque, boleto, agendamento, marketplace…"
+              aria-label="Buscar serviço"
+              className="w-full rounded-full border border-white/10 bg-white/5 py-3 pl-11 pr-11 text-sm text-white placeholder:text-white/35 transition-colors focus:border-violet-500/50 focus:outline-none focus:ring-1 focus:ring-violet-500/30"
+            />
+            {busca && (
+              <button
+                onClick={() => setBusca("")}
+                aria-label="Limpar busca"
+                className="absolute right-3.5 top-1/2 flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white/70 hover:text-white"
+              >
+                <X size={13} />
+              </button>
+            )}
+          </div>
+
+          <div className="no-scrollbar mt-3 -mx-5 flex gap-2 overflow-x-auto px-5">
+            {[{ id: "todos", nome: "Todos" }, ...CATEGORIAS].map((c) => {
+              const ativo = categoria === c.id;
+              const total =
+                c.id === "todos" ? CATALOGO.length : CATALOGO.filter((i) => i.categoriaId === c.id).length;
+              return (
+                <button
+                  key={c.id}
+                  onClick={() => setCategoria(c.id)}
+                  className={`shrink-0 whitespace-nowrap rounded-full border px-4 py-2 text-xs font-bold transition-colors ${
+                    ativo
+                      ? "border-violet-400/50 bg-violet-500/20 text-violet-200"
+                      : "border-white/10 bg-white/5 text-white/60 hover:border-white/20 hover:text-white"
+                  }`}
+                >
+                  {c.nome}
+                  <span className={`ml-1.5 ${ativo ? "text-violet-300/80" : "text-white/35"}`}>{total}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* Resultados */}
+      <section className="relative py-10">
+        <div className="mx-auto max-w-6xl px-5">
+          <div className="flex items-center justify-between gap-4">
+            <p className="text-sm text-white/55">
+              {restantes > 0
+                ? `${mostrados.length} de ${visiveis.length} serviços`
+                : `${visiveis.length} ${visiveis.length === 1 ? "serviço" : "serviços"}`}
+            </p>
+            {filtrando && (
+              <button
+                onClick={() => {
+                  setCategoria("todos");
+                  setBusca("");
+                }}
+                className="text-sm font-semibold text-white/50 underline decoration-white/20 underline-offset-4 transition-colors hover:text-white"
+              >
+                limpar filtros
+              </button>
+            )}
+          </div>
+
+          {visiveis.length === 0 ? (
+            <div className="mt-10 rounded-3xl border border-dashed border-white/15 px-6 py-14 text-center">
+              <p className="font-display text-lg font-bold text-white">Nada encontrado por aqui.</p>
+              <p className="mx-auto mt-2 max-w-sm text-sm text-white/55">
+                Não achou o que precisa? Provavelmente a gente resolve mesmo assim — a maior parte do que
+                fazemos é sob medida.
+              </p>
               <MagneticButton
-                href={linkWhatsApp()}
+                href={linkWhatsApp(
+                  `Oi! Procurei por "${busca}" no site de vocês e não achei. Vocês conseguem resolver isso?`,
+                )}
                 target="_blank"
                 rel="noreferrer"
-                onClick={() => rastrear("whatsapp_click", { origem: "servicos_header" })}
-                className="flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-bold text-ink"
+                onClick={() => rastrear("whatsapp_click", { origem: "servicos_sem_resultado", busca })}
+                className="mt-6 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-bold text-ink"
               >
-                Falar no WhatsApp
-                <ArrowRight size={16} />
+                Perguntar no WhatsApp
+                <ArrowRight size={15} />
               </MagneticButton>
-              <a
-                href="#modulos-principais"
-                className="flex items-center justify-center gap-2 rounded-full border border-white/15 px-7 py-3.5 text-sm font-bold text-white transition-colors hover:bg-white/5"
-              >
-                Ver os módulos
-              </a>
             </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* Módulos principais */}
-      <section id="modulos-principais" className="relative py-14">
-        <div className="mx-auto max-w-6xl px-5">
-          <Reveal>
-            <p className="text-xs font-bold uppercase tracking-widest text-cyan-400">
-              Módulos principais
-            </p>
-            <h2 className="mt-3 max-w-2xl font-display text-2xl font-extrabold tracking-tight sm:text-3xl">
-              A base de qualquer negócio que quer vender melhor online.
-            </h2>
-          </Reveal>
-
-          <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {coreModules.map((m, i) => (
-              <Reveal key={m.id} delay={i * 0.05} className="h-full">
-                <TiltCard className="h-full">
-                  <article className="flex h-full flex-col rounded-3xl border border-white/10 bg-surface p-6 transition-all hover:border-white/20">
-                    <div className="flex items-start justify-between">
-                      <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-500/15 text-violet-300">
-                        {ICONES_MODULO[m.id]}
-                      </span>
-                      <span className="font-display text-2xl font-extrabold text-white/10">
-                        {m.numero}
-                      </span>
-                    </div>
-                    <h3 className="mt-4 font-display text-lg font-bold text-white">{m.titulo}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-white/55">
-                      {RESUMOS_SERVICOS[m.id] ?? m.resumo}
-                    </p>
-                    <ul className="mt-4 flex flex-col gap-2 border-t border-white/10 pt-4">
-                      {m.itens.map((item) => (
-                        <li key={item} className="flex items-start gap-2 text-xs text-white/65">
-                          <Check size={13} className="mt-0.5 shrink-0 text-lime-400" />
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </article>
-                </TiltCard>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Módulos de nicho */}
-      <section className="relative py-14">
-        <div className="mx-auto max-w-6xl px-5">
-          <Reveal>
-            <div className="flex items-center gap-4">
-              <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/15 to-transparent" />
-              <p className="text-xs font-bold uppercase tracking-widest text-lime-400">
-                Módulos de nicho · Goiânia
-              </p>
-              <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/15 to-transparent" />
-            </div>
-          </Reveal>
-
-          <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {nicheModules.map((m, i) => (
-              <Reveal key={m.id} delay={i * 0.05} className="h-full">
-                <article className="flex h-full flex-col rounded-2xl border border-white/8 bg-surface/60 p-5 transition-all hover:border-white/20 hover:bg-surface">
-                  <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-cyan-400/15 text-cyan-300">
-                    {ICONES_MODULO[m.id]}
-                  </span>
-                  <h3 className="mt-3 font-display text-sm font-bold text-white">{m.titulo}</h3>
-                  <p className="mt-2 text-xs leading-relaxed text-white/50">
-                    {RESUMOS_SERVICOS[m.id] ?? m.resumo}
-                  </p>
-                </article>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Categorias de serviços especializados */}
-      {CATEGORIAS_SERVICOS.map((categoria, ci) => {
-        const cor = CORES[categoria.cor];
-        return (
-          <section key={categoria.id} id={categoria.id} className="relative py-14">
-            <div className="mx-auto max-w-6xl px-5">
-              <Reveal>
-                <p className={`text-xs font-bold uppercase tracking-widest ${cor.text}`}>
-                  {String(ci + 1).padStart(2, "0")} · {categoria.titulo}
-                </p>
-                <h2 className="mt-3 max-w-2xl font-display text-2xl font-extrabold tracking-tight sm:text-3xl">
-                  {categoria.descricao}
-                </h2>
-              </Reveal>
-
-              <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                {categoria.servicos.map((s, i) => (
-                  <Reveal key={s.id} delay={i * 0.05} className="h-full">
-                    <TiltCard className="h-full">
-                      <article
-                        className={`flex h-full flex-col rounded-3xl border border-white/10 bg-surface p-6 transition-all hover:shadow-xl ${cor.ring}`}
-                      >
-                        <span
-                          className={`flex h-10 w-10 items-center justify-center rounded-xl ${cor.bg} ${cor.text}`}
-                        >
-                          {ICONES_EXTRA[s.icone]}
-                        </span>
-                        <h3 className="mt-4 font-display text-base font-bold text-white">
-                          {s.titulo}
-                        </h3>
-                        <p className="mt-2 text-sm leading-relaxed text-white/55">{s.resumo}</p>
-                        <ul className="mt-4 flex flex-col gap-2 border-t border-white/10 pt-4">
-                          {s.itens.map((item) => (
-                            <li key={item} className="flex items-start gap-2 text-xs text-white/65">
-                              <Check size={13} className={`mt-0.5 shrink-0 ${cor.text}`} />
-                              {item}
-                            </li>
-                          ))}
-                        </ul>
-                      </article>
-                    </TiltCard>
-                  </Reveal>
+          ) : (
+            <>
+              <div className="mt-7 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                {mostrados.map((item) => (
+                  <CartaoServico key={`${item.categoriaId}-${item.id}`} item={item} />
                 ))}
               </div>
-            </div>
-          </section>
-        );
-      })}
+
+              {restantes > 0 && (
+                <div className="mt-10 flex justify-center">
+                  <button
+                    onClick={() => setLimite((l) => l + LOTE)}
+                    className="flex items-center gap-2 rounded-full border border-white/15 px-7 py-3.5 text-sm font-bold text-white transition-colors hover:bg-white/5"
+                  >
+                    Ver mais {Math.min(restantes, LOTE)}
+                    <ChevronDown size={16} />
+                  </button>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      </section>
 
       {/* CTA final */}
       <section className="relative py-14">
-        <div className="mx-auto max-w-4xl px-5 text-center">
+        <div className="mx-auto max-w-3xl px-5 text-center">
           <Reveal>
             <h2 className="font-display text-2xl font-extrabold tracking-tight sm:text-3xl">
               Não sabe por onde começar? A gente ajuda a escolher.
             </h2>
-            <p className="mx-auto mt-4 max-w-xl text-white/55">
-              Com {totalServicos} frentes de trabalho, o primeiro passo é o diagnóstico: contamos o
-              que está travando sua venda hoje e indicamos os 2 ou 3 serviços que resolvem isso
-              primeiro.
+            <p className="mx-auto mt-4 max-w-lg text-white/60">
+              No diagnóstico a gente olha o que está travando sua venda hoje e indica os 2 ou 3 serviços que
+              resolvem isso primeiro — o resto pode esperar.
             </p>
             <MagneticButton
               href={linkWhatsApp()}
@@ -314,7 +380,7 @@ export function ServicosPage() {
               onClick={() => rastrear("whatsapp_click", { origem: "servicos_footer" })}
               className="mt-7 inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-bold text-ink"
             >
-              Falar no WhatsApp
+              Pedir meu diagnóstico
               <ArrowRight size={16} />
             </MagneticButton>
           </Reveal>

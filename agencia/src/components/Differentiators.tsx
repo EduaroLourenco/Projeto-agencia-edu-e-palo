@@ -1,41 +1,43 @@
 import { DIFERENCIAIS } from "../data/content";
 import { Reveal } from "./Reveal";
-import { TiltCard } from "./TiltCard";
 
 export function Differentiators() {
+  const [destaque, ...resto] = [
+    ...DIFERENCIAIS.filter((d) => d.destaque),
+    ...DIFERENCIAIS.filter((d) => !d.destaque),
+  ];
+
   return (
-    <section id="diferenciais" className="relative py-24 sm:py-32">
+    <section id="diferenciais" className="relative py-20 sm:py-24">
       <div className="mx-auto max-w-6xl px-5">
         <Reveal>
           <p className="text-xs font-bold uppercase tracking-widest text-violet-400">Por que a gente</p>
-          <h2 className="mt-3 max-w-2xl font-display text-3xl font-extrabold tracking-tight sm:text-4xl">
+          <h2 className="mt-3 max-w-2xl font-display text-2xl font-extrabold tracking-tight sm:text-3xl">
             Diferente de agência que empurra pacote fechado.
           </h2>
         </Reveal>
 
-        <div className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {DIFERENCIAIS.map((d, i) => (
-            <Reveal
-              key={d.titulo}
-              delay={i * 0.07}
-              className={d.destaque ? "sm:col-span-2 lg:col-span-2 lg:row-span-2" : ""}
-            >
-              <TiltCard className="h-full">
-                <div
-                  className={`flex h-full flex-col justify-between rounded-3xl border p-7 ${
-                    d.destaque
-                      ? "border-violet-500/30 bg-gradient-to-br from-violet-500/15 via-surface to-surface"
-                      : "border-white/10 bg-surface"
-                  }`}
-                >
-                  <h3 className={`font-display font-bold text-white ${d.destaque ? "text-2xl sm:text-3xl" : "text-lg"}`}>
-                    {d.titulo}
-                  </h3>
-                  <p className={`mt-4 text-white/60 ${d.destaque ? "max-w-md text-base" : "text-sm leading-relaxed"}`}>
-                    {d.descricao}
-                  </p>
+        <Reveal delay={0.08}>
+          <div className="mt-9 rounded-3xl border border-violet-500/25 bg-gradient-to-br from-violet-500/12 via-surface to-surface p-7">
+            <h3 className="font-display text-xl font-bold text-white sm:text-2xl">{destaque.titulo}</h3>
+            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-white/65 sm:text-base">
+              {destaque.descricao}
+            </p>
+          </div>
+        </Reveal>
+
+        {/* Antes eram 5 cards grandes empilhados (1,7 tela de rolagem só de
+            afirmação). Agora os 4 secundários viram uma faixa compacta. */}
+        <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {resto.map((d, i) => (
+            <Reveal key={d.titulo} delay={0.05 + i * 0.05} className="h-full">
+              <div className="flex h-full flex-col rounded-2xl border border-white/10 bg-surface p-5">
+                <div className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-violet-400" />
+                  <h3 className="font-display text-sm font-bold text-white">{d.titulo}</h3>
                 </div>
-              </TiltCard>
+                <p className="mt-2 text-xs leading-relaxed text-white/60">{d.descricao}</p>
+              </div>
             </Reveal>
           ))}
         </div>

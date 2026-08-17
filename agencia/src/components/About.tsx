@@ -17,16 +17,11 @@ export function About() {
             Uma dupla, um objetivo: sistema que funciona e resultado que aparece.
           </h2>
           <p className="mt-5 text-white/60">
-            Somos uma dupla que decidiu juntar engenharia de software, dados e visão de negócio pra
-            resolver um problema bem específico: negócios que vendem muito bem no boca a boca, mas
-            travam na hora de escalar online. A gente entra exatamente nesse ponto — sem prometer
-            mágica, sem contrato eterno, só sistema que funciona de verdade.
-          </p>
-          <p className="mt-4 text-white/60">
-            Cada projeto passa pelas duas mãos: um cuida da estratégia comercial, dos marketplaces e
-            da engenharia por trás do sistema; a outra cuida das finanças, dos processos e dos dados
-            que mostram se o negócio está saudável. No fim, o que chega pra você é um sistema pensado
-            de ponta a ponta — do código ao caixa.
+            Uma dupla que juntou engenharia de software, dados e visão de negócio pra resolver um
+            problema específico: quem vende muito bem no boca a boca, mas trava na hora de escalar
+            online. Cada projeto passa pelas duas mãos — um lado cuida da operação e do código, o
+            outro das finanças e dos números. O que chega pra você é um sistema pensado do código ao
+            caixa.
           </p>
 
           <div className="mt-7 flex items-center gap-3">

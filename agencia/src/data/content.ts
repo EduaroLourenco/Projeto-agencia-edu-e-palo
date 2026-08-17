@@ -220,24 +220,24 @@ export const DIFERENCIAIS: Diferencial[] = [
   {
     titulo: "Um time, todos os módulos",
     descricao:
-      "Você não precisa contratar uma agência pra cada parte do problema. A gente cuida do sistema, do site, do marketing e da automação — tudo conversando entre si, do mesmo jeito que o Zap-Commerce nasceu.",
+      "Sistema, site, marketing e automação com a mesma dupla — tudo conversando entre si, sem uma agência pra cada pedaço.",
     destaque: true,
   },
   {
     titulo: "Processo transparente",
-    descricao: "Prazo e investimento combinados antes de começar. Sem letra miúda, sem surpresa na fatura.",
+    descricao: "Prazo e investimento fechados antes de começar.",
   },
   {
     titulo: "Sem contrato eterno",
-    descricao: "Você contrata o módulo que resolve o problema de agora. Quando parar de fazer sentido, para.",
+    descricao: "Contrate o que resolve agora. Quando não fizer mais sentido, para.",
   },
   {
     titulo: "Feito sob medida",
-    descricao: "Nada de template genérico — cada sistema nasce do seu processo real, não do que já vem pronto.",
+    descricao: "Nasce do seu processo real, não de um template pronto.",
   },
   {
     titulo: "Suporte de verdade",
-    descricao: "Depois que vai pro ar, a gente continua por perto pra ajustar o que precisar.",
+    descricao: "Depois do ar, a gente continua por perto.",
   },
 ];
 
@@ -278,55 +278,139 @@ export interface Nicho {
   id: string;
   nome: string;
   descricao: string;
+  /** O que costuma travar nesse setor — o gancho de identificação. */
+  dor: string;
+  /** O que a gente entrega pra resolver, em linguagem de dono de negócio. */
+  entregas: string[];
 }
 
 export const NICHOS: Nicho[] = [
-  { id: "moda", nome: "Moda & Atacado", descricao: "Lojas da Rua 44 e atacadistas" },
-  { id: "distribuidoras", nome: "Distribuidoras", descricao: "Bebidas, alimentos e mercearias" },
-  { id: "estetica", nome: "Salões & Estética", descricao: "Agendamento sem WhatsApp" },
-  { id: "eventos", nome: "Baladas & Eventos", descricao: "Lista VIP e reserva de lounge" },
-  { id: "oficinas", nome: "Oficinas & Auto", descricao: "Agendamento e orçamento digital" },
-  { id: "logistica", nome: "Logística Interior", descricao: "Excursões e frete da 44" },
-  { id: "lanchonetes", nome: "Lanchonetes", descricao: "Cardápio e delivery sem taxa" },
-  { id: "saude", nome: "Clínicas & Saúde", descricao: "Agenda e prontuário simples" },
+  {
+    id: "moda",
+    nome: "Moda & Atacado",
+    descricao: "Lojas da Rua 44 e atacadistas",
+    dor: "Cliente manda foto solta no grupo, ninguém calcula o preço de atacado na hora e o pedido se perde no meio das mensagens.",
+    entregas: [
+      "Catálogo digital com preço de atacado calculado sozinho",
+      "Pedido chegando pronto e formatado no seu WhatsApp",
+      "Entrega por excursão, retirada ou transportadora",
+      "Painel pra você mesmo trocar foto, preço e estoque",
+    ],
+  },
+  {
+    id: "distribuidoras",
+    nome: "Distribuidoras",
+    descricao: "Bebidas, alimentos e mercearias",
+    dor: "Pedido por telefone e caderno, tabela de preço diferente por cliente e nenhuma visão de quanto realmente sobra no fim do mês.",
+    entregas: [
+      "Catálogo com tabela de preço por tipo de cliente",
+      "Pedido mínimo e cálculo de frete por região",
+      "Controle de contas a pagar e a receber",
+      "Relatório de margem por produto",
+    ],
+  },
+  {
+    id: "estetica",
+    nome: "Salões & Estética",
+    descricao: "Agenda cheia sem parar de atender",
+    dor: "Você para no meio do atendimento pra responder “que horas tem vaga?” — e ainda assim marca dois clientes no mesmo horário.",
+    entregas: [
+      "Agendamento online, o cliente marca sozinho",
+      "Confirmação e lembrete automáticos no WhatsApp",
+      "Vitrine de serviços com preço e duração",
+      "Histórico de quem já passou pelo seu salão",
+    ],
+  },
+  {
+    id: "eventos",
+    nome: "Baladas & Eventos",
+    descricao: "Lista VIP e reserva de lounge",
+    dor: "Lista VIP no papel, fila na portaria e mapa de mesas que só uma pessoa da equipe sabe ler.",
+    entregas: [
+      "Lista VIP com QR Code gerado na hora",
+      "Mapa de lounges e mesas (livre/ocupado)",
+      "Check-in pelo celular do segurança",
+      "Exportação da lista pra planilha ou WhatsApp",
+    ],
+  },
+  {
+    id: "oficinas",
+    nome: "Oficinas & Auto",
+    descricao: "Orçamento e ordem de serviço digital",
+    dor: "Orçamento no caderno, cliente ligando pra saber se o carro ficou pronto e serviço que some entre uma troca de turno e outra.",
+    entregas: [
+      "Ordem de serviço do orçamento ao faturamento",
+      "Status do serviço visível pro cliente",
+      "Agenda dos mecânicos sem choque de horário",
+      "Relatório financeiro ligado à execução",
+    ],
+  },
+  {
+    id: "logistica",
+    nome: "Logística & Frete",
+    descricao: "Excursões e transporte de carga",
+    dor: "Ninguém sabe onde está a mercadoria, e o comprador liga toda hora perguntando se o fardo já saiu.",
+    entregas: [
+      "Registro digital de despacho (bilhete eletrônico)",
+      "Rastreamento pelo número de celular",
+      "Painel de manifesto de carga",
+      "Aviso automático no WhatsApp a cada status",
+    ],
+  },
+  {
+    id: "lanchonetes",
+    nome: "Lanchonetes & Delivery",
+    descricao: "Cardápio próprio, sem taxa de aplicativo",
+    dor: "20% a 30% do seu faturamento fica com o aplicativo de entrega — e o cliente é deles, não seu.",
+    entregas: [
+      "Cardápio digital com carrinho e total em tempo real",
+      "Cálculo de entrega por CEP e bairro",
+      "Painel de pedidos estilo Kanban",
+      "Zero comissão: a venda é 100% sua",
+    ],
+  },
+  {
+    id: "saude",
+    nome: "Clínicas & Consultórios",
+    descricao: "Agenda, prontuário e faturamento",
+    dor: "Secretária presa no telefone remarcando horário, e paciente que falta sem avisar porque ninguém lembrou.",
+    entregas: [
+      "Agendamento online com confirmação automática",
+      "Lembrete de consulta pra reduzir falta",
+      "Prontuário simples e organizado",
+      "Controle de convênio e faturamento",
+    ],
+  },
+  {
+    id: "industrias",
+    nome: "Indústrias",
+    descricao: "Catálogo B2B e portal de representante",
+    dor: "Pedido de representante chega por e-mail e WhatsApp, cada um num formato, e alguém digita tudo de novo no sistema.",
+    entregas: [
+      "Portal B2B com catálogo e tabela por representante",
+      "Central de pedidos com status em tempo real",
+      "Integração com o ERP que você já usa",
+      "Site institucional pra captar cliente novo",
+    ],
+  },
+  {
+    id: "petshop",
+    nome: "Pet Shop & Hotelaria",
+    descricao: "Banho, tosa e hospedagem",
+    dor: "Agenda de banho e tosa no caderno, e nenhum controle de qual pet está hospedado até quando.",
+    entregas: [
+      "Agendamento de banho e tosa online",
+      "Ficha do pet com histórico de atendimento",
+      "Controle de hospedagem com entrada e saída",
+      "Lembrete automático de retorno pro tutor",
+    ],
+  },
 ];
 
-export interface Depoimento {
-  nome: string;
-  negocio: string;
-  texto: string;
-  iniciais: string;
-  cor: "violet" | "lime" | "cyan";
-}
-
-// Placeholder: depoimentos fictícios pra ilustrar o layout. Troque por
-// depoimentos reais de clientes (com autorização deles) antes de publicar.
-export const DEPOIMENTOS: Depoimento[] = [
-  {
-    nome: "Renata Souza",
-    negocio: "Bella Modas — Atacado, Goiânia",
-    texto:
-      "Antes eu perdia pedido todo dia porque cliente mandava foto solta no grupo. Agora eles entram na vitrine, montam a sacola e o pedido já chega formatado pra mim. Virou rotina.",
-    iniciais: "RS",
-    cor: "violet",
-  },
-  {
-    nome: "Diego Almeida",
-    negocio: "Distribuidora Almeida — Bebidas",
-    texto:
-      "Achei que era complicado. Em duas semanas tava no ar, sem custo de iFood, sem percentual. O cliente digita o CEP e já sabe o frete. Simples assim.",
-    iniciais: "DA",
-    cor: "cyan",
-  },
-  {
-    nome: "Carla Mendes",
-    negocio: "Studio CM — Estética, Setor Bueno",
-    texto:
-      "Parei de ficar no celular respondendo 'que horas tem?' entre atendimento. O cliente já abre o site, vê os horários e agenda. Liberou minha cabeça pra trabalhar.",
-    iniciais: "CM",
-    cor: "lime",
-  },
-];
+/* Os depoimentos fictícios (Renata/Diego/Carla) foram removidos: eram
+   placeholders inventados e conviviam com prints REAIS de conversa logo
+   abaixo — inclusive com nomes que se repetiam. Prova real vale mais que
+   prova escrita por nós; a seção "Na prática" (CONVERSAS) faz esse papel. */
 
 /* ------------------------------------------------------------------ */
 /* CONVERSAS REAIS — prints de WhatsApp como prova social               */
@@ -389,7 +473,7 @@ export const DUPLA: MembroDupla[] = [
     iniciais: "E",
     nome: "Eduardo Luiz Lourenço",
     papel: "E-commerce & Engenharia de Software",
-    bio: "Coordenador de e-commerce com experiência prática em marketplaces (Mercado Livre, Amazon, Shopee) e formação em Engenharia de Software. Lidera integrações de ERP e API, automação de operação e desenvolvimento full stack — sempre com foco em rentabilidade e escala.",
+    bio: "Coordenador de e-commerce com estrada em marketplaces (Mercado Livre, Amazon, Shopee) e formação em Engenharia de Software. Cuida das integrações de ERP/API, da automação da operação e do desenvolvimento — com foco em rentabilidade e escala.",
     cor: "from-violet-500 to-cyan-400",
     linkedin:
       "https://www.linkedin.com/in/eduardo-louren%C3%A7o-7a5739260?utm_source=share_via&utm_content=profile&utm_medium=member_ios",
@@ -398,7 +482,7 @@ export const DUPLA: MembroDupla[] = [
     iniciais: "P",
     nome: "Paloma Amaral",
     papel: "Finanças & Business Intelligence",
-    bio: "Atua na gestão financeira e administrativa com foco em Business Intelligence: fluxo de caixa, conciliação bancária, automação de processos e dashboards gerenciais para tomada de decisão. Em formação em Engenharia de Software, une dados, tecnologia e finanças.",
+    bio: "Gestão financeira e administrativa com foco em Business Intelligence: fluxo de caixa, conciliação bancária e dashboards que mostram onde está a margem. Em formação em Engenharia de Software, une dados, tecnologia e finanças.",
     cor: "from-cyan-400 to-lime-400",
     linkedin: "https://www.linkedin.com/in/palomadias028",
   },
