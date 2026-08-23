@@ -116,12 +116,14 @@ export function Nav() {
   }, [maisAberto]);
 
   const algumDoMaisAtivo = LINKS_MAIS.some((l) => isActiveLink(l.href, pathname, secaoAtiva));
+  const rotuloDaSecaoAtiva =
+    pathname === "/" ? LINKS.find((l) => l.href === `/#${secaoAtiva}`)?.label : null;
 
   return (
     <>
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/5 bg-ink/70 backdrop-blur-lg">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4">
-        <Link to="/" className="flex shrink-0 items-center gap-2">
+        <Link to="/" className="flex min-h-[44px] shrink-0 items-center gap-2">
           <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 to-blue-400 font-display text-sm font-bold text-ink">
             {AGENCIA.iniciais}
           </span>
@@ -129,6 +131,18 @@ export function Nav() {
             {AGENCIA.nome}
           </span>
         </Link>
+
+        {/* "Você está aqui", só no celular. No desktop o sublinhado do menu
+            já diz isso; no celular, sem o menu à vista, a página de 14 telas
+            não dava nenhuma pista de onde a pessoa estava. */}
+        {rotuloDaSecaoAtiva && (
+          <span
+            aria-live="polite"
+            className="ml-3 min-w-0 flex-1 truncate text-right text-xs font-semibold text-white/45 lg:hidden"
+          >
+            {rotuloDaSecaoAtiva}
+          </span>
+        )}
 
         <nav className="hidden items-center gap-7 lg:flex">
           {LINKS_PRINCIPAIS.map((l) => {

@@ -71,6 +71,8 @@ export function ConversasReais() {
                       <img
                         src={c.imagem}
                         alt={c.titulo}
+                        width={c.largura}
+                        height={c.altura}
                         loading="lazy"
                         onError={() => setSemImagem((atual) => [...atual, c.id])}
                         /* contain: proporções diferentes entre os prints, então

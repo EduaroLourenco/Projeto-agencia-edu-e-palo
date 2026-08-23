@@ -36,7 +36,7 @@ export function About() {
               href={AGENCIA.instagram}
               target="_blank"
               rel="noreferrer"
-              className="flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-white/5 px-3.5 py-2 text-xs font-semibold text-white/60 transition-colors hover:border-white/20 hover:text-white"
+              className="flex min-h-[44px] items-center gap-1.5 rounded-full border border-white/[0.08] bg-white/5 px-4 text-xs font-semibold text-white/60 transition-colors hover:border-white/20 hover:text-white"
             >
               <Globe size={13} />
               Instagram
@@ -45,7 +45,7 @@ export function About() {
               href={AGENCIA.linkedin}
               target="_blank"
               rel="noreferrer"
-              className="flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-white/5 px-3.5 py-2 text-xs font-semibold text-white/60 transition-colors hover:border-white/20 hover:text-white"
+              className="flex min-h-[44px] items-center gap-1.5 rounded-full border border-white/[0.08] bg-white/5 px-4 text-xs font-semibold text-white/60 transition-colors hover:border-white/20 hover:text-white"
             >
               <ExternalLink size={13} />
               LinkedIn
@@ -76,7 +76,7 @@ export function About() {
                     href={pessoa.linkedin}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex items-center gap-1.5 border-t border-white/8 pt-4 text-[11px] font-semibold text-white/45 transition-colors hover:text-white"
+                    className="-mb-2 flex min-h-[44px] items-center gap-1.5 border-t border-white/8 pt-4 text-[11px] font-semibold text-white/45 transition-colors hover:text-white"
                   >
                     <ExternalLink size={12} />
                     LinkedIn

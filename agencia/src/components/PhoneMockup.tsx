@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { ShoppingBag, Tag, ArrowRight } from "lucide-react";
 import { VIDEO_DEMO, POSTER_DEMO } from "../data/content";
 
@@ -7,6 +8,46 @@ import { VIDEO_DEMO, POSTER_DEMO } from "../data/content";
  * O vídeo fica só num lugar da página pra não tocar duplicado.
  */
 export function PhoneMockup({ comVideo = false }: { comVideo?: boolean }) {
+  const ref = useRef<HTMLVideoElement>(null);
+  // O vídeo só ganha `src` quando chega perto da tela. Com `autoPlay` no
+  // HTML, o navegador ignora o preload e baixa 1,3 MB no carregamento,
+  // competindo com o texto por banda — caro em 4G ruim, e desperdiçado
+  // pra quem nem rolou até ele.
+  const [carregar, setCarregar] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || !comVideo) return;
+
+    // Sem IntersectionObserver (navegador antigo): carrega e pronto.
+    if (typeof IntersectionObserver === "undefined") {
+      setCarregar(true);
+      return;
+    }
+
+    const obs = new IntersectionObserver(
+      ([entrada]) => {
+        if (entrada.isIntersecting) {
+          setCarregar(true);
+          obs.disconnect();
+        }
+      },
+      // Começa a buscar um pouco antes de aparecer, pra já estar tocando
+      // quando o visitante chegar nele.
+      { rootMargin: "300px" },
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [comVideo]);
+
+  // Respeita quem pediu menos movimento no sistema.
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || !carregar) return;
+    const menosMovimento = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (!menosMovimento) el.play().catch(() => {});
+  }, [carregar]);
+
   if (comVideo && VIDEO_DEMO) {
     // Estreito no celular pra caber na primeira tela junto com o texto e o
     // seletor de setor; volta ao tamanho cheio a partir do desktop.
@@ -15,16 +56,18 @@ export function PhoneMockup({ comVideo = false }: { comVideo?: boolean }) {
         <div className="absolute -inset-6 -z-10 rounded-[3rem] bg-violet-500/20 blur-3xl" />
         <div className="rounded-[2.5rem] border border-white/[0.08] bg-surface-2 p-3 shadow-2xl shadow-black/60">
           {/* poster: um frame real do catálogo. Sem ele, quem entra numa
-              conexão lenta vê um retângulo preto na primeira tela — logo
+              conexão lenta vê um retângulo preto na primeira tela, logo
               onde a prova precisa aparecer. */}
           <video
-            src={VIDEO_DEMO}
+            ref={ref}
+            src={carregar ? VIDEO_DEMO : undefined}
             poster={POSTER_DEMO}
-            autoPlay
+            width={384}
+            height={832}
             muted
             loop
             playsInline
-            preload="metadata"
+            preload="none"
             aria-label="Demonstração do catálogo digital funcionando"
             className="aspect-[384/832] w-full rounded-[1.75rem] bg-ink object-cover"
           />

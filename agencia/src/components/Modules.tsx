@@ -117,7 +117,7 @@ export function Modules() {
                   <p className="mt-2 flex-1 text-sm leading-relaxed text-white/55">{m.resumo}</p>
                   <button
                     onClick={() => setAberto(m)}
-                    className={`mt-5 flex items-center gap-1.5 self-start text-sm font-bold ${cor.text}`}
+                    className={`-mb-2 mt-3 flex min-h-[44px] items-center gap-1.5 self-start text-sm font-bold ${cor.text}`}
                   >
                     Saiba mais
                     <ArrowRight size={14} />
