@@ -11,8 +11,9 @@ import { ContactCTA } from "../components/ContactCTA";
 
 /**
  * Ordem = funil. Antes o visitante passava por ~8 telas de prova antes de
- * descobrir o que a gente vende. Agora: ele se reconhece (Setores), vê a
- * oferta (Módulos) e só então recebe a prova de que funciona.
+ * descobrir o que a gente vende. Agora ele se reconhece já no Hero (o
+ * seletor de setor mora lá), vê a oferta em Módulos e só então recebe a
+ * prova de que funciona — case, projetos e conversas reais.
  */
 export function HomePage() {
   return (
