@@ -51,7 +51,7 @@ function ModalModulo({ modulo, onClose }: { modulo: Modulo; onClose: () => void 
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="max-h-[85vh] w-full overflow-y-auto rounded-t-3xl border border-white/10 bg-surface p-7 sm:max-w-lg sm:rounded-3xl"
+        className="max-h-[85vh] w-full overflow-y-auto rounded-t-3xl border border-white/[0.08] bg-surface p-7 sm:max-w-lg sm:rounded-2xl"
       >
         <div className="flex items-start justify-between gap-4">
           <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${cor.bg} ${cor.text}`}>
@@ -67,7 +67,7 @@ function ModalModulo({ modulo, onClose }: { modulo: Modulo; onClose: () => void 
         </div>
         <h3 className="mt-4 font-display text-xl font-bold text-white">{modulo.titulo}</h3>
         <p className="mt-2 text-sm leading-relaxed text-white/60">{modulo.resumo}</p>
-        <ul className="mt-5 flex flex-col gap-2.5 border-t border-white/10 pt-5">
+        <ul className="mt-5 flex flex-col gap-2.5 border-t border-white/[0.08] pt-5">
           {modulo.itens.map((item) => (
             <li key={item} className="flex items-start gap-2.5 text-sm text-white/75">
               <Check size={15} className={`mt-0.5 shrink-0 ${cor.text}`} />
@@ -85,12 +85,12 @@ export function Modules() {
   const [aberto, setAberto] = useState<Modulo | null>(null);
 
   return (
-    <section id="modulos" className="relative py-24 sm:py-32">
+    <section id="modulos" className="relative py-16 sm:py-28">
       <div className="mx-auto max-w-6xl px-5">
         <Reveal>
           <p className="text-xs font-bold uppercase tracking-widest text-violet-400">O que oferecemos</p>
           <h2 className="mt-3 max-w-2xl font-display text-3xl font-extrabold tracking-tight sm:text-4xl">
-            Tudo dividido em módulos — contrate o que resolve seu problema agora.
+            Contrate o módulo que resolve o seu problema agora.
           </h2>
           <p className="mt-4 max-w-xl text-white/55">
             Nada de pacote fechado genérico. Cada módulo pode ser contratado sozinho ou combinado com os
@@ -105,7 +105,7 @@ export function Modules() {
               return (
                 <article
                   key={m.id}
-                  className={`flex h-full w-[82%] shrink-0 snap-center flex-col rounded-3xl border border-white/10 bg-surface p-6 transition-all hover:shadow-xl sm:w-[46%] lg:w-[31%] ${cor.ring}`}
+                  className={`flex h-full w-[82%] shrink-0 snap-center flex-col rounded-2xl border border-white/[0.08] bg-surface p-6 transition-all hover:shadow-xl sm:w-[46%] lg:w-[31%] ${cor.ring}`}
                 >
                   <div className="flex items-start justify-between">
                     <span className={`flex h-11 w-11 items-center justify-center rounded-xl ${cor.bg} ${cor.text}`}>
@@ -135,7 +135,7 @@ export function Modules() {
           <div className="mt-14 flex justify-center">
             <Link
               to="/servicos"
-              className="flex items-center gap-2 rounded-full border border-white/15 px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-white/5"
+              className="flex items-center gap-2 rounded-full border border-white/[0.12] px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-white/5"
             >
               Ver todos os serviços
               <ArrowRight size={16} />

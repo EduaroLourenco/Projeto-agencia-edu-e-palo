@@ -4,7 +4,7 @@ import { Globe, ExternalLink, MapPin } from "lucide-react";
 
 export function About() {
   return (
-    <section id="quem-somos" className="relative border-y border-white/5 bg-surface/40 py-24 sm:py-32">
+    <section id="quem-somos" className="relative border-y border-white/5 bg-surface/40 py-16 sm:py-28">
       <div className="mx-auto max-w-6xl px-5">
         {/* Texto no topo e as pessoas embaixo: com três blocos, a coluna
             lateral que servia pra dois viraria uma pilha comprida. */}
@@ -16,8 +16,8 @@ export function About() {
           <p className="mt-5 text-white/60">
             Um time que juntou engenharia de software, finanças e gestão de pessoas pra resolver um
             problema específico: quem vende muito bem no boca a boca, mas trava na hora de escalar
-            online. Cada projeto passa pelas três mãos — código e operação, números e margem,
-            atendimento e time. O que chega pra você é um sistema pensado do código ao caixa.
+            online. Cada projeto passa pelas três mãos: código e operação, números e margem,
+            atendimento e time.
           </p>
 
           <div className="mt-7 flex flex-wrap items-center gap-3">
@@ -25,7 +25,7 @@ export function About() {
               <MapPin size={12} />
               Goiânia, GO
             </span>
-            <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold text-white/50">
+            <span className="rounded-full border border-white/[0.08] bg-white/5 px-3 py-1.5 text-xs font-semibold text-white/50">
               Atendemos presencial e remoto
             </span>
           </div>
@@ -36,7 +36,7 @@ export function About() {
               href={AGENCIA.instagram}
               target="_blank"
               rel="noreferrer"
-              className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3.5 py-2 text-xs font-semibold text-white/60 transition-colors hover:border-white/20 hover:text-white"
+              className="flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-white/5 px-3.5 py-2 text-xs font-semibold text-white/60 transition-colors hover:border-white/20 hover:text-white"
             >
               <Globe size={13} />
               Instagram
@@ -45,7 +45,7 @@ export function About() {
               href={AGENCIA.linkedin}
               target="_blank"
               rel="noreferrer"
-              className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3.5 py-2 text-xs font-semibold text-white/60 transition-colors hover:border-white/20 hover:text-white"
+              className="flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-white/5 px-3.5 py-2 text-xs font-semibold text-white/60 transition-colors hover:border-white/20 hover:text-white"
             >
               <ExternalLink size={13} />
               LinkedIn
@@ -56,10 +56,10 @@ export function About() {
         <div className="mt-14 grid grid-cols-1 gap-5 md:grid-cols-3">
           {TIME.map((pessoa, i) => (
             <Reveal key={pessoa.iniciais} delay={0.08 + i * 0.07} className="h-full">
-              <div className="flex h-full flex-col gap-4 rounded-3xl border border-white/10 bg-surface p-6 transition-colors hover:border-white/20">
+              <div className="flex h-full flex-col gap-4 rounded-2xl border border-white/[0.08] bg-surface p-6 transition-colors hover:border-white/20">
                 <div className="flex items-center gap-4">
                   <span
-                    className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br ${pessoa.cor} font-display text-xl font-extrabold text-ink`}
+                    className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-white/[0.08] bg-white/[0.04] font-display text-lg font-bold text-white/80"
                   >
                     {pessoa.iniciais}
                   </span>

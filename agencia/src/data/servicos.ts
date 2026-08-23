@@ -29,7 +29,7 @@ export const CATEGORIAS_SERVICOS: CategoriaServicos[] = [
         icone: "search-check",
         titulo: "Diagnóstico de causa-raiz (atraso e cancelamento)",
         resumo:
-          "Cruzamos dado de logística com o marketplace pra achar exatamente onde o pedido trava — separação, transportadora, prazo do vendedor ou o próprio cliente — em vez de ficar no chute.",
+          "Cruzamos dado de logística com o marketplace pra achar exatamente onde o pedido trava: separação, transportadora, prazo do vendedor ou o próprio cliente, em vez de ficar no chute.",
         itens: [
           "Mapeamento do funil do pedido até a entrega",
           "Cruzamento de dados de logística com o marketplace",
@@ -53,7 +53,7 @@ export const CATEGORIAS_SERVICOS: CategoriaServicos[] = [
         icone: "refresh-cw",
         titulo: "Reconciliação de estoque ERP x Marketplace",
         resumo:
-          "Comparamos o estoque do seu sistema com o que está publicado em cada canal pra evitar vender produto que não existe fisicamente — e a punição que vem junto disso.",
+          "Comparamos o estoque do seu sistema com o que está publicado em cada canal pra evitar vender produto que não existe fisicamente e a punição que vem junto disso.",
         itens: [
           "Conferência automática entre ERP e anúncios ativos",
           "Alerta de divergência antes que vire cancelamento",
@@ -65,7 +65,7 @@ export const CATEGORIAS_SERVICOS: CategoriaServicos[] = [
         icone: "bar-chart-3",
         titulo: "Curva ABC + plano de campanha",
         resumo:
-          "Classificamos o catálogo pelo que realmente traz resultado e montamos um plano de campanha pra investir onde tem retorno — em vez de promover tudo do mesmo jeito.",
+          "Classificamos o catálogo pelo que realmente traz resultado e montamos um plano de campanha pra investir onde tem retorno, em vez de promover tudo do mesmo jeito.",
         itens: [
           "Classificação ABC por faturamento e margem",
           "Plano de campanha priorizado por produto",
@@ -77,7 +77,7 @@ export const CATEGORIAS_SERVICOS: CategoriaServicos[] = [
         icone: "users-round",
         titulo: "Segmentação RFM (comportamento do cliente)",
         resumo:
-          "Analisamos recência, frequência e valor de compra pra identificar quem é cliente fiel, quem sumiu e quem só compra na promoção — e o que fazer com cada grupo.",
+          "Analisamos recência, frequência e valor de compra pra identificar quem é cliente fiel, quem sumiu e quem só compra na promoção e o que fazer com cada grupo.",
         itens: [
           "Segmentação da base por comportamento de compra",
           "Identificação de clientes em risco de churn",
@@ -89,7 +89,7 @@ export const CATEGORIAS_SERVICOS: CategoriaServicos[] = [
         icone: "calendar-check",
         titulo: "Calendário de campanha com antes/depois",
         resumo:
-          "Planejamos o calendário promocional do ano e medimos o resultado de cada ação com número real — pra saber se a campanha vendeu ou só deu desconto.",
+          "Planejamos o calendário promocional do ano e medimos o resultado de cada ação com número real, pra saber se a campanha vendeu ou só deu desconto.",
         itens: [
           "Calendário de campanhas alinhado às datas do setor",
           "Comparativo de performance antes/depois de cada ação",
@@ -109,7 +109,7 @@ export const CATEGORIAS_SERVICOS: CategoriaServicos[] = [
         icone: "rocket",
         titulo: "Pacote de lançamento de produto",
         resumo:
-          "Antes de lançar, mapeamos a concorrência, definimos o posicionamento e montamos um plano de 60 dias — com meta clara em cada etapa.",
+          "Antes de lançar, mapeamos a concorrência, definimos o posicionamento e montamos um plano de 60 dias, com meta clara em cada etapa.",
         itens: [
           "Análise de concorrência e precificação de mercado",
           "Definição de posicionamento e proposta de valor",
@@ -121,7 +121,7 @@ export const CATEGORIAS_SERVICOS: CategoriaServicos[] = [
         icone: "palette",
         titulo: "Infraestrutura de marca pros anúncios",
         resumo:
-          "Padronizamos foto, copy e identidade visual de todos os SKUs do catálogo, pra loja parecer uma marca de verdade — não uma coleção de anúncios soltos.",
+          "Padronizamos foto, copy e identidade visual de todos os SKUs do catálogo, pra loja parecer uma marca de verdade, não uma coleção de anúncios soltos.",
         itens: [
           "Diretrizes de foto, copy e layout de anúncio",
           "Padronização aplicada em todo o catálogo",
@@ -133,7 +133,7 @@ export const CATEGORIAS_SERVICOS: CategoriaServicos[] = [
         icone: "shield-check",
         titulo: "Auditoria de compliance de anúncio",
         resumo:
-          "Conferimos se cada anúncio está dentro das regras do marketplace e da legislação — Inmetro, ficha técnica, informação obrigatória — pra evitar denúncia e bloqueio.",
+          "Conferimos se cada anúncio está dentro das regras do marketplace e da legislação:Inmetro, ficha técnica, informação obrigatória, pra evitar denúncia e bloqueio.",
         itens: [
           "Checklist de conformidade por categoria de produto",
           "Identificação de anúncio em risco de bloqueio",
@@ -153,7 +153,7 @@ export const CATEGORIAS_SERVICOS: CategoriaServicos[] = [
         icone: "bot",
         titulo: "Automação de SAC e atendimento",
         resumo:
-          "Montamos um fluxo automático pra dúvida e reclamação repetitiva — status de pedido, troca, prazo — sem precisar de alguém respondendo a mesma coisa o dia inteiro.",
+          "Montamos um fluxo automático pra dúvida e reclamação repetitiva: status de pedido, troca, prazo, sem precisar de alguém respondendo a mesma coisa o dia inteiro.",
         itens: [
           "Mapeamento das dúvidas e reclamações mais frequentes",
           "Fluxo automático de resposta e triagem",
@@ -165,7 +165,7 @@ export const CATEGORIAS_SERVICOS: CategoriaServicos[] = [
         icone: "line-chart",
         titulo: "Auditoria + funil de GA4",
         resumo:
-          "Configuramos e interpretamos o Google Analytics 4 pra mostrar de onde vem a venda de verdade — não só visita, o caminho inteiro até o pedido confirmado.",
+          "Configuramos e interpretamos o Google Analytics 4 pra mostrar de onde vem a venda de verdade, não só visita, o caminho inteiro até o pedido confirmado.",
         itens: [
           "Configuração de evento e funil de conversão",
           "Auditoria do que já existe, corrigindo o que está errado",
@@ -197,7 +197,7 @@ export const CATEGORIAS_SERVICOS: CategoriaServicos[] = [
         icone: "plug-zap",
         titulo: "Integração automática ERP x Marketplace (API)",
         resumo:
-          "Conectamos seu ERP direto com os marketplaces via API, pra estoque, preço e pedido atualizarem sozinhos — fim da planilha manual e do erro de digitação.",
+          "Conectamos seu ERP direto com os marketplaces via API, pra estoque, preço e pedido atualizarem sozinhos. Fim da planilha manual e do erro de digitação.",
         itens: [
           "Integração via API entre ERP e marketplaces",
           "Sincronização automática de estoque e preço",
@@ -209,7 +209,7 @@ export const CATEGORIAS_SERVICOS: CategoriaServicos[] = [
         icone: "monitor-smartphone",
         titulo: "Painel BI web (substitui Excel)",
         resumo:
-          "Uma versão web do seu dashboard de gestão — vários acessando ao mesmo tempo, dado atualizado sozinho, sem depender de planilha que só uma pessoa sabe mexer.",
+          "Uma versão web do seu dashboard de gestão: vários acessando ao mesmo tempo, dado atualizado sozinho, sem depender de planilha que só uma pessoa sabe mexer.",
         itens: [
           "Painel web multiusuário com controle de acesso",
           "Atualização automática de dado",
@@ -233,7 +233,7 @@ export const CATEGORIAS_SERVICOS: CategoriaServicos[] = [
         icone: "radar",
         titulo: "Monitor de métricas via API do Mercado Livre",
         resumo:
-          "Puxamos dado direto da API do Mercado Livre — venda, reputação, anúncio — sem precisar exportar relatório na mão toda semana.",
+          "Puxamos dado direto da API do Mercado Livre: venda, reputação, anúncio, sem precisar exportar relatório na mão toda semana.",
         itens: [
           "Integração direta com a API do Mercado Livre",
           "Venda, reputação e anúncio em tempo real",
@@ -245,7 +245,7 @@ export const CATEGORIAS_SERVICOS: CategoriaServicos[] = [
         icone: "calendar-check",
         titulo: "SaaS de agendamento multissetorial",
         resumo:
-          "Sistema de agendamento pronto pra revender — salão, clínica, oficina, estúdio — com sua marca, implantação rápida, sem construir do zero.",
+          "Sistema de agendamento pronto pra revender: salão, clínica, oficina e estúdio, com sua marca, implantação rápida, sem construir do zero.",
         itens: [
           "Sistema de agendamento white-label por setor",
           "Implantação rápida com sua marca aplicada",
@@ -257,7 +257,7 @@ export const CATEGORIAS_SERVICOS: CategoriaServicos[] = [
         icone: "file-text",
         titulo: "Micro-SaaS de documentos",
         resumo:
-          "Gerador de recibo, declaração ou contrato simples, por assinatura mensal — resolve uma dor específica sem virar um sistema gigante e caro.",
+          "Gerador de recibo, declaração ou contrato simples, por assinatura mensal. Resolve uma dor específica sem virar um sistema gigante e caro.",
         itens: [
           "Geração automática de documento recorrente",
           "Modelo de assinatura mensal de baixo custo",
@@ -293,7 +293,7 @@ export const CATEGORIAS_SERVICOS: CategoriaServicos[] = [
         icone: "shopping-cart",
         titulo: "Plataforma de E-commerce e Loja Virtual",
         resumo:
-          "Construção da loja própria em si — catálogo completo, responsiva e otimizada pra venda, com SEO e checkout fluido. Complementa a estratégia de marketplaces com um canal que é 100% seu.",
+          "Construção da loja própria em si: catálogo completo, responsiva e otimizada pra venda, com SEO e checkout fluido. Complementa a estratégia de marketplaces com um canal que é 100% seu.",
         itens: [
           "Catálogo de produtos completo e responsivo",
           "SEO técnico e checkout otimizado pra conversão",
@@ -305,7 +305,7 @@ export const CATEGORIAS_SERVICOS: CategoriaServicos[] = [
         icone: "network",
         titulo: "Integração de APIs e Sistemas (ERP/CRM)",
         resumo:
-          "Conecta o site ou sistema do cliente com o que já existe por fora: gateway de pagamento, emissão de nota fiscal, ERP local e meios de envio — tudo conversando entre si.",
+          "Conecta o site ou sistema do cliente com o que já existe por fora: gateway de pagamento, emissão de nota fiscal, ERP local e meios de envio, tudo conversando entre si.",
         itens: [
           "Integração com gateways de pagamento e emissão de NF",
           "Conexão com ERP/CRM já usado pelo negócio",
@@ -317,7 +317,7 @@ export const CATEGORIAS_SERVICOS: CategoriaServicos[] = [
         icone: "gauge",
         titulo: "Website Institucional High-Performance",
         resumo:
-          "Site moderno e otimizado pra posicionamento de marca, captação de lead B2B/B2C e apresentação de catálogo industrial — pensado pra carregar rápido e converter visita em contato.",
+          "Site moderno e otimizado pra posicionamento de marca, captação de lead B2B/B2C e apresentação de catálogo industrial, pensado pra carregar rápido e converter visita em contato.",
         itens: [
           "Performance e SEO técnico desde a estrutura",
           "Captação de lead com formulário qualificado",
@@ -329,7 +329,7 @@ export const CATEGORIAS_SERVICOS: CategoriaServicos[] = [
         icone: "app-window",
         titulo: "Aplicação Web Sob Medida (SaaS)",
         resumo:
-          "Quando o gargalo é específico e nenhum sistema pronto resolve — controle interno de insumo, agendamento com regra própria, portal de fornecedor — construímos a aplicação exata pra esse problema.",
+          "Quando o gargalo é específico e nenhum sistema pronto resolve: controle interno de insumo, agendamento com regra própria, portal de fornecedor, construímos a aplicação exata pra esse problema.",
         itens: [
           "Levantamento do gargalo específico da operação",
           "Aplicação construída sob medida, não adaptada de template",
@@ -341,7 +341,7 @@ export const CATEGORIAS_SERVICOS: CategoriaServicos[] = [
         icone: "server-cog",
         titulo: "Manutenção, Hospedagem e Segurança",
         resumo:
-          "Pacote contínuo de suporte técnico, otimização de velocidade, gestão da infraestrutura em nuvem e proteção de dados — pra o site ou sistema não virar problema depois que vai pro ar.",
+          "Pacote contínuo de suporte técnico, otimização de velocidade, gestão da infraestrutura em nuvem e proteção de dados, pra o site ou sistema não virar problema depois que vai pro ar.",
         itens: [
           "Suporte técnico contínuo pós-lançamento",
           "Otimização de velocidade e gestão de infraestrutura em nuvem",
@@ -353,7 +353,7 @@ export const CATEGORIAS_SERVICOS: CategoriaServicos[] = [
   {
     id: "financas-controladoria",
     titulo: "Finanças & Controladoria",
-    descricao: "Pra saber, com número na mão, quanto sobra no fim do mês — e por quê.",
+    descricao: "Pra saber, com número na mão, quanto sobra no fim do mês e por quê.",
     cor: "blue",
     servicos: [
       {
@@ -361,7 +361,7 @@ export const CATEGORIAS_SERVICOS: CategoriaServicos[] = [
         icone: "pie-chart",
         titulo: "Dashboard de Indicadores Financeiros (BI)",
         resumo:
-          "Margem de lucro, DRE simplificado, ticket médio, faturamento por canal e projeção de receita — tudo em tempo real, num painel só, sem esperar o fim do mês pra saber como foi.",
+          "Margem de lucro, DRE simplificado, ticket médio, faturamento por canal e projeção de receita. Tudo em tempo real, num painel só, sem esperar o fim do mês pra saber como foi.",
         itens: [
           "DRE simplificado e margem de lucro em tempo real",
           "Faturamento por canal e ticket médio",
@@ -373,7 +373,7 @@ export const CATEGORIAS_SERVICOS: CategoriaServicos[] = [
         icone: "receipt",
         titulo: "Automação de Faturamento e Cobrança",
         resumo:
-          "Emissão automática de nota fiscal (NF-e/NFS-e), geração de Pix e boleto, e régua de cobrança pra inadimplente — sem alguém tendo que lembrar de fazer isso manualmente.",
+          "Emissão automática de nota fiscal (NF-e/NFS-e), geração de Pix e boleto, e régua de cobrança pra inadimplente, sem alguém tendo que lembrar de fazer isso manualmente.",
         itens: [
           "Emissão automática de NF-e/NFS-e",
           "Geração de Pix e boleto integrada à venda",
@@ -385,7 +385,7 @@ export const CATEGORIAS_SERVICOS: CategoriaServicos[] = [
         icone: "landmark",
         titulo: "Controle de Contas a Pagar e a Receber",
         resumo:
-          "Gestão centralizada com alerta de vencimento, fluxo de caixa diário e mensal, e categorização por centro de custo — pra nada vencer sem ninguém perceber.",
+          "Gestão centralizada com alerta de vencimento, fluxo de caixa diário e mensal, e categorização por centro de custo, pra nada vencer sem ninguém perceber.",
         itens: [
           "Alertas de vencimento automáticos",
           "Fluxo de caixa diário e mensal",
@@ -409,7 +409,7 @@ export const CATEGORIAS_SERVICOS: CategoriaServicos[] = [
         icone: "percent",
         titulo: "Precificação e Calculadora de Margem",
         resumo:
-          "Simula custo de produção ou aquisição (CMV), despesa operacional e imposto, pra você definir a margem de lucro ideal antes de colocar o preço na etiqueta — não depois.",
+          "Simula custo de produção ou aquisição (CMV), despesa operacional e imposto, pra você definir a margem de lucro ideal antes de colocar o preço na etiqueta, não depois.",
         itens: [
           "Simulação de CMV e despesa operacional",
           "Cálculo de imposto embutido no preço final",
@@ -421,7 +421,7 @@ export const CATEGORIAS_SERVICOS: CategoriaServicos[] = [
         icone: "split",
         titulo: "Cálculo de Comissão e Split de Pagamento",
         resumo:
-          "Automatiza a divisão de receita entre vendedor, representante comercial ou parceiro, com suporte a gateway de pagamento com split automático — sem planilha de rateio no fim do mês.",
+          "Automatiza a divisão de receita entre vendedor, representante comercial ou parceiro, com suporte a gateway de pagamento com split automático, sem planilha de rateio no fim do mês.",
         itens: [
           "Divisão automática entre vendedores, representantes e parceiros",
           "Suporte a gateway de pagamento com split automático",
@@ -433,7 +433,7 @@ export const CATEGORIAS_SERVICOS: CategoriaServicos[] = [
         icone: "trending-up",
         titulo: "Relatório e Projeção de Fluxo de Caixa",
         resumo:
-          "Análise de ponto de equilíbrio (breakeven), simulação de cenário futuro e controle de custo fixo versus variável — pra decisão de investimento sair do feeling e entrar na planilha certa.",
+          "Análise de ponto de equilíbrio (breakeven), simulação de cenário futuro e controle de custo fixo versus variável, pra decisão de investimento sair do feeling e entrar na planilha certa.",
         itens: [
           "Análise de ponto de equilíbrio (breakeven)",
           "Simulação de cenários futuros de receita e custo",
@@ -445,7 +445,7 @@ export const CATEGORIAS_SERVICOS: CategoriaServicos[] = [
   {
     id: "ticket-menor",
     titulo: "Ticket Menor & Volume",
-    descricao: "Projeto enxuto, entrega rápida — pra testar antes de investir em algo maior.",
+    descricao: "Projeto enxuto, entrega rápida, pra testar antes de investir em algo maior.",
     cor: "pink",
     servicos: [
       {
@@ -453,7 +453,7 @@ export const CATEGORIAS_SERVICOS: CategoriaServicos[] = [
         icone: "calculator",
         titulo: "Ferramenta web sob medida",
         resumo:
-          "Calculadora, formulário ou gerador simples que resolve uma tarefa manual repetitiva do seu time — escopo enxuto, ticket menor, resultado imediato.",
+          "Calculadora, formulário ou gerador simples que resolve uma tarefa manual repetitiva do seu time, escopo enxuto, ticket menor, resultado imediato.",
         itens: [
           "Escopo enxuto focado numa única tarefa",
           "Entrega rápida, sem processo longo de projeto",
@@ -465,7 +465,7 @@ export const CATEGORIAS_SERVICOS: CategoriaServicos[] = [
         icone: "store",
         titulo: "Catálogo digital + landing page pra loja local",
         resumo:
-          "Presença digital básica pra quem ainda não tem nada online — catálogo com foto e preço, contato direto, publicado em poucos dias.",
+          "Presença digital básica pra quem ainda não tem nada online, catálogo com foto e preço, contato direto, publicado em poucos dias.",
         itens: [
           "Catálogo digital com foto, preço e categoria",
           "Landing page com contato direto pelo WhatsApp",
@@ -482,23 +482,23 @@ export const RESUMOS_SERVICOS: Record<string, string> = {
   "comercio-whatsapp":
     "Substitui o grupo de WhatsApp bagunçado por uma vitrine profissional: o cliente monta o próprio pedido, vê o preço certo e a mensagem final já chega organizada pro lojista, sem ida e volta.",
   "sites-sistemas":
-    "Não é template disfarçado de sistema: mapeamos o seu processo real e construímos exatamente o que ele precisa — do site institucional ao painel interno que sua equipe usa todo dia.",
+    "Não é template disfarçado de sistema: mapeamos o seu processo real e construímos exatamente o que ele precisa, do site institucional ao painel interno que sua equipe usa todo dia.",
   "marketing-digital":
     "Tráfego, redes sociais e identidade visual trabalhando juntos com uma meta clara: converter, não só aparecer. Cada peça de conteúdo nasce pensando em quem vai comprar.",
   "marketplace-ecommerce":
-    "Do primeiro anúncio à operação madura: colocamos sua loja pra vender nos canais certos e estruturamos a rotina — estoque, precificação, atendimento — pra sustentar o crescimento.",
+    "Do primeiro anúncio à operação madura: colocamos sua loja pra vender nos canais certos e estruturamos a rotina, estoque, precificação, atendimento, pra sustentar o crescimento.",
   financas:
-    "Conectamos a operação do dia a dia — venda, OS, faturamento — aos números que realmente importam: quanto entra, quanto sai, e onde está a margem que ninguém está vendo.",
+    "Conectamos a operação do dia a dia, venda, OS, faturamento, aos números que realmente importam: quanto entra, quanto sai, e onde está a margem que ninguém está vendo.",
   "consultoria-automacao":
-    "A gente entra no processo, encontra o gargalo que consome seu tempo e constrói a automação certa — sem prometer robô milagroso, só o que realmente resolve.",
+    "A gente entra no processo, encontra o gargalo que consome seu tempo e constrói a automação certa, sem prometer robô milagroso, só o que realmente resolve.",
   "vida-noturna":
-    "Portaria e reserva sem fila de papel: lista VIP, mapa de lounge e check-in digital, feitos pra funcionar no ritmo — e no barulho — de uma casa noturna cheia.",
+    "Portaria e reserva sem fila de papel: lista VIP, mapa de lounge e check-in digital, feitos pra funcionar no ritmo e no barulho, de uma casa noturna cheia.",
   agendamento:
-    "Seu cliente agenda sozinho, você para de responder 'que horas tem vaga' o dia inteiro — e ainda ganha um histórico organizado de quem passou pelo seu negócio.",
+    "Seu cliente agenda sozinho, você para de responder 'que horas tem vaga' o dia inteiro e ainda ganha um histórico organizado de quem passou pelo seu negócio.",
   alimentacao:
     "Cardápio, carrinho e frete calculado por CEP, sem repassar 20-30% pro aplicativo de entrega. A venda continua sua, do pedido ao pagamento.",
   "logistica-44":
-    "Rastreamento de fardo por excursão ou transportadora, com notificação automática — pra lojista e revendedor pararem de se perguntar onde está a mercadoria.",
+    "Rastreamento de fardo por excursão ou transportadora, com notificação automática, pra lojista e revendedor pararem de se perguntar onde está a mercadoria.",
 };
 
 /* ------------------------------------------------------------------ */
@@ -563,7 +563,7 @@ export const GRUPOS_SERVICOS: GrupoServicos[] = [
   {
     id: "financas",
     nome: "Finanças e controladoria",
-    promessa: "Saber, com número na mão, quanto sobra no fim do mês — e por quê.",
+    promessa: "Saber, com número na mão, quanto sobra no fim do mês e por quê.",
     icone: "wallet",
     servicos: [
       "financas",

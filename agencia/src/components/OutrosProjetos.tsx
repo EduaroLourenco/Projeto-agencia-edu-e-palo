@@ -13,7 +13,7 @@ const SLIDES: Slide[] = [
   {
     src: "/cases/memo/01-dashboard.png",
     titulo: "Dashboard Operacional",
-    descricao: "Capacidade da oficina, OS concluídas, status geral e OTs por técnico — tudo em tempo real.",
+    descricao: "Capacidade da oficina, OS concluídas, status geral e OTs por técnico, em tempo real.",
     tipo: "desktop",
   },
   {
@@ -25,7 +25,7 @@ const SLIDES: Slide[] = [
   {
     src: "/cases/memo/03-funil-orcamentos.png",
     titulo: "Funil de Orçamentos",
-    descricao: "Pipeline de orçamento por status — do 'aguardando aprovação' ao fechamento.",
+    descricao: "Pipeline de orçamento por status, do 'aguardando aprovação' ao fechamento.",
     tipo: "desktop",
   },
   {
@@ -91,8 +91,7 @@ export function OutrosProjetos() {
   }
 
   return (
-    <section id="outros-projetos" className="relative py-24 sm:py-32">
-      <div className="glow-blue pointer-events-none absolute right-0 top-1/4 h-[400px] w-[400px] translate-x-1/2 rounded-full opacity-50" />
+    <section id="outros-projetos" className="relative py-16 sm:py-28">
 
       <div className="relative mx-auto max-w-6xl px-5">
         <Reveal className="text-center">
@@ -101,8 +100,8 @@ export function OutrosProjetos() {
             Cada sistema, construído do zero pra operação real de um cliente.
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-white/55">
-            Um exemplo: sistema completo de gestão de Ordens de Serviço pra uma assistência técnica —
-            do diagnóstico ao faturamento, no computador do administrador e no celular do técnico.
+            Sistema completo de gestão de Ordens de Serviço pra uma assistência técnica: do
+            diagnóstico ao faturamento, no computador do administrador e no celular do técnico.
           </p>
         </Reveal>
 
@@ -113,7 +112,7 @@ export function OutrosProjetos() {
               onClick={() => mover(-1)}
               disabled={ativo === 0}
               aria-label="Projeto anterior"
-              className="absolute left-0 top-1/2 z-10 hidden h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-surface text-white transition-opacity hover:bg-white/10 disabled:pointer-events-none disabled:opacity-0 md:flex"
+              className="absolute left-0 top-1/2 z-10 hidden h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/[0.12] bg-surface text-white transition-opacity hover:bg-white/10 disabled:pointer-events-none disabled:opacity-0 md:flex"
             >
               <ChevronLeft size={18} />
             </button>
@@ -121,7 +120,7 @@ export function OutrosProjetos() {
               onClick={() => mover(1)}
               disabled={ativo === SLIDES.length - 1}
               aria-label="Próximo projeto"
-              className="absolute right-0 top-1/2 z-10 hidden h-11 w-11 translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-surface text-white transition-opacity hover:bg-white/10 disabled:pointer-events-none disabled:opacity-0 md:flex"
+              className="absolute right-0 top-1/2 z-10 hidden h-11 w-11 translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/[0.12] bg-surface text-white transition-opacity hover:bg-white/10 disabled:pointer-events-none disabled:opacity-0 md:flex"
             >
               <ChevronRight size={18} />
             </button>
@@ -141,7 +140,7 @@ export function OutrosProjetos() {
                       : "w-full sm:w-[85%] lg:w-[70%]"
                   }`}
                 >
-                  <div className="overflow-hidden rounded-2xl border border-white/10 bg-surface-2 shadow-2xl shadow-black/50">
+                  <div className="overflow-hidden rounded-2xl border border-white/[0.08] bg-surface-2 shadow-2xl shadow-black/50">
                     {/* Barra de janela */}
                     <div className="flex items-center gap-1.5 border-b border-white/5 px-4 py-2.5">
                       <span className="h-2 w-2 rounded-full bg-white/15" />

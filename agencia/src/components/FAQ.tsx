@@ -8,7 +8,7 @@ export function FAQ() {
   const [aberta, setAberta] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="relative border-y border-white/5 bg-surface/40 py-24 sm:py-32">
+    <section id="faq" className="relative border-y border-white/5 bg-surface/40 py-16 sm:py-28">
       <div className="mx-auto max-w-3xl px-5">
         <Reveal className="text-center">
           <p className="text-xs font-bold uppercase tracking-widest text-violet-400">Perguntas frequentes</p>
@@ -17,7 +17,7 @@ export function FAQ() {
           </h2>
         </Reveal>
 
-        <div className="mt-12 flex flex-col divide-y divide-white/10 border-y border-white/10">
+        <div className="mt-12 flex flex-col divide-y divide-white/10 border-y border-white/[0.08]">
           {PERGUNTAS.map((item, i) => {
             const estaAberta = aberta === i;
             return (

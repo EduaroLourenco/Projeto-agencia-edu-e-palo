@@ -34,8 +34,7 @@ export function ConversasReais() {
   }, [ampliada]);
 
   return (
-    <section id="conversas" className="relative overflow-hidden py-24 sm:py-32">
-      <div className="glow-blue pointer-events-none absolute right-0 top-1/4 h-[380px] w-[380px] translate-x-1/2 rounded-full opacity-50" />
+    <section id="conversas" className="relative overflow-hidden py-16 sm:py-28">
 
       <div className="relative mx-auto max-w-6xl px-5">
         <Reveal>
@@ -60,14 +59,14 @@ export function ConversasReais() {
             return (
               <div key={c.id} className="w-[80%] shrink-0 snap-center sm:w-[46%] lg:w-[31%]">
                 <figure
-                  className={`flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-surface transition-colors ${cor.borda}`}
+                  className={`flex h-full flex-col overflow-hidden rounded-2xl border border-white/[0.08] bg-surface transition-colors ${cor.borda}`}
                 >
                   {temImagem ? (
                     <button
                       type="button"
                       onClick={() => setAmpliada(c)}
                       aria-label={`Ampliar print: ${c.titulo}`}
-                      className="group relative block aspect-[3/4] w-full overflow-hidden border-b border-white/10 bg-ink/60"
+                      className="group relative block aspect-[3/4] w-full overflow-hidden border-b border-white/[0.08] bg-ink/60"
                     >
                       <img
                         src={c.imagem}
@@ -84,7 +83,7 @@ export function ConversasReais() {
                       </span>
                     </button>
                   ) : (
-                    <div className="flex aspect-[3/4] w-full flex-col items-center justify-center gap-2 border-b border-dashed border-white/15 bg-white/[0.02] px-4 text-center">
+                    <div className="flex aspect-[3/4] w-full flex-col items-center justify-center gap-2 border-b border-dashed border-white/[0.12] bg-white/[0.02] px-4 text-center">
                       <ImageIcon size={22} className="text-white/50" />
                       <p className="text-xs font-semibold text-white/55">Espaço reservado para o print</p>
                       <p className="text-[11px] leading-relaxed text-white/50">
