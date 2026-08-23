@@ -1,5 +1,5 @@
 import { ShoppingBag, Tag, ArrowRight } from "lucide-react";
-import { VIDEO_DEMO } from "../data/content";
+import { VIDEO_DEMO, POSTER_DEMO } from "../data/content";
 
 /**
  * Mockup de celular. Com `comVideo`, mostra o vídeo real do catálogo
@@ -8,16 +8,23 @@ import { VIDEO_DEMO } from "../data/content";
  */
 export function PhoneMockup({ comVideo = false }: { comVideo?: boolean }) {
   if (comVideo && VIDEO_DEMO) {
+    // Estreito no celular pra caber na primeira tela junto com o texto e o
+    // seletor de setor; volta ao tamanho cheio a partir do desktop.
     return (
-      <div className="relative mx-auto w-[260px] select-none sm:w-[300px]">
+      <div className="relative mx-auto w-[178px] select-none sm:w-[240px] lg:w-[300px]">
         <div className="absolute -inset-6 -z-10 rounded-[3rem] bg-violet-500/20 blur-3xl" />
         <div className="rounded-[2.5rem] border border-white/10 bg-surface-2 p-3 shadow-2xl shadow-black/60">
+          {/* poster: um frame real do catálogo. Sem ele, quem entra numa
+              conexão lenta vê um retângulo preto na primeira tela — logo
+              onde a prova precisa aparecer. */}
           <video
             src={VIDEO_DEMO}
+            poster={POSTER_DEMO}
             autoPlay
             muted
             loop
             playsInline
+            preload="metadata"
             aria-label="Demonstração do catálogo digital funcionando"
             className="aspect-[384/832] w-full rounded-[1.75rem] bg-ink object-cover"
           />

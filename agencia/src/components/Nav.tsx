@@ -9,7 +9,6 @@ import { rastrear } from "../lib/analytics";
 // Todos os links, na ordem real das seções na página — usados pro cálculo
 // de seção ativa e pro menu mobile (lista única, sem agrupar).
 const LINKS = [
-  { href: "/#setores", label: "Seu setor" },
   { href: "/#modulos", label: "Módulos" },
   { href: "/servicos", label: "Serviços" },
   { href: "/#case", label: "Case" },
@@ -23,7 +22,7 @@ const LINKS = [
 
 // No desktop, só os 5 mais importantes ficam sempre visíveis — o resto
 // entra num "Mais" pra não virar uma fileira quebrando linha.
-const PRINCIPAIS_HREFS = ["/#setores", "/#modulos", "/servicos", "/#case", "/#quem-somos"];
+const PRINCIPAIS_HREFS = ["/#modulos", "/servicos", "/#case", "/#quem-somos"];
 const LINKS_PRINCIPAIS = LINKS.filter((l) => PRINCIPAIS_HREFS.includes(l.href));
 const LINKS_MAIS = LINKS.filter((l) => !PRINCIPAIS_HREFS.includes(l.href));
 

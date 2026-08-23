@@ -1,5 +1,4 @@
 import { Hero } from "../components/Hero";
-import { Nichos } from "../components/Nichos";
 import { Modules } from "../components/Modules";
 import { CaseStudy } from "../components/CaseStudy";
 import { OutrosProjetos } from "../components/OutrosProjetos";
@@ -19,7 +18,6 @@ export function HomePage() {
   return (
     <>
       <Hero />
-      <Nichos />
       <Modules />
       <CaseStudy />
       <OutrosProjetos />

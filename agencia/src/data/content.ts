@@ -19,6 +19,8 @@ export const ZAP_COMMERCE_URL =
 
 // Vídeo real do catálogo funcionando, usado no mockup de celular do case.
 export const VIDEO_DEMO = "/demo-catalogo.mp4";
+// Primeiro quadro do vídeo, mostrado enquanto ele carrega.
+export const POSTER_DEMO = "/demo-poster.jpg";
 
 export function linkWhatsApp(mensagem = AGENCIA.mensagemPadrao) {
   return `https://wa.me/${AGENCIA.whatsapp}?text=${encodeURIComponent(mensagem)}`;
