@@ -462,20 +462,21 @@ export const CONVERSAS: Conversa[] = [
   },
 ];
 
-export interface MembroDupla {
+export interface MembroTime {
   iniciais: string;
   nome: string;
   papel: string;
   bio: string;
   cor: string;
+  /** Vazio quando a pessoa ainda não tem perfil pra divulgar. */
   linkedin: string;
 }
 
-export const DUPLA: MembroDupla[] = [
+export const TIME: MembroTime[] = [
   {
     iniciais: "E",
-    nome: "Eduardo Luiz Lourenço",
-    papel: "E-commerce & Engenharia de Software",
+    nome: "Eduardo Lourenço",
+    papel: "Engenheiro de Software · Consultor de E-commerce e Marketplace",
     bio: "Coordenador de e-commerce com estrada em marketplaces (Mercado Livre, Amazon, Shopee) e formação em Engenharia de Software. Cuida das integrações de ERP/API, da automação da operação e do desenvolvimento — com foco em rentabilidade e escala.",
     cor: "from-violet-500 to-cyan-400",
     linkedin:
@@ -488,5 +489,13 @@ export const DUPLA: MembroDupla[] = [
     bio: "Gestão financeira e administrativa com foco em Business Intelligence: fluxo de caixa, conciliação bancária e dashboards que mostram onde está a margem. Em formação em Engenharia de Software, une dados, tecnologia e finanças.",
     cor: "from-cyan-400 to-lime-400",
     linkedin: "https://www.linkedin.com/in/palomadias028",
+  },
+  {
+    iniciais: "B",
+    nome: "Bárbara Prata",
+    papel: "Liderança, Gestão de Equipes & Experiência do Cliente",
+    bio: "Formação em Gestão de Pessoas e Experiência do Cliente, com experiência em atendimento, acompanhamento de indicadores e desenvolvimento de equipes. Foco em atendimento proativo, eficaz e humanizado, sempre buscando resultado e melhoria contínua.",
+    cor: "from-lime-400 to-violet-500",
+    linkedin: "",
   },
 ];
