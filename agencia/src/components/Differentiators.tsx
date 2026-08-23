@@ -13,7 +13,7 @@ export function Differentiators() {
         <Reveal>
           <p className="text-xs font-bold uppercase tracking-widest text-violet-400">Por que a gente</p>
           <h2 className="mt-3 max-w-2xl font-display text-2xl font-extrabold tracking-tight sm:text-3xl">
-            Diferente de agência que empurra pacote fechado.
+            Quem constrói o seu sistema é quem conversa com você.
           </h2>
         </Reveal>
 

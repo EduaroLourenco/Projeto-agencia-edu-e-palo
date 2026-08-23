@@ -216,28 +216,31 @@ export interface Diferencial {
   destaque?: boolean;
 }
 
+/* Cada item aqui precisa dizer algo que um concorrente NÃO possa copiar
+   sem mentir. "Processo transparente" e "suporte de verdade" toda agência
+   promete — então não diferenciam nada e viram enchimento. */
 export const DIFERENCIAIS: Diferencial[] = [
   {
-    titulo: "Um time, todos os módulos",
+    titulo: "Uma dupla, não uma esteira",
     descricao:
-      "Sistema, site, marketing e automação com a mesma dupla — tudo conversando entre si, sem uma agência pra cada pedaço.",
+      "Sistema, site, finanças e automação saem das mesmas duas pessoas. Você não vira gerente de projeto coordenando três fornecedores que se apontam quando algo quebra.",
     destaque: true,
   },
   {
-    titulo: "Processo transparente",
-    descricao: "Prazo e investimento fechados antes de começar.",
+    titulo: "Preço fechado antes da primeira linha",
+    descricao: "Escopo, prazo e valor definidos na proposta. Sem “isso aí vai dar um extra”.",
   },
   {
-    titulo: "Sem contrato eterno",
-    descricao: "Contrate o que resolve agora. Quando não fizer mais sentido, para.",
+    titulo: "Sem fidelidade de 12 meses",
+    descricao: "Contrate o módulo que resolve agora. Se parar de fazer sentido, para — sem multa.",
   },
   {
-    titulo: "Feito sob medida",
-    descricao: "Nasce do seu processo real, não de um template pronto.",
+    titulo: "Construído do zero, não configurado",
+    descricao: "Os sistemas em Projetos nasceram da operação de um cliente real — nenhum é template.",
   },
   {
-    titulo: "Suporte de verdade",
-    descricao: "Depois do ar, a gente continua por perto.",
+    titulo: "Ajuste depois do ar é combinado",
+    descricao: "Correção e melhoria entram no acordo desde o início, não viram cobrança surpresa.",
   },
 ];
 
