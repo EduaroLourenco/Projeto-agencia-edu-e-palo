@@ -129,7 +129,7 @@ export function Nichos() {
     <section id="setores" className="relative py-16 sm:py-20">
       <div className="mx-auto max-w-4xl px-5">
         <Reveal className="text-center">
-          <p className="text-xs font-bold uppercase tracking-widest text-cyan-400">Setores atendidos</p>
+          <p className="text-xs font-bold uppercase tracking-widest text-blue-400">Setores atendidos</p>
           <h2 className="mt-3 font-display text-2xl font-extrabold tracking-tight sm:text-3xl">
             Qual desses é o seu negócio?
           </h2>

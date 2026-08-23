@@ -15,7 +15,7 @@ const RESULTADOS = [
 export function CaseStudy() {
   return (
     <section id="case" className="relative overflow-hidden py-24 sm:py-32">
-      <div className="glow-lime pointer-events-none absolute left-0 top-1/3 h-[400px] w-[400px] -translate-x-1/2 rounded-full opacity-60" />
+      <div className="glow-pink pointer-events-none absolute left-0 top-1/3 h-[400px] w-[400px] -translate-x-1/2 rounded-full opacity-60" />
 
       <div className="relative mx-auto max-w-6xl px-5">
         <div className="grid grid-cols-1 items-center gap-14 lg:grid-cols-2">
@@ -25,7 +25,9 @@ export function CaseStudy() {
 
           <div className="order-1 lg:order-2">
             <Reveal>
-              <p className="text-xs font-bold uppercase tracking-widest text-violet-400">Case ao vivo</p>
+              {/* Case é prova → azul. O rosa fica só no botão, pra ele ser
+                  a única coisa "clicável" que o olho encontra na seção. */}
+              <p className="text-xs font-bold uppercase tracking-widest text-blue-400">Case ao vivo</p>
               <h2 className="mt-3 font-display text-3xl font-extrabold tracking-tight sm:text-4xl">
                 Zap-Commerce: de mensagem perdida no grupo a sistema no ar.
               </h2>
@@ -41,7 +43,7 @@ export function CaseStudy() {
               <ul className="mt-7 flex flex-col gap-3">
                 {RESULTADOS.map((r) => (
                   <li key={r} className="flex items-start gap-2.5 text-sm text-white/75">
-                    <Check size={16} className="mt-0.5 shrink-0 text-lime-400" />
+                    <Check size={16} className="mt-0.5 shrink-0 text-blue-400" />
                     {r}
                   </li>
                 ))}
@@ -54,7 +56,7 @@ export function CaseStudy() {
                 target="_blank"
                 rel="noreferrer"
                 onClick={() => rastrear("case_zapcommerce_click")}
-                className="mt-8 inline-flex items-center gap-2 rounded-full bg-lime-400 px-7 py-3.5 text-sm font-bold text-ink shadow-lg shadow-lime-400/25 transition-transform hover:scale-105"
+                className="mt-8 inline-flex items-center gap-2 rounded-full bg-pink-400 px-7 py-3.5 text-sm font-bold text-ink shadow-lg shadow-pink-400/25 transition-transform hover:scale-105"
               >
                 Clique aqui e confira o case ao vivo
                 <ArrowUpRight size={18} />

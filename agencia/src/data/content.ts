@@ -30,7 +30,7 @@ export interface Modulo {
   titulo: string;
   resumo: string;
   itens: string[];
-  cor: "violet" | "lime" | "cyan";
+  cor: "violet" | "pink" | "blue";
 }
 
 export const MODULOS: Modulo[] = [
@@ -60,7 +60,7 @@ export const MODULOS: Modulo[] = [
       "Integrações com as ferramentas que você já usa",
       "Manutenção e evolução contínua depois do lançamento",
     ],
-    cor: "cyan",
+    cor: "blue",
   },
   {
     id: "marketing-digital",
@@ -74,7 +74,7 @@ export const MODULOS: Modulo[] = [
       "Branding e identidade visual",
       "Conteúdo pensado pra conversão, não só pra alcance",
     ],
-    cor: "lime",
+    cor: "pink",
   },
   {
     id: "marketplace-ecommerce",
@@ -102,7 +102,7 @@ export const MODULOS: Modulo[] = [
       "Relatórios gerenciais e dashboards para análise de lucratividade, desempenho e tomada de decisão",
       "Controle de contas a receber e a pagar para acompanhamento da saúde financeira do negócio",
     ],
-    cor: "cyan",
+    cor: "blue",
   },
   {
     id: "consultoria-automacao",
@@ -116,7 +116,7 @@ export const MODULOS: Modulo[] = [
       "Integração entre as ferramentas do seu negócio",
       "Treinamento da equipe pra usar o que foi construído",
     ],
-    cor: "lime",
+    cor: "pink",
   },
   {
     id: "vida-noturna",
@@ -130,7 +130,7 @@ export const MODULOS: Modulo[] = [
       "Check-in pelo celular do segurança (câmera + validação)",
       "Exportação da lista para planilha ou WhatsApp",
     ],
-    cor: "cyan",
+    cor: "blue",
   },
   {
     id: "agendamento",
@@ -144,7 +144,7 @@ export const MODULOS: Modulo[] = [
       "Integração gratuita com Google Agenda",
       "Confirmação automática via WhatsApp para o cliente",
     ],
-    cor: "lime",
+    cor: "pink",
   },
   {
     id: "alimentacao",
@@ -172,7 +172,7 @@ export const MODULOS: Modulo[] = [
       "Painel de manifestos de carga para guias de excursão",
       "Notificação automática via WhatsApp a cada status",
     ],
-    cor: "cyan",
+    cor: "blue",
   },
 ];
 
@@ -424,7 +424,7 @@ export interface Conversa {
   etiqueta: string;
   titulo: string;
   descricao: string;
-  cor: "violet" | "lime" | "cyan";
+  cor: "violet" | "pink" | "blue";
   /**
    * Print em `public/conversas/`. Vazio ("") mostra o espaço reservado.
    * Antes de publicar: borre número, foto e nome completo de quem aparece.
@@ -439,7 +439,7 @@ export const CONVERSAS: Conversa[] = [
     titulo: "“Chegou mais 4 pedidos sem eu precisar calcular nada”",
     descricao:
       "Cliente na manhã seguinte ao site entrar no ar. Antes ele perdia cerca de 2 pedidos por semana porque o pessoal mandava foto solta e ele esquecia de responder.",
-    cor: "lime",
+    cor: "pink",
     imagem: "/conversas/cliente-aprovando.jpg",
   },
   {
@@ -457,7 +457,7 @@ export const CONVERSAS: Conversa[] = [
     titulo: "Pedido do catálogo chegando pronto",
     descricao:
       "O cliente monta a sacola no catálogo e o pedido cai formatado no WhatsApp do lojista — itens, regra de preço, total e forma de entrega. Sem digitar nada.",
-    cor: "cyan",
+    cor: "blue",
     imagem: "/conversas/pedido-formatado.jpg",
   },
 ];
@@ -478,7 +478,7 @@ export const TIME: MembroTime[] = [
     nome: "Eduardo Lourenço",
     papel: "Engenheiro de Software · Consultor de E-commerce e Marketplace",
     bio: "Coordenador de e-commerce com estrada em marketplaces (Mercado Livre, Amazon, Shopee) e formação em Engenharia de Software. Cuida das integrações de ERP/API, da automação da operação e do desenvolvimento — com foco em rentabilidade e escala.",
-    cor: "from-violet-500 to-cyan-400",
+    cor: "from-violet-500 to-blue-400",
     linkedin:
       "https://www.linkedin.com/in/eduardo-louren%C3%A7o-7a5739260?utm_source=share_via&utm_content=profile&utm_medium=member_ios",
   },
@@ -487,7 +487,7 @@ export const TIME: MembroTime[] = [
     nome: "Paloma Amaral",
     papel: "Finanças & Business Intelligence",
     bio: "Gestão financeira e administrativa com foco em Business Intelligence: fluxo de caixa, conciliação bancária e dashboards que mostram onde está a margem. Em formação em Engenharia de Software, une dados, tecnologia e finanças.",
-    cor: "from-cyan-400 to-lime-400",
+    cor: "from-blue-400 to-pink-400",
     linkedin: "https://www.linkedin.com/in/palomadias028",
   },
   {
@@ -495,7 +495,7 @@ export const TIME: MembroTime[] = [
     nome: "Bárbara Prata",
     papel: "Liderança, Gestão de Equipes & Experiência do Cliente",
     bio: "Formação em Gestão de Pessoas e Experiência do Cliente, com experiência em atendimento, acompanhamento de indicadores e desenvolvimento de equipes. Foco em atendimento proativo, eficaz e humanizado, sempre buscando resultado e melhoria contínua.",
-    cor: "from-lime-400 to-violet-500",
+    cor: "from-pink-400 to-violet-500",
     linkedin: "",
   },
 ];

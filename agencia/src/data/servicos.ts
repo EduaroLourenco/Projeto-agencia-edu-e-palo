@@ -13,7 +13,7 @@ export interface CategoriaServicos {
   id: string;
   titulo: string;
   descricao: string;
-  cor: "violet" | "lime" | "cyan";
+  cor: "violet" | "pink" | "blue";
   servicos: ServicoExtra[];
 }
 
@@ -102,7 +102,7 @@ export const CATEGORIAS_SERVICOS: CategoriaServicos[] = [
     id: "lancamento-marca",
     titulo: "Lançamento & Marca",
     descricao: "Pra produto novo não nascer perdido no meio do catálogo.",
-    cor: "lime",
+    cor: "pink",
     servicos: [
       {
         id: "pacote-lancamento",
@@ -146,7 +146,7 @@ export const CATEGORIAS_SERVICOS: CategoriaServicos[] = [
     id: "automacao-atendimento",
     titulo: "Automação & Atendimento",
     descricao: "Pra tirar o time do repetitivo e deixar o dado provar o resultado.",
-    cor: "cyan",
+    cor: "blue",
     servicos: [
       {
         id: "automacao-sac",
@@ -354,7 +354,7 @@ export const CATEGORIAS_SERVICOS: CategoriaServicos[] = [
     id: "financas-controladoria",
     titulo: "Finanças & Controladoria",
     descricao: "Pra saber, com número na mão, quanto sobra no fim do mês — e por quê.",
-    cor: "cyan",
+    cor: "blue",
     servicos: [
       {
         id: "dashboard-financeiro-bi",
@@ -446,7 +446,7 @@ export const CATEGORIAS_SERVICOS: CategoriaServicos[] = [
     id: "ticket-menor",
     titulo: "Ticket Menor & Volume",
     descricao: "Projeto enxuto, entrega rápida — pra testar antes de investir em algo maior.",
-    cor: "lime",
+    cor: "pink",
     servicos: [
       {
         id: "ferramenta-sob-medida",

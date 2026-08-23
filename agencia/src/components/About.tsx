@@ -9,7 +9,7 @@ export function About() {
         {/* Texto no topo e as pessoas embaixo: com três blocos, a coluna
             lateral que servia pra dois viraria uma pilha comprida. */}
         <Reveal className="max-w-2xl">
-          <p className="text-xs font-bold uppercase tracking-widest text-cyan-400">Quem somos</p>
+          <p className="text-xs font-bold uppercase tracking-widest text-blue-400">Quem somos</p>
           <h2 className="mt-3 font-display text-3xl font-extrabold tracking-tight sm:text-4xl">
             Três frentes, um objetivo: sistema que funciona e resultado que aparece.
           </h2>
@@ -21,7 +21,7 @@ export function About() {
           </p>
 
           <div className="mt-7 flex flex-wrap items-center gap-3">
-            <span className="flex items-center gap-1.5 rounded-full border border-yellow-400/20 bg-yellow-400/8 px-3 py-1.5 text-xs font-semibold text-yellow-300">
+            <span className="flex items-center gap-1.5 rounded-full border border-blue-400/25 bg-blue-500/10 px-3 py-1.5 text-xs font-semibold text-blue-300">
               <MapPin size={12} />
               Goiânia, GO
             </span>

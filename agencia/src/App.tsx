@@ -11,7 +11,8 @@ import { ServicosPage } from "./pages/ServicosPage";
 
 export default function App() {
   return (
-    <div className="relative min-h-screen bg-ink text-white">
+    /* pb no celular: espaço pro conteúdo não terminar atrás da barra de ação inferior. */
+    <div className="relative min-h-screen bg-ink pb-20 text-white lg:pb-0">
       <div className="noise-overlay pointer-events-none fixed inset-0 z-[70]" />
       <ScrollProgress />
       <CursorGlow />

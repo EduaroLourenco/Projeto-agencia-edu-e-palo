@@ -4,22 +4,29 @@
   --font-display: "Sora", ui-sans-serif, system-ui, sans-serif;
   --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
 
-  --color-ink: #05050a;
-  --color-surface: #0e0e17;
-  --color-surface-2: #15151f;
-  --color-line: #23232f;
+  /* Base quase preta, com fundo levemente arroxeado em vez de cinza puro:
+     é o que faz rosa, roxo e azul acenderem em cima. */
+  --color-ink: #07040e;
+  --color-surface: #100a1d;
+  --color-surface-2: #1a1130;
+  --color-line: #2b1f47;
 
-  --color-violet-300: #c4b5fd;
-  --color-violet-400: #a78bfa;
-  --color-violet-500: #8b5cf6;
-  --color-violet-600: #7c3aed;
-  --color-violet-700: #6d28d9;
+  /* ROXO = o que a Sigma é e vende (serviços, setores, processo). */
+  --color-violet-300: #d8b4fe;
+  --color-violet-400: #c084fc;
+  --color-violet-500: #a855f7;
+  --color-violet-600: #9333ea;
+  --color-violet-700: #7e22ce;
 
-  --color-lime-300: #d9f99d;
-  --color-lime-400: #bef264;
-  --color-lime-500: #a3e635;
+  /* ROSA = ação. Reservado pro que é clicável de verdade. */
+  --color-pink-300: #f9a8d4;
+  --color-pink-400: #f472b6;
+  --color-pink-500: #ec4899;
 
-  --color-cyan-400: #22d3ee;
+  /* AZUL = prova e resultado (cases, projetos, conversas reais). */
+  --color-blue-300: #93c5fd;
+  --color-blue-400: #60a5fa;
+  --color-blue-500: #3b82f6;
 }
 
 * {
@@ -69,7 +76,7 @@ body {
 
 @layer utilities {
   .text-gradient {
-    background: linear-gradient(100deg, #fff 20%, var(--color-violet-300) 55%, var(--color-lime-300) 90%);
+    background: linear-gradient(100deg, #fff 20%, var(--color-violet-300) 55%, var(--color-pink-300) 90%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -84,14 +91,15 @@ body {
   }
 }
 
+/* Halos de fundo — mesmos matizes dos tokens acima (roxo/rosa/azul). */
 .glow-violet {
-  background: radial-gradient(circle, rgba(139, 92, 246, 0.55) 0%, rgba(139, 92, 246, 0) 70%);
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.5) 0%, rgba(168, 85, 247, 0) 70%);
 }
-.glow-lime {
-  background: radial-gradient(circle, rgba(163, 230, 53, 0.35) 0%, rgba(163, 230, 53, 0) 70%);
+.glow-pink {
+  background: radial-gradient(circle, rgba(236, 72, 153, 0.38) 0%, rgba(236, 72, 153, 0) 70%);
 }
-.glow-cyan {
-  background: radial-gradient(circle, rgba(34, 211, 238, 0.35) 0%, rgba(34, 211, 238, 0) 70%);
+.glow-blue {
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.35) 0%, rgba(59, 130, 246, 0) 70%);
 }
 
 .grid-fade {

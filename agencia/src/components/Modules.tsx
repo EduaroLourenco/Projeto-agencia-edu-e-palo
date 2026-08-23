@@ -34,10 +34,12 @@ const ICONES: Record<string, ReactNode> = {
   "logistica-44": <Truck size={22} />,
 };
 
+// Módulo é oferta → roxo, sempre. Rosa fica reservado pra ação (o CTA do
+// WhatsApp): usar rosa aqui, num card decorativo, dilui o sinal de clique.
 const CORES: Record<Modulo["cor"], { bg: string; text: string; ring: string }> = {
   violet: { bg: "bg-violet-500/15", text: "text-violet-300", ring: "hover:border-violet-500/40" },
-  lime: { bg: "bg-lime-500/15", text: "text-lime-300", ring: "hover:border-lime-500/40" },
-  cyan: { bg: "bg-cyan-400/15", text: "text-cyan-300", ring: "hover:border-cyan-400/40" },
+  pink: { bg: "bg-violet-500/15", text: "text-violet-300", ring: "hover:border-violet-500/40" },
+  blue: { bg: "bg-violet-500/15", text: "text-violet-300", ring: "hover:border-violet-500/40" },
 };
 
 function ModalModulo({ modulo, onClose }: { modulo: Modulo; onClose: () => void }) {
