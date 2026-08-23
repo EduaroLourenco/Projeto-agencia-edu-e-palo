@@ -11,7 +11,7 @@
  * funções falham em silêncio e o site funciona igual.
  */
 
-const CHAVE = "sigma:setor";
+const CHAVE = "bepa:setor";
 
 export function lembrarSetor(id: string) {
   try {

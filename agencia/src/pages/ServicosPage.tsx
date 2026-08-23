@@ -284,9 +284,9 @@ export function ServicosPage() {
   const [aberto, setAberto] = useState<GrupoResolvido | null>(null);
 
   useEffect(() => {
-    document.title = "Serviços — Sigma | Consultoria, Assessoria e Serviços";
+    document.title = "Serviços — BEPA | Consultoria, Assessoria e Serviços";
     return () => {
-      document.title = "Sigma — Consultoria, Assessoria e Serviços | Sistemas, sites e marketing digital";
+      document.title = "BEPA — Consultoria, Assessoria e Serviços | Sistemas, sites e marketing digital";
     };
   }, []);
 

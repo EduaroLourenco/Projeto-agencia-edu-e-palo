@@ -1,17 +1,14 @@
 import { Link } from "react-router-dom";
 import { Globe, ExternalLink, MessageCircle, Share2 } from "lucide-react";
-import { AGENCIA, linkWhatsApp } from "../data/content";
+import { AGENCIA, TIME, linkWhatsApp } from "../data/content";
 import { rastrear } from "../lib/analytics";
 
 const LINKS_NAV = [
-  { href: "/#modulos", label: "Módulos" },
-  { href: "/servicos", label: "Serviços" },
-  { href: "/#case", label: "Case" },
-  { href: "/#outros-projetos", label: "Projetos" },
-  { href: "/#conversas", label: "Na prática" },
+  { href: "/#servicos", label: "Serviços" },
+  { href: "/servicos", label: "Catálogo completo" },
+  { href: "/#case", label: "Cases" },
   { href: "/#como-funciona", label: "Como funciona" },
   { href: "/#faq", label: "FAQ" },
-  { href: "/#quem-somos", label: "Quem somos" },
 ];
 
 const REDES = [
@@ -45,8 +42,8 @@ export function Footer() {
         <div className="flex flex-col gap-10 sm:flex-row sm:items-start sm:justify-between">
           {/* Logo + tagline */}
           <div className="flex flex-col gap-3">
-            <Link to="/" className="flex min-h-[44px] items-center gap-2">
-              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-blue-400 font-display text-sm font-bold text-ink shadow-lg shadow-violet-500/20">
+            <Link to="/" className="flex min-h-[44px] items-center gap-2.5">
+              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 via-pink-500 to-blue-400 font-display text-sm font-bold text-white shadow-lg shadow-violet-500/20">
                 {AGENCIA.iniciais}
               </span>
               <span className="font-display text-base font-bold text-white">{AGENCIA.nome}</span>
@@ -89,6 +86,24 @@ export function Footer() {
               </a>
             ))}
           </div>
+
+          {/* Quem somos — compacto */}
+          <div className="flex flex-col gap-3">
+            <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-white/30">Quem somos</p>
+            {TIME.map((pessoa) => (
+              <div key={pessoa.nome} className="flex items-center gap-2.5">
+                <span
+                  className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br ${pessoa.cor} font-display text-xs font-bold text-white`}
+                >
+                  {pessoa.iniciais}
+                </span>
+                <div className="min-w-0">
+                  <p className="text-sm font-medium text-white/70">{pessoa.nome}</p>
+                  <p className="truncate text-[11px] text-white/40">{pessoa.papel.split("·")[0].trim()}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Linha de copyright */}
@@ -97,7 +112,7 @@ export function Footer() {
             © {new Date().getFullYear()} {AGENCIA.nome}. Todos os direitos reservados.
           </p>
           <p className="text-[11px] text-white/20">
-            Sistemas que funcionam de verdade · Goiânia, GO
+            Tecnologia, estratégia e resultado · Goiânia, GO
           </p>
         </div>
       </div>

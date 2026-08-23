@@ -6,7 +6,7 @@
  * Cada acento tem UM significado. Usar um acento fora do papel dele não
  * é "variedade": é ruído que ensina o visitante a ignorar a cor.
  *
- *   ROXO  (violet-*)  → o que a Sigma é e vende.
+ *   ROXO  (violet-*)  → o que a BEPA é e vende.
  *                       Serviços, módulos, setores, processo, quem somos.
  *
  *   AZUL  (blue-*)    → prova e resultado.

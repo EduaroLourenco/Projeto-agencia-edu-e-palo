@@ -4,19 +4,11 @@ import { ArrowRight } from "lucide-react";
 import { linkWhatsApp } from "../data/content";
 import { PhoneMockup } from "./PhoneMockup";
 import { MagneticButton } from "./MagneticButton";
-import { SeletorSetor } from "./SeletorSetor";
 import { rastrear } from "../lib/analytics";
 
 /**
- * Primeira tela pensada pra resolver tudo sem rolagem no celular:
- * o que é (título), a prova de que funciona (vídeo real do sistema) e
- * o primeiro gesto possível (escolher o próprio setor).
- *
- * O que saiu daqui e por quê:
- * - parágrafo de 6 linhas → 2: ninguém lê um bloco denso na primeira tela;
- * - "8 módulos / 5 etapas / 100%": números que não provam nada e comiam
- *   a altura que o vídeo precisava — foram pro desktop só;
- * - CTA duplicado no celular: a barra inferior já carrega o WhatsApp fixo.
+ * Hero direto ao ponto: título, subtítulo com capacidades e CTAs.
+ * Sem seletor de setor — os ServiceCards logo abaixo cumprem esse papel.
  */
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
@@ -40,7 +32,7 @@ export function Hero() {
             transition={{ duration: 0.7 }}
             className="font-display text-[2rem] font-extrabold leading-[1.06] tracking-[-0.03em] sm:text-5xl lg:text-[3.4rem]"
           >
-            Sua empresa vendendo online em semanas, não em meses.
+            Tecnologia, estratégia e resultado para o seu negócio.
           </motion.h1>
 
           <motion.p
@@ -49,17 +41,32 @@ export function Hero() {
             transition={{ duration: 0.7, delay: 0.1 }}
             className="mt-4 max-w-lg text-[15px] leading-relaxed text-white/60 sm:mt-6 sm:text-lg"
           >
-            Catálogo digital, sistema sob medida, e-commerce, finanças e automação com IA.
-            Do código ao caixa.
+            Sistemas sob medida, e-commerce, marketplace, consultoria financeira,
+            automação com IA e marketing digital. Tudo num só lugar.
           </motion.p>
 
+          {/* Chips das macro-capacidades */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.25 }}
-            className="mt-7"
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="mt-6 flex flex-wrap gap-2"
           >
-            <SeletorSetor />
+            {[
+              "Sistemas",
+              "E-commerce",
+              "Finanças",
+              "Automação",
+              "Marketing",
+              "Consultoria",
+            ].map((cap) => (
+              <span
+                key={cap}
+                className="rounded-full border border-white/12 bg-white/5 px-3 py-1.5 text-xs font-semibold text-white/60"
+              >
+                {cap}
+              </span>
+            ))}
           </motion.div>
 
           {/* Botões só no desktop: no celular a barra inferior já tem o
@@ -81,10 +88,10 @@ export function Hero() {
               <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
             </MagneticButton>
             <a
-              href="#modulos"
+              href="#servicos"
               className="flex items-center justify-center gap-2 rounded-full border border-white/[0.12] px-7 py-3.5 text-sm font-bold text-white transition-colors hover:bg-white/5"
             >
-              Ver os módulos
+              Ver o que fazemos
             </a>
           </motion.div>
         </div>

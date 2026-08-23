@@ -1,32 +1,37 @@
 import { Hero } from "../components/Hero";
-import { Modules } from "../components/Modules";
+import { ServiceCards } from "../components/ServiceCards";
 import { CaseStudy } from "../components/CaseStudy";
-import { OutrosProjetos } from "../components/OutrosProjetos";
-import { ConversasReais } from "../components/ConversasReais";
 import { Differentiators } from "../components/Differentiators";
 import { HowItWorks } from "../components/HowItWorks";
 import { FAQ } from "../components/FAQ";
-import { About } from "../components/About";
 import { ContactCTA } from "../components/ContactCTA";
 
 /**
- * Ordem = funil. Antes o visitante passava por ~8 telas de prova antes de
- * descobrir o que a gente vende. Agora ele se reconhece já no Hero (o
- * seletor de setor mora lá), vê a oferta em Módulos e só então recebe a
- * prova de que funciona — case, projetos e conversas reais.
+ * Nova ordem: direto ao ponto.
+ *
+ * 1. Hero — título + subtítulo + CTAs
+ * 2. ServiceCards — os 6 grupos macro, em grid, logo de cara
+ * 3. Case — prova social (Zap-Commerce)
+ * 4. Diferenciais — compactos
+ * 5. Como funciona — as 5 etapas
+ * 6. FAQ
+ * 7. CTA final — formulário
+ *
+ * Seções removidas da home:
+ * - Modules (carrossel) → substituído por ServiceCards
+ * - OutrosProjetos → compacta com CaseStudy ou sai
+ * - ConversasReais → prova social secundária
+ * - About → info do time vai compacta no footer
  */
 export function HomePage() {
   return (
     <>
       <Hero />
-      <Modules />
+      <ServiceCards />
       <CaseStudy />
-      <OutrosProjetos />
-      <ConversasReais />
       <Differentiators />
       <HowItWorks />
       <FAQ />
-      <About />
       <ContactCTA />
     </>
   );

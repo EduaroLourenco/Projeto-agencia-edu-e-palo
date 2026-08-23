@@ -4,29 +4,29 @@
   --font-display: "Sora", ui-sans-serif, system-ui, sans-serif;
   --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
 
-  /* Base quase preta, com fundo levemente arroxeado em vez de cinza puro:
-     é o que faz rosa, roxo e azul acenderem em cima. */
-  --color-ink: #07040e;
-  --color-surface: #100a1d;
-  --color-surface-2: #1a1130;
-  --color-line: #2b1f47;
+  /* Base: roxo profundo quase preto — mais denso que o anterior,
+     dá um tom premium e faz as cores vibrantes se destacarem. */
+  --color-ink: #0a0514;
+  --color-surface: #130b24;
+  --color-surface-2: #1c1235;
+  --color-line: #2f1f52;
 
-  /* ROXO = o que a Sigma é e vende (serviços, setores, processo). */
-  --color-violet-300: #d8b4fe;
-  --color-violet-400: #c084fc;
-  --color-violet-500: #a855f7;
-  --color-violet-600: #9333ea;
-  --color-violet-700: #7e22ce;
+  /* ROXO = identidade BEPA — mais quente e vibrante que o padrão Tailwind. */
+  --color-violet-300: #d4a5ff;
+  --color-violet-400: #b96bfa;
+  --color-violet-500: #9b3de8;
+  --color-violet-600: #7c22c4;
+  --color-violet-700: #6318a0;
 
-  /* ROSA = ação. Reservado pro que é clicável de verdade. */
-  --color-pink-300: #f9a8d4;
-  --color-pink-400: #f472b6;
-  --color-pink-500: #ec4899;
+  /* ROSA = ação. Reservado pro que é clicável de verdade. Mais saturado. */
+  --color-pink-300: #ff9ed6;
+  --color-pink-400: #f564b8;
+  --color-pink-500: #e33da0;
 
-  /* AZUL = prova e resultado (cases, projetos, conversas reais). */
-  --color-blue-300: #93c5fd;
-  --color-blue-400: #60a5fa;
-  --color-blue-500: #3b82f6;
+  /* AZUL = prova e resultado (cases, projetos, conversas reais). Mais frio. */
+  --color-blue-300: #7bb8ff;
+  --color-blue-400: #4d9aff;
+  --color-blue-500: #2b7ef5;
 }
 
 * {
@@ -84,14 +84,7 @@ body {
   }
 }
 
-/*
- * Sem halos coloridos, texto em gradiente ou textura de ruído.
- * Eram os três efeitos que faziam a página parecer template de IA: quem
- * constrói produto de verdade tira decoração, não acrescenta. A hierarquia
- * aqui é feita por tipografia, espaço e uma linha de 1px — não por brilho.
- */
-
-/* Único elemento ambiente que sobrou: a malha técnica atrás do topo.
+/* Único elemento ambiente: a malha técnica atrás do topo.
    Discreta, estática, e sugere "engenharia" em vez de "efeito". */
 .grid-fade {
   background-image:
@@ -108,4 +101,36 @@ body {
 }
 .animate-marquee {
   animation: marquee 28s linear infinite;
+}
+
+/* Gradient border sutil para os service cards */
+.card-glow {
+  position: relative;
+}
+.card-glow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(155, 61, 232, 0.3),
+    rgba(245, 100, 184, 0.15),
+    rgba(77, 154, 255, 0.3)
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.card-glow:hover::before {
+  opacity: 1;
 }

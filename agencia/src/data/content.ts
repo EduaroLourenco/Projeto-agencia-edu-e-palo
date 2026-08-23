@@ -1,16 +1,16 @@
 // Copy de exemplo — troque à vontade. Números/nomes são placeholders.
 
 export const AGENCIA = {
-  nome: "Sigma",
-  nomeCompleto: "Sigma Consultoria, Assessoria e Serviços",
-  iniciais: "S",
+  nome: "BEPA",
+  nomeCompleto: "BEPA Consultoria, Assessoria e Serviços",
+  iniciais: "B",
   tagline: "Consultoria, Assessoria e Serviços · Goiânia",
   cidade: "Goiânia",
   whatsapp: "5516994447044",
   mensagemPadrao: "Oi! Vi o site de vocês e quero entender como posso digitalizar meu negócio.",
-  email: "contato@sigmaconsultoria.com.br",
-  instagram: "https://instagram.com/sigma.consultoria",
-  linkedin: "https://linkedin.com/company/sigma-consultoria",
+  email: "contato@bepa.com.br",
+  instagram: "https://instagram.com/bepa.consultoria",
+  linkedin: "https://linkedin.com/company/bepa-consultoria",
 };
 
 // Em produção, defina VITE_ZAP_COMMERCE_URL no .env apontando para o domínio publicado do case.
