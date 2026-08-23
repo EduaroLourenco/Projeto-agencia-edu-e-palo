@@ -4,7 +4,6 @@ import { AGENCIA, linkWhatsApp } from "../data/content";
 import { rastrear } from "../lib/analytics";
 
 const LINKS_NAV = [
-  { href: "/#setores", label: "Seu setor" },
   { href: "/#modulos", label: "Módulos" },
   { href: "/servicos", label: "Serviços" },
   { href: "/#case", label: "Case" },

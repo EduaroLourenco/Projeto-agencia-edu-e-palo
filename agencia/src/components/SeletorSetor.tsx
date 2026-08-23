@@ -18,21 +18,20 @@ import {
 } from "lucide-react";
 import type { ReactNode } from "react";
 import { NICHOS, linkWhatsApp, type Nicho } from "../data/content";
-import { Reveal } from "./Reveal";
 import { MagneticButton } from "./MagneticButton";
 import { rastrear } from "../lib/analytics";
 
 const ICONES: Record<string, ReactNode> = {
-  moda: <Shirt size={16} />,
-  distribuidoras: <Beer size={16} />,
-  estetica: <Scissors size={16} />,
-  eventos: <PartyPopper size={16} />,
-  oficinas: <Wrench size={16} />,
-  logistica: <Bus size={16} />,
-  lanchonetes: <UtensilsCrossed size={16} />,
-  saude: <HeartPulse size={16} />,
-  industrias: <Factory size={16} />,
-  petshop: <PawPrint size={16} />,
+  moda: <Shirt size={15} />,
+  distribuidoras: <Beer size={15} />,
+  estetica: <Scissors size={15} />,
+  eventos: <PartyPopper size={15} />,
+  oficinas: <Wrench size={15} />,
+  logistica: <Bus size={15} />,
+  lanchonetes: <UtensilsCrossed size={15} />,
+  saude: <HeartPulse size={15} />,
+  industrias: <Factory size={15} />,
+  petshop: <PawPrint size={15} />,
 };
 
 function PainelNicho({ nicho, onClose }: { nicho: Nicho; onClose: () => void }) {
@@ -70,16 +69,16 @@ function PainelNicho({ nicho, onClose }: { nicho: Nicho; onClose: () => void }) 
         exit={{ y: 40, opacity: 0 }}
         transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
         onClick={(e) => e.stopPropagation()}
-        className="max-h-[88vh] w-full overflow-y-auto rounded-t-3xl border border-white/10 bg-surface p-7 sm:max-w-lg sm:rounded-3xl"
+        className="max-h-[88vh] w-full overflow-y-auto rounded-t-3xl border border-white/10 bg-surface p-7 pb-[max(1.75rem,env(safe-area-inset-bottom))] sm:max-w-lg sm:rounded-3xl"
       >
         <div className="flex items-start justify-between gap-4">
-          <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-violet-500/15 text-violet-300">
+          <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-violet-500/15 text-violet-300 [&>svg]:h-5 [&>svg]:w-5">
             {ICONES[nicho.id]}
           </span>
           <button
             onClick={onClose}
             aria-label="Fechar"
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/5 text-white/60 transition-colors hover:text-white"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/5 text-white/60 transition-colors hover:text-white"
           >
             <X size={16} />
           </button>
@@ -111,7 +110,7 @@ function PainelNicho({ nicho, onClose }: { nicho: Nicho; onClose: () => void }) 
           target="_blank"
           rel="noreferrer"
           onClick={() => rastrear("whatsapp_click", { origem: "nicho", nicho: nicho.id })}
-          className="mt-7 flex w-full items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-bold text-ink"
+          className="mt-7 flex w-full items-center justify-center gap-2 rounded-full bg-pink-400 px-6 py-3.5 text-sm font-bold text-ink"
         >
           Quero isso no meu negócio
           <ArrowRight size={15} />
@@ -122,52 +121,44 @@ function PainelNicho({ nicho, onClose }: { nicho: Nicho; onClose: () => void }) 
   );
 }
 
-export function Nichos() {
+/**
+ * Seletor de setor. Vive dentro do hero: é o primeiro gesto que o
+ * visitante pode fazer, e o caminho mais curto entre "esse site é pra
+ * mim?" e a resposta. Rola na horizontal pra caber na primeira tela sem
+ * empurrar o resto para baixo.
+ */
+export function SeletorSetor() {
   const [escolhido, setEscolhido] = useState<Nicho | null>(null);
 
   return (
-    <section id="setores" className="relative py-16 sm:py-20">
-      <div className="mx-auto max-w-4xl px-5">
-        <Reveal className="text-center">
-          <p className="text-xs font-bold uppercase tracking-widest text-blue-400">Setores atendidos</p>
-          <h2 className="mt-3 font-display text-2xl font-extrabold tracking-tight sm:text-3xl">
-            Qual desses é o seu negócio?
-          </h2>
-          <p className="mx-auto mt-3 max-w-lg text-sm text-white/60">
-            Toque no seu setor e veja direto o que a gente resolve nele — sem precisar ler o site inteiro.
-          </p>
-        </Reveal>
+    <div>
+      <p className="text-xs font-semibold text-white/50">
+        Qual é o seu negócio? Toque e veja o que resolvemos nele.
+      </p>
 
-        {/* Estático de propósito: como agora são botões de navegação, esteira
-            animada obrigaria o visitante a perseguir o alvo com o dedo e a
-            esperar o setor dele passar. Aqui os 10 aparecem de uma vez. */}
-        <Reveal delay={0.1}>
-          <div className="mt-8 flex flex-wrap justify-center gap-2.5">
-            {NICHOS.map((nicho) => (
-              <button
-                key={nicho.id}
-                onClick={() => setEscolhido(nicho)}
-                className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-2 transition-colors hover:border-violet-400/45 hover:bg-violet-500/10 sm:gap-2 sm:px-4 sm:py-2.5"
-              >
-                <span className="text-violet-300">{ICONES[nicho.id]}</span>
-                <span className="font-display text-xs font-bold text-white/85 sm:text-sm">
-                  {nicho.nome}
-                </span>
-              </button>
-            ))}
-          </div>
-        </Reveal>
-
-        <Reveal delay={0.16}>
-          <p className="mt-6 text-center text-xs text-white/45">
-            Não achou o seu? A gente já montou sistema pra setor que não está nessa lista.
-          </p>
-        </Reveal>
+      {/* Sombra na borda direita: sem ela, um chip cortado pode parecer
+          bug de layout em vez de convite pra arrastar. */}
+      <div className="relative">
+        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-gradient-to-l from-ink to-transparent sm:hidden" />
+        <div className="no-scrollbar -mx-5 mt-3 flex snap-x gap-2 overflow-x-auto px-5 pb-1 sm:mx-0 sm:flex-wrap sm:px-0">
+          {NICHOS.map((nicho) => (
+            <button
+              key={nicho.id}
+              onClick={() => setEscolhido(nicho)}
+              className="flex shrink-0 snap-start items-center gap-1.5 rounded-full border border-white/12 bg-white/5 px-3.5 py-2.5 transition-all active:scale-95 hover:border-violet-400/50 hover:bg-violet-500/12"
+            >
+              <span className="text-violet-300">{ICONES[nicho.id]}</span>
+              <span className="whitespace-nowrap font-display text-xs font-bold text-white/85">
+                {nicho.nome}
+              </span>
+            </button>
+          ))}
+        </div>
       </div>
 
       <AnimatePresence>
         {escolhido && <PainelNicho nicho={escolhido} onClose={() => setEscolhido(null)} />}
       </AnimatePresence>
-    </section>
+    </div>
   );
 }
