@@ -13,7 +13,7 @@ export function PhoneMockup({ comVideo = false }: { comVideo?: boolean }) {
     return (
       <div className="relative mx-auto w-[178px] select-none sm:w-[240px] lg:w-[300px]">
         <div className="absolute -inset-6 -z-10 rounded-[3rem] bg-violet-500/20 blur-3xl" />
-        <div className="rounded-[2.5rem] border border-white/10 bg-surface-2 p-3 shadow-2xl shadow-black/60">
+        <div className="rounded-[2.5rem] border border-white/[0.08] bg-surface-2 p-3 shadow-2xl shadow-black/60">
           {/* poster: um frame real do catálogo. Sem ele, quem entra numa
               conexão lenta vê um retângulo preto na primeira tela — logo
               onde a prova precisa aparecer. */}
@@ -36,7 +36,7 @@ export function PhoneMockup({ comVideo = false }: { comVideo?: boolean }) {
   return (
     <div aria-hidden className="relative mx-auto w-[260px] select-none sm:w-[300px]">
       <div className="absolute -inset-6 -z-10 rounded-[3rem] bg-violet-500/20 blur-3xl" />
-      <div className="rounded-[2.5rem] border border-white/10 bg-surface-2 p-3 shadow-2xl shadow-black/60">
+      <div className="rounded-[2.5rem] border border-white/[0.08] bg-surface-2 p-3 shadow-2xl shadow-black/60">
         <div className="overflow-hidden rounded-[1.75rem] bg-ink">
           <div className="flex items-center justify-between px-4 pb-2 pt-3 text-[10px] text-white/40">
             <span>9:41</span>

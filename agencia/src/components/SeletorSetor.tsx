@@ -69,7 +69,7 @@ function PainelNicho({ nicho, onClose }: { nicho: Nicho; onClose: () => void }) 
         exit={{ y: 40, opacity: 0 }}
         transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
         onClick={(e) => e.stopPropagation()}
-        className="max-h-[88vh] w-full overflow-y-auto rounded-t-3xl border border-white/10 bg-surface p-7 pb-[max(1.75rem,env(safe-area-inset-bottom))] sm:max-w-lg sm:rounded-3xl"
+        className="max-h-[88vh] w-full overflow-y-auto rounded-t-3xl border border-white/[0.08] bg-surface p-7 pb-[max(1.75rem,env(safe-area-inset-bottom))] sm:max-w-lg sm:rounded-2xl"
       >
         <div className="flex items-start justify-between gap-4">
           <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-violet-500/15 text-violet-300 [&>svg]:h-5 [&>svg]:w-5">

@@ -9,13 +9,12 @@ const RESULTADOS = [
   "Vitrine mobile-first carregando instantaneamente, mesmo em 3G/4G",
   "Preço de atacado calculado sozinho conforme a sacola enche",
   "Pedido chega pronto e formatado no WhatsApp do lojista",
-  "Entrega por excursão, retirada ou Correios — do jeito que a região já compra",
+  "Entrega por excursão, retirada ou Correios, do jeito que a região já compra",
 ];
 
 export function CaseStudy() {
   return (
-    <section id="case" className="relative overflow-hidden py-24 sm:py-32">
-      <div className="glow-pink pointer-events-none absolute left-0 top-1/3 h-[400px] w-[400px] -translate-x-1/2 rounded-full opacity-60" />
+    <section id="case" className="relative overflow-hidden py-16 sm:py-28">
 
       <div className="relative mx-auto max-w-6xl px-5">
         <div className="grid grid-cols-1 items-center gap-14 lg:grid-cols-2">
@@ -61,7 +60,7 @@ export function CaseStudy() {
                 Clique aqui e confira o case ao vivo
                 <ArrowUpRight size={18} />
               </MagneticButton>
-              <p className="mt-3 text-xs text-white/35">Sistema 100% funcional — livre pra você navegar.</p>
+              <p className="mt-3 text-xs text-white/35">Sistema 100% funcional, livre pra você navegar.</p>
             </Reveal>
           </div>
         </div>

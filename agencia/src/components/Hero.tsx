@@ -21,25 +21,16 @@ import { rastrear } from "../lib/analytics";
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const yBlobs = useTransform(scrollYProgress, [0, 1], [0, 120]);
-  const opacityHero = useTransform(scrollYProgress, [0, 0.85], [1, 0.35]);
+  const opacityHero = useTransform(scrollYProgress, [0, 0.85], [1, 0.45]);
 
   return (
     <motion.section
       ref={ref}
       id="top"
       style={{ opacity: opacityHero }}
-      className="relative overflow-hidden pb-12 pt-24 sm:pb-20 sm:pt-40"
+      className="relative overflow-hidden pb-10 pt-20 sm:pb-16 sm:pt-36"
     >
-      <div className="grid-fade pointer-events-none absolute inset-0 top-0 h-[700px]" />
-      <motion.div
-        style={{ y: yBlobs }}
-        className="glow-violet animate-drift pointer-events-none absolute -top-40 left-1/2 h-[600px] w-[600px] -translate-x-1/2 rounded-full"
-      />
-      <motion.div
-        style={{ y: yBlobs }}
-        className="glow-pink animate-drift-slow pointer-events-none absolute -right-20 top-72 h-[380px] w-[380px] rounded-full"
-      />
+      <div className="grid-fade pointer-events-none absolute inset-0 top-0 h-[560px]" />
 
       <div className="relative mx-auto grid max-w-6xl grid-cols-1 items-center gap-10 px-5 lg:grid-cols-2 lg:gap-14">
         <div>
@@ -47,10 +38,9 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
-            className="font-display text-[2rem] font-extrabold leading-[1.06] tracking-tight sm:text-5xl lg:text-[3.4rem]"
+            className="font-display text-[2rem] font-extrabold leading-[1.06] tracking-[-0.03em] sm:text-5xl lg:text-[3.4rem]"
           >
-            Sua empresa <span className="text-gradient">vendendo online</span> em semanas, não em
-            meses.
+            Sua empresa vendendo online em semanas, não em meses.
           </motion.h1>
 
           <motion.p
@@ -59,8 +49,8 @@ export function Hero() {
             transition={{ duration: 0.7, delay: 0.1 }}
             className="mt-4 max-w-lg text-[15px] leading-relaxed text-white/60 sm:mt-6 sm:text-lg"
           >
-            Catálogo digital, sistema sob medida, e-commerce, finanças e automação com IA — do
-            código ao caixa.
+            Catálogo digital, sistema sob medida, e-commerce, finanças e automação com IA.
+            Do código ao caixa.
           </motion.p>
 
           <motion.div
@@ -92,7 +82,7 @@ export function Hero() {
             </MagneticButton>
             <a
               href="#modulos"
-              className="flex items-center justify-center gap-2 rounded-full border border-white/15 px-7 py-3.5 text-sm font-bold text-white transition-colors hover:bg-white/5"
+              className="flex items-center justify-center gap-2 rounded-full border border-white/[0.12] px-7 py-3.5 text-sm font-bold text-white transition-colors hover:bg-white/5"
             >
               Ver os módulos
             </a>
@@ -105,11 +95,9 @@ export function Hero() {
           initial={{ opacity: 0, scale: 0.92, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="mt-8 flex justify-center lg:mt-0 lg:justify-end"
+          className="mt-6 flex justify-center lg:mt-0 lg:justify-end"
         >
-          <div className="animate-float">
-            <PhoneMockup comVideo />
-          </div>
+          <PhoneMockup comVideo />
         </motion.div>
       </div>
     </motion.section>

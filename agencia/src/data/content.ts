@@ -41,7 +41,7 @@ export const MODULOS: Modulo[] = [
     numero: "01",
     titulo: "Comércio no WhatsApp",
     resumo:
-      "Catálogo digital mobile-first com calculadora de preço em tempo real e pedido pronto no WhatsApp — o mesmo motor por trás do Zap-Commerce, um dos nossos cases.",
+      "Catálogo digital mobile-first com calculadora de preço em tempo real e pedido pronto no WhatsApp. É o mesmo motor por trás do Zap-Commerce, um dos nossos cases.",
     itens: [
       "Vitrine mobile-first que carrega instantaneamente",
       "Calculadora de atacado/desconto automática",
@@ -69,7 +69,7 @@ export const MODULOS: Modulo[] = [
     numero: "03",
     titulo: "Marketing Digital",
     resumo:
-      "Presença que gera venda: redes sociais, tráfego pago e identidade visual pensados pra quem realmente compra — não só pra curtir.",
+      "Presença que gera venda: redes sociais, tráfego pago e identidade visual pensados pra quem realmente compra, não só pra curtir.",
     itens: [
       "Gestão de redes sociais com calendário e métricas",
       "Tráfego pago (Meta Ads e Google Ads)",
@@ -97,7 +97,7 @@ export const MODULOS: Modulo[] = [
     numero: "05",
     titulo: "Finanças",
     resumo:
-      "Visibilidade financeira real: conectamos a operação do dia a dia aos números que mostram se o negócio está saudável — e onde pode lucrar mais.",
+      "Visibilidade financeira real: conectamos a operação do dia a dia aos números que mostram se o negócio está saudável e onde pode lucrar mais.",
     itens: [
       "Controle de caixa com registro automatizado de entradas, saídas e fluxo diário integrado à operação",
       "Gestão de ordens de serviço (OS) e faturamento, com vínculo direto entre a execução de vendas/serviços e os relatórios financeiros",
@@ -111,7 +111,7 @@ export const MODULOS: Modulo[] = [
     numero: "06",
     titulo: "Consultoria & Automação",
     resumo:
-      "A gente entra, mapeia onde seu processo trava, e automatiza o que hoje consome seu tempo — planilha, mensagem repetida, controle manual.",
+      "A gente entra, mapeia onde seu processo trava, e automatiza o que hoje consome seu tempo: planilha, mensagem repetida, controle manual.",
     itens: [
       "Diagnóstico completo do processo atual",
       "Automação de tarefas repetitivas",
@@ -153,7 +153,7 @@ export const MODULOS: Modulo[] = [
     numero: "09",
     titulo: "Alimentação Sem Taxa de Delivery",
     resumo:
-      "Cardápio digital com carrinho e cálculo de frete por CEP — ideal para distribuidoras de bebidas e lanchonetes que querem fugir das altas taxas do iFood.",
+      "Cardápio digital com carrinho e cálculo de frete por CEP. Ideal para distribuidoras de bebidas e lanchonetes que querem fugir das altas taxas do iFood.",
     itens: [
       "Cardápio por categorias com fotos e preços",
       "Carrinho em tempo real com total atualizado",
@@ -193,7 +193,7 @@ export const ETAPAS: Etapa[] = [
   {
     numero: "02",
     titulo: "Proposta",
-    descricao: "Você recebe um plano claro: o que vai ser feito, prazo e investimento — sem letra miúda.",
+    descricao: "Você recebe um plano claro: o que vai ser feito, prazo e investimento, sem letra miúda.",
   },
   {
     numero: "03",
@@ -234,11 +234,11 @@ export const DIFERENCIAIS: Diferencial[] = [
   },
   {
     titulo: "Sem fidelidade de 12 meses",
-    descricao: "Contrate o módulo que resolve agora. Se parar de fazer sentido, para — sem multa.",
+    descricao: "Contrate o módulo que resolve agora. Se parar de fazer sentido, para, sem multa.",
   },
   {
     titulo: "Construído do zero, não configurado",
-    descricao: "Os sistemas em Projetos nasceram da operação de um cliente real — nenhum é template.",
+    descricao: "Os sistemas em Projetos nasceram da operação de um cliente real. Nenhum é template.",
   },
   {
     titulo: "Ajuste depois do ar é combinado",
@@ -255,7 +255,7 @@ export const FAQ: PerguntaFrequente[] = [
   {
     pergunta: "Quanto custa um projeto?",
     resposta:
-      "Depende do módulo e do tamanho do problema. Depois do diagnóstico, você recebe uma proposta fechada — sem surpresa depois.",
+      "Depende do módulo e do tamanho do problema. Depois do diagnóstico, você recebe uma proposta fechada, sem surpresa depois.",
   },
   {
     pergunta: "Quanto tempo leva?",
@@ -270,7 +270,7 @@ export const FAQ: PerguntaFrequente[] = [
   {
     pergunta: "Vocês atendem só o setor de moda e atacado?",
     resposta:
-      "Não — o Zap-Commerce é um case específico, mas construímos sistemas, sites e automações pra qualquer negócio que precise vender melhor online.",
+      "Não. O Zap-Commerce é um case específico, mas construímos sistemas, sites e automações pra qualquer negócio que precise vender melhor online.",
   },
   {
     pergunta: "E depois que o site ou sistema vai pro ar?",
@@ -318,7 +318,7 @@ export const NICHOS: Nicho[] = [
     id: "estetica",
     nome: "Salões & Estética",
     descricao: "Agenda cheia sem parar de atender",
-    dor: "Você para no meio do atendimento pra responder “que horas tem vaga?” — e ainda assim marca dois clientes no mesmo horário.",
+    dor: "Você para no meio do atendimento pra responder “que horas tem vaga?” e ainda assim marca dois clientes no mesmo horário.",
     entregas: [
       "Agendamento online, o cliente marca sozinho",
       "Confirmação e lembrete automáticos no WhatsApp",
@@ -366,7 +366,7 @@ export const NICHOS: Nicho[] = [
     id: "lanchonetes",
     nome: "Lanchonetes & Delivery",
     descricao: "Cardápio próprio, sem taxa de aplicativo",
-    dor: "20% a 30% do seu faturamento fica com o aplicativo de entrega — e o cliente é deles, não seu.",
+    dor: "20% a 30% do seu faturamento fica com o aplicativo de entrega e o cliente é deles, não seu.",
     entregas: [
       "Cardápio digital com carrinho e total em tempo real",
       "Cálculo de entrega por CEP e bairro",
@@ -458,7 +458,7 @@ export const CONVERSAS: Conversa[] = [
     etiqueta: "Sistema funcionando",
     titulo: "Pedido do catálogo chegando pronto",
     descricao:
-      "O cliente monta a sacola no catálogo e o pedido cai formatado no WhatsApp do lojista — itens, regra de preço, total e forma de entrega. Sem digitar nada.",
+      "O cliente monta a sacola no catálogo e o pedido cai formatado no WhatsApp do lojista: itens, regra de preço, total e forma de entrega. Sem digitar nada.",
     cor: "blue",
     imagem: "/conversas/pedido-formatado.jpg",
   },
@@ -479,7 +479,7 @@ export const TIME: MembroTime[] = [
     iniciais: "E",
     nome: "Eduardo Lourenço",
     papel: "Engenheiro de Software · Consultor de E-commerce e Marketplace",
-    bio: "Coordenador de e-commerce com estrada em marketplaces (Mercado Livre, Amazon, Shopee) e formação em Engenharia de Software. Cuida das integrações de ERP/API, da automação da operação e do desenvolvimento — com foco em rentabilidade e escala.",
+    bio: "Coordenador de e-commerce com estrada em marketplaces (Mercado Livre, Amazon, Shopee) e formação em Engenharia de Software. Cuida das integrações de ERP/API, da automação da operação e do desenvolvimento, com foco em rentabilidade e escala.",
     cor: "from-violet-500 to-blue-400",
     linkedin:
       "https://www.linkedin.com/in/eduardo-louren%C3%A7o-7a5739260?utm_source=share_via&utm_content=profile&utm_medium=member_ios",

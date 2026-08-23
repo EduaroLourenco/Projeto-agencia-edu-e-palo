@@ -3,7 +3,7 @@ import { Reveal } from "./Reveal";
 
 export function HowItWorks() {
   return (
-    <section id="como-funciona" className="relative border-y border-white/5 bg-surface/40 py-24 sm:py-32">
+    <section id="como-funciona" className="relative border-y border-white/5 bg-surface/40 py-16 sm:py-28">
       <div className="mx-auto max-w-6xl px-5">
         <Reveal>
           <p className="text-xs font-bold uppercase tracking-widest text-violet-400">Como funciona</p>

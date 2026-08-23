@@ -29,13 +29,12 @@ export function ContactCTA() {
   const pronto = nome.trim().length > 1 && setor;
 
   return (
-    <section className="relative overflow-hidden py-24 sm:py-32">
-      <div className="glow-violet animate-drift pointer-events-none absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-50" />
+    <section className="relative overflow-hidden py-16 sm:py-28">
 
       <div className="relative mx-auto max-w-5xl px-5">
         <Reveal className="text-center">
           <h2 className="font-display text-3xl font-extrabold tracking-tight sm:text-5xl">
-            Bora tirar sua ideia <span className="text-gradient">do papel</span>?
+            Bora tirar sua ideia do papel?
           </h2>
           <p className="mx-auto mt-5 max-w-lg text-white/60">
             Conta pra gente o que você vende e onde está travando. Em 2 minutos a gente já sabe se
@@ -45,7 +44,7 @@ export function ContactCTA() {
 
         {/* Formulário que gera a mensagem do WhatsApp */}
         <Reveal delay={0.15}>
-          <div className="mx-auto mt-12 max-w-xl rounded-3xl border border-white/10 bg-surface p-8">
+          <div className="mx-auto mt-12 max-w-xl rounded-2xl border border-white/[0.08] bg-surface p-8">
             <p className="mb-5 text-sm font-semibold text-white/60">Monte seu diagnóstico rápido:</p>
 
             <div className="flex flex-col gap-4">
@@ -53,13 +52,13 @@ export function ContactCTA() {
                 value={nome}
                 onChange={(e) => setNome(e.target.value)}
                 placeholder="Seu nome"
-                className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-white/30 focus:border-violet-500/50 focus:outline-none focus:ring-1 focus:ring-violet-500/30 transition-colors"
+                className="w-full rounded-xl border border-white/[0.08] bg-white/5 px-4 py-3 text-sm text-white placeholder:text-white/30 focus:border-violet-500/50 focus:outline-none focus:ring-1 focus:ring-violet-500/30 transition-colors"
               />
 
               <select
                 value={setor}
                 onChange={(e) => setSetor(e.target.value)}
-                className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white focus:border-violet-500/50 focus:outline-none focus:ring-1 focus:ring-violet-500/30 transition-colors appearance-none"
+                className="w-full rounded-xl border border-white/[0.08] bg-white/5 px-4 py-3 text-sm text-white focus:border-violet-500/50 focus:outline-none focus:ring-1 focus:ring-violet-500/30 transition-colors appearance-none"
                 style={{ colorScheme: "dark" }}
               >
                 <option value="" disabled>Qual é o seu setor?</option>
@@ -73,7 +72,7 @@ export function ContactCTA() {
                 onChange={(e) => setProblema(e.target.value)}
                 placeholder="Qual é o seu maior problema hoje? (opcional)"
                 rows={3}
-                className="w-full resize-none rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-white/30 focus:border-violet-500/50 focus:outline-none focus:ring-1 focus:ring-violet-500/30 transition-colors"
+                className="w-full resize-none rounded-xl border border-white/[0.08] bg-white/5 px-4 py-3 text-sm text-white placeholder:text-white/30 focus:border-violet-500/50 focus:outline-none focus:ring-1 focus:ring-violet-500/30 transition-colors"
               />
 
               <a
@@ -116,7 +115,7 @@ export function ContactCTA() {
               target="_blank"
               rel="noreferrer"
               onClick={() => rastrear("whatsapp_click", { origem: "cta_final" })}
-              className="group flex items-center gap-2 rounded-full border border-white/15 px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-white/5"
+              className="group flex items-center gap-2 rounded-full border border-white/[0.12] px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-white/5"
             >
               Falar no WhatsApp
               <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />

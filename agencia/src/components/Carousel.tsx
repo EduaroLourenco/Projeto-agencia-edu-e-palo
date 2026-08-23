@@ -69,7 +69,7 @@ export function Carousel({
         onClick={() => rolar(-1)}
         disabled={!podeVoltar}
         aria-label="Ver anteriores"
-        className="absolute -left-4 top-1/2 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-surface/95 text-white shadow-lg backdrop-blur transition-opacity hover:bg-surface disabled:pointer-events-none disabled:opacity-0 lg:flex"
+        className="absolute -left-4 top-1/2 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/[0.12] bg-surface/95 text-white shadow-lg backdrop-blur transition-opacity hover:bg-surface disabled:pointer-events-none disabled:opacity-0 lg:flex"
       >
         <ChevronLeft size={20} />
       </button>
@@ -78,7 +78,7 @@ export function Carousel({
         onClick={() => rolar(1)}
         disabled={!podeAvancar}
         aria-label="Ver próximos"
-        className="absolute -right-4 top-1/2 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-surface/95 text-white shadow-lg backdrop-blur transition-opacity hover:bg-surface disabled:pointer-events-none disabled:opacity-0 lg:flex"
+        className="absolute -right-4 top-1/2 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/[0.12] bg-surface/95 text-white shadow-lg backdrop-blur transition-opacity hover:bg-surface disabled:pointer-events-none disabled:opacity-0 lg:flex"
       >
         <ChevronRight size={20} />
       </button>

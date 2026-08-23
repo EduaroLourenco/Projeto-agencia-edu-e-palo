@@ -230,7 +230,7 @@ function PainelGrupo({ grupo, onClose }: { grupo: GrupoResolvido; onClose: () =>
         exit={{ y: 40, opacity: 0 }}
         transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
         onClick={(e) => e.stopPropagation()}
-        className="flex max-h-[88vh] w-full flex-col rounded-t-3xl border border-white/10 bg-surface sm:max-w-xl sm:rounded-3xl"
+        className="flex max-h-[88vh] w-full flex-col rounded-t-3xl border border-white/[0.08] bg-surface sm:max-w-xl sm:rounded-2xl"
       >
         <div className="flex items-start justify-between gap-4 border-b border-white/8 p-6">
           <div className="flex min-w-0 items-start gap-3">
@@ -316,7 +316,7 @@ export function ServicosPage() {
               Seis frentes. {TOTAL} serviços por trás delas.
             </h1>
             <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-white/60">
-              Comece pela área que resolve o seu problema — a lista completa está lá dentro, pra quando
+              Comece pela área que resolve o seu problema. A lista completa está lá dentro, pra quando
               você quiser entrar no detalhe.
             </p>
           </Reveal>
@@ -332,7 +332,7 @@ export function ServicosPage() {
             onChange={(e) => setBusca(e.target.value)}
             placeholder="Ou busque direto: estoque, boleto, agendamento…"
             aria-label="Buscar serviço"
-            className="w-full rounded-full border border-white/10 bg-white/5 py-3 pl-11 pr-11 text-sm text-white placeholder:text-white/35 transition-colors focus:border-violet-500/50 focus:outline-none focus:ring-1 focus:ring-violet-500/30"
+            className="w-full rounded-full border border-white/[0.08] bg-white/5 py-3 pl-11 pr-11 text-sm text-white placeholder:text-white/35 transition-colors focus:border-violet-500/50 focus:outline-none focus:ring-1 focus:ring-violet-500/30"
           />
           {busca && (
             <button
@@ -351,10 +351,10 @@ export function ServicosPage() {
           {resultados ? (
             /* ---- modo busca: lista achatada ---- */
             resultados.length === 0 ? (
-              <div className="mx-auto max-w-md rounded-3xl border border-dashed border-white/15 px-6 py-14 text-center">
+              <div className="mx-auto max-w-md rounded-2xl border border-dashed border-white/[0.12] px-6 py-14 text-center">
                 <p className="font-display text-lg font-bold text-white">Nada encontrado por aqui.</p>
                 <p className="mt-2 text-sm text-white/55">
-                  Provavelmente a gente resolve mesmo assim — a maior parte do que fazemos é sob medida.
+                  Provavelmente a gente resolve mesmo assim: a maior parte do que fazemos é sob medida.
                 </p>
                 <MagneticButton
                   href={linkWhatsApp(
@@ -374,7 +374,7 @@ export function ServicosPage() {
                 <p className="text-sm text-white/55">
                   {resultados.length} {resultados.length === 1 ? "serviço encontrado" : "serviços encontrados"}
                 </p>
-                <ul className="mt-4 flex flex-col rounded-3xl border border-white/10 bg-surface px-6">
+                <ul className="mt-4 flex flex-col rounded-2xl border border-white/[0.08] bg-surface px-6">
                   {resultados.map(({ servico, grupo }) => (
                     <LinhaServico key={servico.id} servico={servico} grupo={grupo} />
                   ))}
@@ -388,7 +388,7 @@ export function ServicosPage() {
                 <Reveal key={g.id} delay={i * 0.05} className="h-full">
                   <button
                     onClick={() => setAberto(g)}
-                    className="flex h-full w-full flex-col rounded-3xl border border-white/10 bg-surface p-6 text-left transition-colors hover:border-violet-500/45"
+                    className="flex h-full w-full flex-col rounded-2xl border border-white/[0.08] bg-surface p-6 text-left transition-colors hover:border-violet-500/45"
                   >
                     <div className="flex items-start justify-between gap-3">
                       <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-violet-500/15 text-violet-300">
@@ -445,7 +445,7 @@ export function ServicosPage() {
             </h2>
             <p className="mx-auto mt-4 max-w-lg text-white/60">
               No diagnóstico a gente olha o que está travando sua venda hoje e indica os 2 ou 3 serviços que
-              resolvem isso primeiro — o resto pode esperar.
+              resolvem isso primeiro. O resto pode esperar.
             </p>
             <MagneticButton
               href={linkWhatsApp()}

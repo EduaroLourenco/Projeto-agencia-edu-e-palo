@@ -170,7 +170,7 @@ export function Nav() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -6 }}
                   transition={{ duration: 0.15 }}
-                  className="absolute right-0 top-full mt-3 w-52 rounded-2xl border border-white/10 bg-surface p-2 shadow-2xl shadow-black/50"
+                  className="absolute right-0 top-full mt-3 w-52 rounded-2xl border border-white/[0.08] bg-surface p-2 shadow-2xl shadow-black/50"
                 >
                   {LINKS_MAIS.map((l) => {
                     const ativo = isActiveLink(l.href, pathname, secaoAtiva);
@@ -213,12 +213,12 @@ export function Nav() {
           Barra de ação inferior (só no celular): menu e CTA na zona do
           polegar. O hambúrguer ficava no canto superior direito — o ponto
           mais difícil de alcançar com uma mão num celular alto. */}
-      <div className="fixed inset-x-0 bottom-0 z-50 border-t border-white/10 bg-ink/90 px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur-lg lg:hidden">
+      <div className="fixed inset-x-0 bottom-0 z-50 border-t border-white/[0.08] bg-ink/90 px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur-lg lg:hidden">
         <div className="mx-auto flex max-w-md items-center gap-3">
           <button
             onClick={() => setAberto(true)}
             aria-label="Abrir menu"
-            className="flex h-12 w-12 shrink-0 flex-col items-center justify-center gap-0.5 rounded-2xl border border-white/10 bg-white/5 text-white"
+            className="flex h-12 w-12 shrink-0 flex-col items-center justify-center gap-0.5 rounded-2xl border border-white/[0.08] bg-white/5 text-white"
           >
             <Menu size={18} />
             <span className="text-[9px] font-bold uppercase tracking-wider text-white/60">Menu</span>
@@ -254,7 +254,7 @@ export function Nav() {
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
               transition={{ type: "spring", stiffness: 320, damping: 34 }}
-              className="fixed inset-x-0 bottom-0 z-[70] flex max-h-[82vh] flex-col rounded-t-3xl border-t border-white/10 bg-surface px-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-4 lg:hidden"
+              className="fixed inset-x-0 bottom-0 z-[70] flex max-h-[82vh] flex-col rounded-t-3xl border-t border-white/[0.08] bg-surface px-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-4 lg:hidden"
             >
               <span className="mx-auto mb-4 h-1 w-10 shrink-0 rounded-full bg-white/15" />
               <div className="flex items-center justify-between">
