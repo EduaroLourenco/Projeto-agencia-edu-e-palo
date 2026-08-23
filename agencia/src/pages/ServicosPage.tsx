@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   Check,
   ArrowRight,
@@ -50,7 +52,8 @@ import {
 } from "lucide-react";
 import type { ReactNode } from "react";
 import { MODULOS, linkWhatsApp } from "../data/content";
-import { CATEGORIAS_SERVICOS, RESUMOS_SERVICOS } from "../data/servicos";
+import { CATEGORIAS_SERVICOS, GRUPOS_SERVICOS, RESUMOS_SERVICOS } from "../data/servicos";
+import type { GrupoServicos } from "../data/servicos";
 import { Reveal } from "../components/Reveal";
 import { MagneticButton } from "../components/MagneticButton";
 import { rastrear } from "../lib/analytics";
@@ -101,50 +104,47 @@ const ICONES: Record<string, ReactNode> = {
   percent: <Percent size={20} />,
   split: <Split size={20} />,
   "trending-up": <TrendingUp size={20} />,
+  megaphone: <Megaphone size={20} />,
+  wallet: <Wallet size={20} />,
 };
 
-interface ItemCatalogo {
+interface Servico {
   id: string;
   icone: string;
   titulo: string;
   resumo: string;
   itens: string[];
-  categoriaId: string;
-  categoriaNome: string;
 }
 
-/**
- * Catálogo achatado numa lista só. Antes a página era uma pilha de seções
- * fixas (25 telas de rolagem, sem índice); agora tudo vira uma coleção
- * filtrável, então o visitante chega no que interessa em 1 clique.
- */
-const CATALOGO: ItemCatalogo[] = [
-  ...MODULOS.map((m) => ({
-    id: m.id,
-    icone: m.id,
-    titulo: m.titulo,
-    resumo: RESUMOS_SERVICOS[m.id] ?? m.resumo,
-    itens: m.itens,
-    categoriaId: "modulos",
-    categoriaNome: "Módulos principais",
-  })),
+/** Índice de todos os serviços por id — MODULOS + categorias, sem duplicar. */
+const POR_ID: Record<string, Servico> = Object.fromEntries([
+  ...MODULOS.map((m) => [
+    m.id,
+    {
+      id: m.id,
+      icone: m.id,
+      titulo: m.titulo,
+      resumo: RESUMOS_SERVICOS[m.id] ?? m.resumo,
+      itens: m.itens,
+    },
+  ]),
   ...CATEGORIAS_SERVICOS.flatMap((c) =>
-    c.servicos.map((s) => ({
-      id: s.id,
-      icone: s.icone,
-      titulo: s.titulo,
-      resumo: s.resumo,
-      itens: s.itens,
-      categoriaId: c.id,
-      categoriaNome: c.titulo,
-    })),
+    c.servicos.map((s) => [
+      s.id,
+      { id: s.id, icone: s.icone, titulo: s.titulo, resumo: s.resumo, itens: s.itens },
+    ]),
   ),
-];
+]);
 
-const CATEGORIAS = [
-  { id: "modulos", nome: "Módulos principais" },
-  ...CATEGORIAS_SERVICOS.map((c) => ({ id: c.id, nome: c.titulo })),
-];
+/** Grupos já resolvidos: os ids viram os serviços de verdade. */
+const GRUPOS = GRUPOS_SERVICOS.map((g) => ({
+  ...g,
+  itens: g.servicos.map((id) => POR_ID[id]).filter(Boolean),
+}));
+
+type GrupoResolvido = (typeof GRUPOS)[number];
+
+const TOTAL = GRUPOS.reduce((soma, g) => soma + g.itens.length, 0);
 
 function normalizar(texto: string) {
   return texto
@@ -153,55 +153,135 @@ function normalizar(texto: string) {
     .replace(/[̀-ͯ]/g, ""); // tira acento: buscar "financas" acha "Finanças"
 }
 
-function CartaoServico({ item }: { item: ItemCatalogo }) {
+/** Linha de serviço com os detalhes recolhidos. */
+function LinhaServico({ servico, grupo }: { servico: Servico; grupo?: GrupoServicos }) {
   const [aberto, setAberto] = useState(false);
 
   return (
-    <article className="flex h-full flex-col rounded-3xl border border-white/10 bg-surface p-6 transition-colors hover:border-violet-500/40">
-      <div className="flex items-start justify-between gap-3">
-        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-violet-500/15 text-violet-300">
-          {ICONES[item.icone]}
-        </span>
-        <span className="rounded-full border border-white/8 bg-white/5 px-2.5 py-1 text-[10px] font-semibold text-white/55">
-          {item.categoriaNome}
-        </span>
-      </div>
-
-      <h3 className="mt-4 font-display text-base font-bold leading-snug text-white">{item.titulo}</h3>
-      <p className="mt-2 flex-1 text-sm leading-relaxed text-white/60">{item.resumo}</p>
-
-      {/* Os 126 bullets da página ficavam todos abertos ao mesmo tempo.
-          Agora só abrem quando o visitante pede. */}
+    <li className="border-b border-white/8 last:border-b-0">
       <button
         onClick={() => setAberto((v) => !v)}
         aria-expanded={aberto}
-        className="mt-5 flex items-center gap-1.5 self-start text-sm font-bold text-violet-300 transition-colors hover:text-violet-200"
+        className="flex w-full items-start gap-3 py-4 text-left"
       >
-        {aberto ? "Ocultar detalhes" : "O que inclui"}
-        <ChevronDown size={14} className={`transition-transform ${aberto ? "rotate-180" : ""}`} />
+        <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-violet-500/12 text-violet-300 [&>svg]:h-4 [&>svg]:w-4">
+          {ICONES[servico.icone]}
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="flex items-start justify-between gap-3">
+            <span className="font-display text-sm font-bold leading-snug text-white">
+              {servico.titulo}
+            </span>
+            <ChevronDown
+              size={15}
+              className={`mt-0.5 shrink-0 text-white/40 transition-transform ${aberto ? "rotate-180" : ""}`}
+            />
+          </span>
+          {grupo && (
+            <span className="mt-1 block text-[11px] font-semibold text-violet-300/80">{grupo.nome}</span>
+          )}
+          {aberto && (
+            <>
+              <span className="mt-2 block text-sm leading-relaxed text-white/60">{servico.resumo}</span>
+              <span className="mt-3 flex flex-col gap-2">
+                {servico.itens.map((i) => (
+                  <span key={i} className="flex items-start gap-2 text-xs leading-relaxed text-white/60">
+                    <Check size={12} className="mt-0.5 shrink-0 text-violet-300" />
+                    {i}
+                  </span>
+                ))}
+              </span>
+            </>
+          )}
+        </span>
       </button>
-
-      {aberto && (
-        <ul className="mt-4 flex flex-col gap-2 border-t border-white/10 pt-4">
-          {item.itens.map((i) => (
-            <li key={i} className="flex items-start gap-2 text-xs leading-relaxed text-white/65">
-              <Check size={13} className="mt-0.5 shrink-0 text-violet-300" />
-              {i}
-            </li>
-          ))}
-        </ul>
-      )}
-    </article>
+    </li>
   );
 }
 
-/** Quantos cards aparecem antes do "ver mais" — segura a primeira dobra. */
-const LOTE = 12;
+function PainelGrupo({ grupo, onClose }: { grupo: GrupoResolvido; onClose: () => void }) {
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") onClose();
+    }
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [onClose]);
+
+  return createPortal(
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.18 }}
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label={grupo.nome}
+      className="fixed inset-0 z-[100] flex items-end justify-center bg-black/75 backdrop-blur-sm sm:items-center sm:p-5"
+    >
+      <motion.div
+        initial={{ y: 40, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        exit={{ y: 40, opacity: 0 }}
+        transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
+        onClick={(e) => e.stopPropagation()}
+        className="flex max-h-[88vh] w-full flex-col rounded-t-3xl border border-white/10 bg-surface sm:max-w-xl sm:rounded-3xl"
+      >
+        <div className="flex items-start justify-between gap-4 border-b border-white/8 p-6">
+          <div className="flex min-w-0 items-start gap-3">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-violet-500/15 text-violet-300">
+              {ICONES[grupo.icone]}
+            </span>
+            <div className="min-w-0">
+              <h3 className="font-display text-lg font-bold leading-snug text-white">{grupo.nome}</h3>
+              <p className="mt-1 text-xs text-white/55">{grupo.itens.length} serviços nesta área</p>
+            </div>
+          </div>
+          <button
+            onClick={onClose}
+            aria-label="Fechar"
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/5 text-white/60 transition-colors hover:text-white"
+          >
+            <X size={16} />
+          </button>
+        </div>
+
+        <div className="min-h-0 flex-1 overflow-y-auto px-6">
+          <ul className="flex flex-col">
+            {grupo.itens.map((s) => (
+              <LinhaServico key={s.id} servico={s} />
+            ))}
+          </ul>
+        </div>
+
+        <div className="border-t border-white/8 p-6">
+          <MagneticButton
+            href={linkWhatsApp(
+              `Oi! Vi no site de vocês a área de ${grupo.nome} e quero entender o que dá pra fazer no meu caso.`,
+            )}
+            target="_blank"
+            rel="noreferrer"
+            onClick={() => rastrear("whatsapp_click", { origem: "grupo_servico", grupo: grupo.id })}
+            className="flex w-full items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-bold text-ink"
+          >
+            Falar sobre isso
+            <ArrowRight size={15} />
+          </MagneticButton>
+        </div>
+      </motion.div>
+    </motion.div>,
+    document.body,
+  );
+}
 
 export function ServicosPage() {
-  const [categoria, setCategoria] = useState("todos");
   const [busca, setBusca] = useState("");
-  const [limite, setLimite] = useState(LOTE);
+  const [aberto, setAberto] = useState<GrupoResolvido | null>(null);
 
   useEffect(() => {
     document.title = "Serviços — Sigma | Consultoria, Assessoria e Serviços";
@@ -210,160 +290,154 @@ export function ServicosPage() {
     };
   }, []);
 
-  const visiveis = useMemo(() => {
+  // A busca fura os grupos: quem já sabe o que quer não deve ter que
+  // adivinhar em qual área aquilo mora.
+  const resultados = useMemo(() => {
     const termo = normalizar(busca.trim());
-    return CATALOGO.filter((item) => {
-      if (categoria !== "todos" && item.categoriaId !== categoria) return false;
-      if (!termo) return true;
-      const alvo = normalizar(`${item.titulo} ${item.resumo} ${item.itens.join(" ")} ${item.categoriaNome}`);
-      return alvo.includes(termo);
-    });
-  }, [categoria, busca]);
-
-  // Trocar de filtro recomeça a contagem — senão o "ver mais" de um filtro
-  // anterior vaza pro próximo e a lista abre já gigante.
-  useEffect(() => {
-    setLimite(LOTE);
-  }, [categoria, busca]);
-
-  const filtrando = categoria !== "todos" || busca.trim().length > 0;
-  const mostrados = visiveis.slice(0, limite);
-  const restantes = visiveis.length - mostrados.length;
+    if (!termo) return null;
+    return GRUPOS.flatMap((g) =>
+      g.itens
+        .filter((s) =>
+          normalizar(`${s.titulo} ${s.resumo} ${s.itens.join(" ")} ${g.nome}`).includes(termo),
+        )
+        .map((s) => ({ servico: s, grupo: g })),
+    );
+  }, [busca]);
 
   return (
     <div className="pb-24 pt-32 sm:pt-40">
       {/* Cabeçalho */}
-      <section className="relative overflow-hidden pb-10">
+      <section className="relative overflow-hidden pb-8">
         <div className="grid-fade pointer-events-none absolute inset-0 top-0 h-[420px]" />
         <div className="relative mx-auto max-w-3xl px-5 text-center">
           <Reveal>
-            <p className="text-xs font-bold uppercase tracking-widest text-violet-400">Todos os serviços</p>
+            <p className="text-xs font-bold uppercase tracking-widest text-violet-400">O que fazemos</p>
             <h1 className="mt-3 font-display text-4xl font-extrabold tracking-tight sm:text-5xl">
-              Ache o que resolve o seu problema.
+              Seis frentes. {TOTAL} serviços por trás delas.
             </h1>
             <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-white/60">
-              São {CATALOGO.length} frentes de trabalho. Filtre pela área ou busque pelo que está travando seu
-              negócio hoje — não precisa ler tudo.
+              Comece pela área que resolve o seu problema — a lista completa está lá dentro, pra quando
+              você quiser entrar no detalhe.
             </p>
           </Reveal>
         </div>
       </section>
 
-      {/* Barra de filtro — gruda no topo pra o visitante nunca "se perder" na lista */}
-      <div className="sticky top-[68px] z-30 border-y border-white/8 bg-ink/85 py-4 backdrop-blur-lg">
-        <div className="mx-auto max-w-6xl px-5">
-          <div className="relative">
-            <Search size={16} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-white/40" />
-            <input
-              value={busca}
-              onChange={(e) => setBusca(e.target.value)}
-              placeholder="Buscar: estoque, boleto, agendamento, marketplace…"
-              aria-label="Buscar serviço"
-              className="w-full rounded-full border border-white/10 bg-white/5 py-3 pl-11 pr-11 text-sm text-white placeholder:text-white/35 transition-colors focus:border-violet-500/50 focus:outline-none focus:ring-1 focus:ring-violet-500/30"
-            />
-            {busca && (
-              <button
-                onClick={() => setBusca("")}
-                aria-label="Limpar busca"
-                className="absolute right-3.5 top-1/2 flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white/70 hover:text-white"
-              >
-                <X size={13} />
-              </button>
-            )}
-          </div>
-
-          <div className="no-scrollbar mt-3 -mx-5 flex gap-2 overflow-x-auto px-5">
-            {[{ id: "todos", nome: "Todos" }, ...CATEGORIAS].map((c) => {
-              const ativo = categoria === c.id;
-              const total =
-                c.id === "todos" ? CATALOGO.length : CATALOGO.filter((i) => i.categoriaId === c.id).length;
-              return (
-                <button
-                  key={c.id}
-                  onClick={() => setCategoria(c.id)}
-                  className={`shrink-0 whitespace-nowrap rounded-full border px-4 py-2 text-xs font-bold transition-colors ${
-                    ativo
-                      ? "border-violet-400/50 bg-violet-500/20 text-violet-200"
-                      : "border-white/10 bg-white/5 text-white/60 hover:border-white/20 hover:text-white"
-                  }`}
-                >
-                  {c.nome}
-                  <span className={`ml-1.5 ${ativo ? "text-violet-300/80" : "text-white/35"}`}>{total}</span>
-                </button>
-              );
-            })}
-          </div>
+      {/* Busca */}
+      <div className="mx-auto max-w-2xl px-5">
+        <div className="relative">
+          <Search size={16} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-white/40" />
+          <input
+            value={busca}
+            onChange={(e) => setBusca(e.target.value)}
+            placeholder="Ou busque direto: estoque, boleto, agendamento…"
+            aria-label="Buscar serviço"
+            className="w-full rounded-full border border-white/10 bg-white/5 py-3 pl-11 pr-11 text-sm text-white placeholder:text-white/35 transition-colors focus:border-violet-500/50 focus:outline-none focus:ring-1 focus:ring-violet-500/30"
+          />
+          {busca && (
+            <button
+              onClick={() => setBusca("")}
+              aria-label="Limpar busca"
+              className="absolute right-3.5 top-1/2 flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white/70 hover:text-white"
+            >
+              <X size={13} />
+            </button>
+          )}
         </div>
       </div>
 
-      {/* Resultados */}
       <section className="relative py-10">
         <div className="mx-auto max-w-6xl px-5">
-          <div className="flex items-center justify-between gap-4">
-            <p className="text-sm text-white/55">
-              {restantes > 0
-                ? `${mostrados.length} de ${visiveis.length} serviços`
-                : `${visiveis.length} ${visiveis.length === 1 ? "serviço" : "serviços"}`}
-            </p>
-            {filtrando && (
-              <button
-                onClick={() => {
-                  setCategoria("todos");
-                  setBusca("");
-                }}
-                className="text-sm font-semibold text-white/50 underline decoration-white/20 underline-offset-4 transition-colors hover:text-white"
-              >
-                limpar filtros
-              </button>
-            )}
-          </div>
-
-          {visiveis.length === 0 ? (
-            <div className="mt-10 rounded-3xl border border-dashed border-white/15 px-6 py-14 text-center">
-              <p className="font-display text-lg font-bold text-white">Nada encontrado por aqui.</p>
-              <p className="mx-auto mt-2 max-w-sm text-sm text-white/55">
-                Não achou o que precisa? Provavelmente a gente resolve mesmo assim — a maior parte do que
-                fazemos é sob medida.
-              </p>
-              <MagneticButton
-                href={linkWhatsApp(
-                  `Oi! Procurei por "${busca}" no site de vocês e não achei. Vocês conseguem resolver isso?`,
-                )}
-                target="_blank"
-                rel="noreferrer"
-                onClick={() => rastrear("whatsapp_click", { origem: "servicos_sem_resultado", busca })}
-                className="mt-6 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-bold text-ink"
-              >
-                Perguntar no WhatsApp
-                <ArrowRight size={15} />
-              </MagneticButton>
-            </div>
-          ) : (
-            <>
-              <div className="mt-7 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                {mostrados.map((item) => (
-                  <CartaoServico key={`${item.categoriaId}-${item.id}`} item={item} />
-                ))}
+          {resultados ? (
+            /* ---- modo busca: lista achatada ---- */
+            resultados.length === 0 ? (
+              <div className="mx-auto max-w-md rounded-3xl border border-dashed border-white/15 px-6 py-14 text-center">
+                <p className="font-display text-lg font-bold text-white">Nada encontrado por aqui.</p>
+                <p className="mt-2 text-sm text-white/55">
+                  Provavelmente a gente resolve mesmo assim — a maior parte do que fazemos é sob medida.
+                </p>
+                <MagneticButton
+                  href={linkWhatsApp(
+                    `Oi! Procurei por "${busca}" no site de vocês e não achei. Vocês conseguem resolver isso?`,
+                  )}
+                  target="_blank"
+                  rel="noreferrer"
+                  onClick={() => rastrear("whatsapp_click", { origem: "servicos_sem_resultado", busca })}
+                  className="mt-6 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-bold text-ink"
+                >
+                  Perguntar no WhatsApp
+                  <ArrowRight size={15} />
+                </MagneticButton>
               </div>
-
-              {restantes > 0 && (
-                <div className="mt-10 flex justify-center">
+            ) : (
+              <div className="mx-auto max-w-2xl">
+                <p className="text-sm text-white/55">
+                  {resultados.length} {resultados.length === 1 ? "serviço encontrado" : "serviços encontrados"}
+                </p>
+                <ul className="mt-4 flex flex-col rounded-3xl border border-white/10 bg-surface px-6">
+                  {resultados.map(({ servico, grupo }) => (
+                    <LinhaServico key={servico.id} servico={servico} grupo={grupo} />
+                  ))}
+                </ul>
+              </div>
+            )
+          ) : (
+            /* ---- modo padrão: as 6 áreas ---- */
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+              {GRUPOS.map((g, i) => (
+                <Reveal key={g.id} delay={i * 0.05} className="h-full">
                   <button
-                    onClick={() => setLimite((l) => l + LOTE)}
-                    className="flex items-center gap-2 rounded-full border border-white/15 px-7 py-3.5 text-sm font-bold text-white transition-colors hover:bg-white/5"
+                    onClick={() => setAberto(g)}
+                    className="flex h-full w-full flex-col rounded-3xl border border-white/10 bg-surface p-6 text-left transition-colors hover:border-violet-500/45"
                   >
-                    Ver mais {Math.min(restantes, LOTE)}
-                    <ChevronDown size={16} />
+                    <div className="flex items-start justify-between gap-3">
+                      <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-violet-500/15 text-violet-300">
+                        {ICONES[g.icone]}
+                      </span>
+                      <span className="rounded-full border border-white/8 bg-white/5 px-2.5 py-1 text-[10px] font-bold text-white/55">
+                        {g.itens.length} serviços
+                      </span>
+                    </div>
+
+                    <h2 className="mt-4 font-display text-lg font-bold leading-snug text-white">{g.nome}</h2>
+                    <p className="mt-2 text-sm leading-relaxed text-white/60">{g.promessa}</p>
+
+                    {/* Os nomes ficam à vista: é o que mostra o repertório
+                        sem obrigar ninguém a ler 44 descrições. */}
+                    <ul className="mt-4 flex flex-1 flex-wrap content-start gap-1.5">
+                      {g.itens.slice(0, 5).map((s) => (
+                        <li
+                          key={s.id}
+                          className="rounded-md border border-white/8 bg-white/[0.04] px-2 py-1 text-[11px] font-medium text-white/60"
+                        >
+                          {s.titulo.length > 34 ? `${s.titulo.slice(0, 32)}…` : s.titulo}
+                        </li>
+                      ))}
+                      {g.itens.length > 5 && (
+                        <li className="px-1 py-1 text-[11px] font-semibold text-white/40">
+                          +{g.itens.length - 5}
+                        </li>
+                      )}
+                    </ul>
+
+                    <span className="mt-5 flex items-center gap-1.5 text-sm font-bold text-violet-300">
+                      Ver os {g.itens.length} serviços
+                      <ArrowRight size={14} />
+                    </span>
                   </button>
-                </div>
-              )}
-            </>
+                </Reveal>
+              ))}
+            </div>
           )}
         </div>
       </section>
 
+      <AnimatePresence>
+        {aberto && <PainelGrupo grupo={aberto} onClose={() => setAberto(null)} />}
+      </AnimatePresence>
+
       {/* CTA final */}
-      <section className="relative py-14">
+      <section className="relative py-12">
         <div className="mx-auto max-w-3xl px-5 text-center">
           <Reveal>
             <h2 className="font-display text-2xl font-extrabold tracking-tight sm:text-3xl">

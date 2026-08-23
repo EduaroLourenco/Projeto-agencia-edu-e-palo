@@ -47,14 +47,14 @@ export function Footer() {
           {/* Logo + tagline */}
           <div className="flex flex-col gap-3">
             <Link to="/" className="flex items-center gap-2">
-              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-cyan-400 font-display text-sm font-bold text-ink shadow-lg shadow-violet-500/20">
+              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-blue-400 font-display text-sm font-bold text-ink shadow-lg shadow-violet-500/20">
                 {AGENCIA.iniciais}
               </span>
               <span className="font-display text-base font-bold text-white">{AGENCIA.nome}</span>
             </Link>
             <p className="text-xs text-white/40">{AGENCIA.tagline}</p>
             <p className="mt-1 flex items-center gap-1.5 text-xs text-white/30">
-              <span className="h-1.5 w-1.5 rounded-full bg-yellow-400/70" />
+              <span className="h-1.5 w-1.5 rounded-full bg-blue-400/70" />
               Feito em Goiânia, GO
             </p>
           </div>

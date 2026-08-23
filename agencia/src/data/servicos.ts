@@ -13,7 +13,7 @@ export interface CategoriaServicos {
   id: string;
   titulo: string;
   descricao: string;
-  cor: "violet" | "lime" | "cyan";
+  cor: "violet" | "pink" | "blue";
   servicos: ServicoExtra[];
 }
 
@@ -102,7 +102,7 @@ export const CATEGORIAS_SERVICOS: CategoriaServicos[] = [
     id: "lancamento-marca",
     titulo: "Lançamento & Marca",
     descricao: "Pra produto novo não nascer perdido no meio do catálogo.",
-    cor: "lime",
+    cor: "pink",
     servicos: [
       {
         id: "pacote-lancamento",
@@ -146,7 +146,7 @@ export const CATEGORIAS_SERVICOS: CategoriaServicos[] = [
     id: "automacao-atendimento",
     titulo: "Automação & Atendimento",
     descricao: "Pra tirar o time do repetitivo e deixar o dado provar o resultado.",
-    cor: "cyan",
+    cor: "blue",
     servicos: [
       {
         id: "automacao-sac",
@@ -354,7 +354,7 @@ export const CATEGORIAS_SERVICOS: CategoriaServicos[] = [
     id: "financas-controladoria",
     titulo: "Finanças & Controladoria",
     descricao: "Pra saber, com número na mão, quanto sobra no fim do mês — e por quê.",
-    cor: "cyan",
+    cor: "blue",
     servicos: [
       {
         id: "dashboard-financeiro-bi",
@@ -446,7 +446,7 @@ export const CATEGORIAS_SERVICOS: CategoriaServicos[] = [
     id: "ticket-menor",
     titulo: "Ticket Menor & Volume",
     descricao: "Projeto enxuto, entrega rápida — pra testar antes de investir em algo maior.",
-    cor: "lime",
+    cor: "pink",
     servicos: [
       {
         id: "ferramenta-sob-medida",
@@ -500,3 +500,114 @@ export const RESUMOS_SERVICOS: Record<string, string> = {
   "logistica-44":
     "Rastreamento de fardo por excursão ou transportadora, com notificação automática — pra lojista e revendedor pararem de se perguntar onde está a mercadoria.",
 };
+
+/* ------------------------------------------------------------------ */
+/* AGRUPAMENTO POR PROBLEMA DO CLIENTE                                  */
+/* ------------------------------------------------------------------ */
+
+/**
+ * As categorias acima são a nossa taxonomia interna (por disciplina).
+ * O cliente não chega pensando "preciso de Dev & Sistemas" — ele chega
+ * com um problema. Estes grupos reorganizam os mesmos 44 serviços pela
+ * pergunta que o dono do negócio faz, e é essa a divisão que a página
+ * /servicos usa: poucas áreas na entrada, profundidade a um clique.
+ */
+export interface GrupoServicos {
+  id: string;
+  nome: string;
+  /** Frase curta, no problema do cliente — não no nome da disciplina. */
+  promessa: string;
+  icone: string;
+  /** IDs vindos de MODULOS (content.ts) e de CATEGORIAS_SERVICOS. */
+  servicos: string[];
+}
+
+export const GRUPOS_SERVICOS: GrupoServicos[] = [
+  {
+    id: "vender-online",
+    nome: "Vender online e em marketplace",
+    promessa: "Do primeiro catálogo à operação madura em Mercado Livre, Shopee e loja própria.",
+    icone: "shopping-cart",
+    servicos: [
+      "comercio-whatsapp",
+      "marketplace-ecommerce",
+      "plataforma-ecommerce",
+      "catalogo-landing-local",
+      "repricer",
+      "monitor-api-ml",
+      "reconciliacao-estoque",
+      "curva-abc",
+      "auditoria-compliance",
+      "infra-marca",
+      "pacote-lancamento",
+    ],
+  },
+  {
+    id: "sistemas",
+    nome: "Sistema sob medida pra sua operação",
+    promessa: "Quando nenhum sistema pronto encaixa no jeito que o seu negócio funciona.",
+    icone: "app-window",
+    servicos: [
+      "app-web-sob-medida",
+      "gestao-os",
+      "portal-b2b",
+      "agendamento",
+      "saas-agendamento",
+      "vida-noturna",
+      "alimentacao",
+      "logistica-44",
+      "micro-saas-documentos",
+      "ferramenta-sob-medida",
+    ],
+  },
+  {
+    id: "financas",
+    nome: "Finanças e controladoria",
+    promessa: "Saber, com número na mão, quanto sobra no fim do mês — e por quê.",
+    icone: "wallet",
+    servicos: [
+      "financas",
+      "dashboard-financeiro-bi",
+      "automacao-faturamento",
+      "contas-pagar-receber",
+      "conciliacao-bancaria",
+      "precificacao-margem",
+      "comissao-split",
+      "fluxo-caixa-projecao",
+    ],
+  },
+  {
+    id: "dados",
+    nome: "Dados pra decidir",
+    promessa: "Parar de decidir no achismo e passar a olhar o número certo.",
+    icone: "bar-chart-3",
+    servicos: [
+      "dashboard-multicanal",
+      "painel-bi-web",
+      "causa-raiz",
+      "segmentacao-rfm",
+      "calendario-campanha",
+      "tracker-roi",
+    ],
+  },
+  {
+    id: "automacao",
+    nome: "Automação e integração",
+    promessa: "Tirar o time do repetitivo e fazer os sistemas conversarem entre si.",
+    icone: "plug-zap",
+    servicos: [
+      "consultoria-automacao",
+      "automacao-sac",
+      "integracao-erp-api",
+      "integracao-erp-crm",
+      "manutencao-hospedagem",
+    ],
+  },
+  {
+    id: "site-marketing",
+    nome: "Site, marca e tráfego",
+    promessa: "Ser achado, parecer profissional e transformar visita em contato.",
+    icone: "megaphone",
+    servicos: ["sites-sistemas", "sites-institucionais-hp", "marketing-digital", "auditoria-ga4"],
+  },
+];

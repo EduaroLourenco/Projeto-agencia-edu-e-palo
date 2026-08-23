@@ -8,9 +8,9 @@ import { Carousel } from "./Carousel";
 
 // Conversa é prova → um único acento, sem rodízio de cor por card.
 const CORES: Record<Conversa["cor"], { bg: string; text: string; borda: string }> = {
-  violet: { bg: "bg-cyan-400/15", text: "text-cyan-300", borda: "hover:border-cyan-400/45" },
-  lime: { bg: "bg-cyan-400/15", text: "text-cyan-300", borda: "hover:border-cyan-400/45" },
-  cyan: { bg: "bg-cyan-400/15", text: "text-cyan-300", borda: "hover:border-cyan-400/45" },
+  violet: { bg: "bg-blue-400/15", text: "text-blue-300", borda: "hover:border-blue-400/45" },
+  pink: { bg: "bg-blue-400/15", text: "text-blue-300", borda: "hover:border-blue-400/45" },
+  blue: { bg: "bg-blue-400/15", text: "text-blue-300", borda: "hover:border-blue-400/45" },
 };
 
 export function ConversasReais() {
@@ -35,11 +35,11 @@ export function ConversasReais() {
 
   return (
     <section id="conversas" className="relative overflow-hidden py-24 sm:py-32">
-      <div className="glow-cyan pointer-events-none absolute right-0 top-1/4 h-[380px] w-[380px] translate-x-1/2 rounded-full opacity-50" />
+      <div className="glow-blue pointer-events-none absolute right-0 top-1/4 h-[380px] w-[380px] translate-x-1/2 rounded-full opacity-50" />
 
       <div className="relative mx-auto max-w-6xl px-5">
         <Reveal>
-          <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-cyan-400">
+          <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-blue-400">
             <MessageCircle size={14} />
             Na prática
           </p>

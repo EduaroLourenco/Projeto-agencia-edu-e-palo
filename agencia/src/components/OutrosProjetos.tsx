@@ -92,11 +92,11 @@ export function OutrosProjetos() {
 
   return (
     <section id="outros-projetos" className="relative py-24 sm:py-32">
-      <div className="glow-cyan pointer-events-none absolute right-0 top-1/4 h-[400px] w-[400px] translate-x-1/2 rounded-full opacity-50" />
+      <div className="glow-blue pointer-events-none absolute right-0 top-1/4 h-[400px] w-[400px] translate-x-1/2 rounded-full opacity-50" />
 
       <div className="relative mx-auto max-w-6xl px-5">
         <Reveal className="text-center">
-          <p className="text-xs font-bold uppercase tracking-widest text-cyan-400">Outros projetos feitos</p>
+          <p className="text-xs font-bold uppercase tracking-widest text-blue-400">Outros projetos feitos</p>
           <h2 className="mt-3 font-display text-3xl font-extrabold tracking-tight sm:text-4xl">
             Cada sistema, construído do zero pra operação real de um cliente.
           </h2>
@@ -188,7 +188,7 @@ export function OutrosProjetos() {
                   onClick={() => irPara(i)}
                   aria-label={`Ir pro projeto ${i + 1}`}
                   className={`h-1.5 rounded-full transition-all ${
-                    i === ativo ? "w-6 bg-cyan-400" : "w-1.5 bg-white/15 hover:bg-white/30"
+                    i === ativo ? "w-6 bg-blue-400" : "w-1.5 bg-white/15 hover:bg-white/30"
                   }`}
                 />
               ))}

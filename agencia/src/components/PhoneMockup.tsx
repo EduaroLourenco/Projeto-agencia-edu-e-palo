@@ -49,14 +49,14 @@ export function PhoneMockup({ comVideo = false }: { comVideo?: boolean }) {
           </div>
 
           <div className="mx-4 mb-3 rounded-xl bg-white/[0.06] p-2.5">
-            <div className="aspect-[16/8] w-full rounded-lg bg-gradient-to-br from-violet-500/40 via-fuchsia-500/20 to-cyan-400/30" />
+            <div className="aspect-[16/8] w-full rounded-lg bg-gradient-to-br from-violet-500/40 via-fuchsia-500/20 to-blue-400/30" />
             <div className="mt-2 flex items-center justify-between">
               <span className="text-[11px] font-semibold text-white">Cropped Linho</span>
-              <span className="text-[11px] font-bold text-lime-400">R$ 39,90</span>
+              <span className="text-[11px] font-bold text-pink-400">R$ 39,90</span>
             </div>
           </div>
 
-          <div className="mx-4 mb-3 flex items-center gap-1.5 rounded-lg bg-lime-400/10 px-2.5 py-2 text-[10px] font-semibold text-lime-300">
+          <div className="mx-4 mb-3 flex items-center gap-1.5 rounded-lg bg-pink-400/10 px-2.5 py-2 text-[10px] font-semibold text-pink-300">
             <Tag size={11} />
             Preço de atacado liberado
           </div>

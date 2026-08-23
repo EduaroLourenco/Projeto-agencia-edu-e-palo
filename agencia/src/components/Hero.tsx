@@ -28,7 +28,7 @@ export function Hero() {
       />
       <motion.div
         style={{ y: yBlobs }}
-        className="glow-cyan animate-drift-slow pointer-events-none absolute right-0 top-60 h-[400px] w-[400px] rounded-full"
+        className="glow-blue animate-drift-slow pointer-events-none absolute right-0 top-60 h-[400px] w-[400px] rounded-full"
       />
       {/* Glow amarelo Goiânia */}
       <div className="pointer-events-none absolute bottom-0 left-1/4 h-[300px] w-[300px] -translate-x-1/2 rounded-full opacity-20" style={{ background: "radial-gradient(circle, rgba(250,204,21,0.5) 0%, transparent 70%)" }} />
