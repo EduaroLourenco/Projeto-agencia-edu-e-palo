@@ -432,6 +432,10 @@ export interface Conversa {
    * Antes de publicar: borre número, foto e nome completo de quem aparece.
    */
   imagem: string;
+  /** Dimensão real do arquivo: sem ela o navegador não reserva o espaço
+      e a página pula quando o print chega (CLS). */
+  largura: number;
+  altura: number;
 }
 
 export const CONVERSAS: Conversa[] = [
@@ -443,6 +447,8 @@ export const CONVERSAS: Conversa[] = [
       "Cliente na manhã seguinte ao site entrar no ar. Antes ele perdia cerca de 2 pedidos por semana porque o pessoal mandava foto solta e ele esquecia de responder.",
     cor: "pink",
     imagem: "/conversas/cliente-aprovando.jpg",
+    largura: 739,
+    altura: 900,
   },
   {
     id: "lead-salao",
@@ -452,6 +458,8 @@ export const CONVERSAS: Conversa[] = [
       "“Muita mulherada me manda mensagem perguntando da minha agenda, querem saber se tenho hora vaga.” O site trouxe o contato; a agenda online resolve a dor.",
     cor: "violet",
     imagem: "/conversas/lead-salao.jpg",
+    largura: 739,
+    altura: 1200,
   },
   {
     id: "pedido-formatado",
@@ -461,6 +469,8 @@ export const CONVERSAS: Conversa[] = [
       "O cliente monta a sacola no catálogo e o pedido cai formatado no WhatsApp do lojista: itens, regra de preço, total e forma de entrega. Sem digitar nada.",
     cor: "blue",
     imagem: "/conversas/pedido-formatado.jpg",
+    largura: 739,
+    altura: 1460,
   },
 ];
 

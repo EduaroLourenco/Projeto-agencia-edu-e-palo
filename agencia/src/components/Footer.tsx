@@ -45,7 +45,7 @@ export function Footer() {
         <div className="flex flex-col gap-10 sm:flex-row sm:items-start sm:justify-between">
           {/* Logo + tagline */}
           <div className="flex flex-col gap-3">
-            <Link to="/" className="flex items-center gap-2">
+            <Link to="/" className="flex min-h-[44px] items-center gap-2">
               <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-blue-400 font-display text-sm font-bold text-ink shadow-lg shadow-violet-500/20">
                 {AGENCIA.iniciais}
               </span>
@@ -65,7 +65,7 @@ export function Footer() {
               <a
                 key={l.href}
                 href={l.href}
-                className="text-sm font-medium text-white/50 transition-colors hover:text-white"
+                className="flex min-h-[44px] items-center text-sm font-medium text-white/50 transition-colors hover:text-white"
               >
                 {l.label}
               </a>
@@ -82,7 +82,7 @@ export function Footer() {
                 target={r.href.startsWith("http") ? "_blank" : undefined}
                 rel="noreferrer"
                 onClick={() => r.label === "WhatsApp" && rastrear("whatsapp_click", { origem: "footer" })}
-                className="flex items-center gap-2 text-sm font-medium text-white/50 transition-colors hover:text-white"
+                className="flex min-h-[44px] items-center gap-2 text-sm font-medium text-white/50 transition-colors hover:text-white"
               >
                 {r.icon}
                 {r.label}

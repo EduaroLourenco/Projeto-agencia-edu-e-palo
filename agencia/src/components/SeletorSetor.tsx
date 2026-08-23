@@ -20,6 +20,7 @@ import type { ReactNode } from "react";
 import { NICHOS, linkWhatsApp, type Nicho } from "../data/content";
 import { MagneticButton } from "./MagneticButton";
 import { rastrear } from "../lib/analytics";
+import { lembrarSetor, setorLembrado } from "../lib/preferencias";
 
 const ICONES: Record<string, ReactNode> = {
   moda: <Shirt size={15} />,
@@ -129,11 +130,28 @@ function PainelNicho({ nicho, onClose }: { nicho: Nicho; onClose: () => void }) 
  */
 export function SeletorSetor() {
   const [escolhido, setEscolhido] = useState<Nicho | null>(null);
+  const [lembrado, setLembrado] = useState<string | null>(null);
+
+  // Lido depois da montagem, não durante: localStorage não existe quando
+  // o HTML é gerado, e ler no primeiro render quebraria a hidratação.
+  useEffect(() => {
+    setLembrado(setorLembrado());
+  }, []);
+
+  function escolher(nicho: Nicho) {
+    setEscolhido(nicho);
+    setLembrado(nicho.id);
+    lembrarSetor(nicho.id);
+  }
+
+  const nomeLembrado = NICHOS.find((n) => n.id === lembrado)?.nome;
 
   return (
     <div>
       <p className="text-xs font-semibold text-white/50">
-        Qual é o seu negócio? Toque e veja o que resolvemos nele.
+        {nomeLembrado
+          ? `Da última vez você olhou ${nomeLembrado}. Toque pra rever, ou escolha outro.`
+          : "Qual é o seu negócio? Toque e veja o que resolvemos nele."}
       </p>
 
       {/* Sombra na borda direita: sem ela, um chip cortado pode parecer
@@ -141,18 +159,27 @@ export function SeletorSetor() {
       <div className="relative">
         <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-gradient-to-l from-ink to-transparent sm:hidden" />
         <div className="no-scrollbar -mx-5 mt-3 flex snap-x gap-2 overflow-x-auto px-5 pb-1 sm:mx-0 sm:flex-wrap sm:px-0">
-          {NICHOS.map((nicho) => (
-            <button
-              key={nicho.id}
-              onClick={() => setEscolhido(nicho)}
-              className="flex shrink-0 snap-start items-center gap-1.5 rounded-full border border-white/12 bg-white/5 px-3.5 py-2.5 transition-all active:scale-95 hover:border-violet-400/50 hover:bg-violet-500/12"
-            >
-              <span className="text-violet-300">{ICONES[nicho.id]}</span>
-              <span className="whitespace-nowrap font-display text-xs font-bold text-white/85">
-                {nicho.nome}
-              </span>
-            </button>
-          ))}
+          {NICHOS.map((nicho) => {
+            const ultimo = nicho.id === lembrado;
+            return (
+              <button
+                key={nicho.id}
+                onClick={() => escolher(nicho)}
+                /* min-h-[44px]: alvo de toque mínimo pro dedo médio. Antes
+                   tinham 38px de altura e exigiam pontaria. */
+                className={`flex min-h-[44px] shrink-0 snap-start items-center gap-1.5 rounded-full border px-4 transition-all active:scale-95 ${
+                  ultimo
+                    ? "border-violet-400/60 bg-violet-500/15"
+                    : "border-white/12 bg-white/5 hover:border-violet-400/50 hover:bg-violet-500/12"
+                }`}
+              >
+                <span className="text-violet-300">{ICONES[nicho.id]}</span>
+                <span className="whitespace-nowrap font-display text-xs font-bold text-white/85">
+                  {nicho.nome}
+                </span>
+              </button>
+            );
+          })}
         </div>
       </div>
 

@@ -4,6 +4,10 @@ import { Reveal } from "./Reveal";
 
 interface Slide {
   src: string;
+  /** Dimensão real do arquivo: sem ela o navegador não reserva espaço
+      e o layout pula quando a imagem chega (CLS). */
+  w: number;
+  h: number;
   titulo: string;
   descricao: string;
   tipo: "desktop" | "mobile";
@@ -12,42 +16,56 @@ interface Slide {
 const SLIDES: Slide[] = [
   {
     src: "/cases/memo/01-dashboard.png",
+    w: 1917,
+    h: 901,
     titulo: "Dashboard Operacional",
     descricao: "Capacidade da oficina, OS concluídas, status geral e OTs por técnico, em tempo real.",
     tipo: "desktop",
   },
   {
     src: "/cases/memo/02-sla-gargalos.png",
+    w: 1576,
+    h: 383,
     titulo: "SLA & Gargalos",
     descricao: "Alerta automático de diagnóstico atrasado e aprovação pendente, antes que vire prejuízo.",
     tipo: "desktop",
   },
   {
     src: "/cases/memo/03-funil-orcamentos.png",
+    w: 1601,
+    h: 695,
     titulo: "Funil de Orçamentos",
     descricao: "Pipeline de orçamento por status, do 'aguardando aprovação' ao fechamento.",
     tipo: "desktop",
   },
   {
     src: "/cases/memo/04-planner.png",
+    w: 1617,
+    h: 791,
     titulo: "Programação de Ordens",
     descricao: "Agenda dos técnicos com arrastar e soltar. Zero choque de horário.",
     tipo: "desktop",
   },
   {
     src: "/cases/memo/05-kanban-os.png",
+    w: 1601,
+    h: 822,
     titulo: "Ordens de Serviço",
     descricao: "Kanban do ciclo completo: aberta, diagnóstico, aprovação, execução, faturamento.",
     tipo: "desktop",
   },
   {
     src: "/cases/memo/06-app-tecnico.png",
+    w: 472,
+    h: 806,
     titulo: "App do Técnico",
     descricao: "Agenda, execução, laudo e fotos direto no celular de quem está em campo.",
     tipo: "mobile",
   },
   {
     src: "/cases/memo/07-app-agenda.png",
+    w: 457,
+    h: 778,
     titulo: "Agenda do Técnico",
     descricao: "Visão semanal dos atendimentos agendados, sincronizada com o painel do administrador.",
     tipo: "mobile",
@@ -163,6 +181,8 @@ export function OutrosProjetos() {
                         <img
                           src={s.src}
                           alt={s.titulo}
+                          width={s.w}
+                          height={s.h}
                           loading="lazy"
                           onError={() => setComErro((prev) => ({ ...prev, [i]: true }))}
                           className="h-full w-full object-contain"
@@ -181,15 +201,23 @@ export function OutrosProjetos() {
 
             {/* Indicadores */}
             <div className="mt-6 flex items-center justify-center gap-2">
+              {/* O ponto continua pequeno, mas a área de toque é 44x44: o
+                  alvo visual e o alvo do dedo não precisam ter o mesmo
+                  tamanho. Antes o botão inteiro tinha 6x6px. */}
               {SLIDES.map((s, i) => (
                 <button
                   key={s.src}
                   onClick={() => irPara(i)}
                   aria-label={`Ir pro projeto ${i + 1}`}
-                  className={`h-1.5 rounded-full transition-all ${
-                    i === ativo ? "w-6 bg-blue-400" : "w-1.5 bg-white/15 hover:bg-white/30"
-                  }`}
-                />
+                  aria-current={i === ativo}
+                  className="flex h-11 w-11 items-center justify-center"
+                >
+                  <span
+                    className={`h-1.5 rounded-full transition-all ${
+                      i === ativo ? "w-6 bg-blue-400" : "w-1.5 bg-white/15 hover:bg-white/30"
+                    }`}
+                  />
+                </button>
               ))}
             </div>
           </div>
