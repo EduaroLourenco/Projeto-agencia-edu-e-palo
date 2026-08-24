@@ -2,6 +2,7 @@ import { Hero } from "../components/Hero";
 import { ServiceCards } from "../components/ServiceCards";
 import { CaseStudy } from "../components/CaseStudy";
 import { HowItWorks } from "../components/HowItWorks";
+import { About } from "../components/About";
 import { FAQ } from "../components/FAQ";
 import { ContactCTA } from "../components/ContactCTA";
 
@@ -29,6 +30,7 @@ export function HomePage() {
       <ServiceCards />
       <CaseStudy />
       <HowItWorks />
+      <About />
       <FAQ />
       <ContactCTA />
     </>
