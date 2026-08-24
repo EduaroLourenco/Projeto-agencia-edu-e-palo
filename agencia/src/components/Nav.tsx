@@ -8,6 +8,7 @@ import { rastrear } from "../lib/analytics";
 
 // Links simplificados — menos é mais. Sem dropdown "Mais".
 const LINKS = [
+  { href: "/#quem-somos", label: "Quem somos" },
   { href: "/#servicos", label: "Serviços" },
   { href: "/servicos", label: "Todos os serviços" },
   { href: "/#case", label: "Cases" },
@@ -18,6 +19,7 @@ const LINKS = [
 
 // No desktop, os mais importantes.
 const LINKS_DESKTOP = [
+  { href: "/#quem-somos", label: "Quem somos" },
   { href: "/#servicos", label: "Serviços" },
   { href: "/servicos", label: "Catálogo completo" },
   { href: "/#case", label: "Cases" },

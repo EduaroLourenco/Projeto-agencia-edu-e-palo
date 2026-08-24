@@ -20,37 +20,6 @@ export function About() {
             atendimento e time.
           </p>
 
-          <div className="mt-7 flex flex-wrap items-center gap-3">
-            <span className="flex items-center gap-1.5 rounded-full border border-blue-400/25 bg-blue-500/10 px-3 py-1.5 text-xs font-semibold text-blue-300">
-              <MapPin size={12} />
-              Goiânia, GO
-            </span>
-            <span className="rounded-full border border-white/[0.08] bg-white/5 px-3 py-1.5 text-xs font-semibold text-white/50">
-              Atendemos presencial e remoto
-            </span>
-          </div>
-
-          {/* Redes sociais da agência */}
-          <div className="mt-6 flex items-center gap-3">
-            <a
-              href={AGENCIA.instagram}
-              target="_blank"
-              rel="noreferrer"
-              className="flex min-h-[44px] items-center gap-1.5 rounded-full border border-white/[0.08] bg-white/5 px-4 text-xs font-semibold text-white/60 transition-colors hover:border-white/20 hover:text-white"
-            >
-              <Globe size={13} />
-              Instagram
-            </a>
-            <a
-              href={AGENCIA.linkedin}
-              target="_blank"
-              rel="noreferrer"
-              className="flex min-h-[44px] items-center gap-1.5 rounded-full border border-white/[0.08] bg-white/5 px-4 text-xs font-semibold text-white/60 transition-colors hover:border-white/20 hover:text-white"
-            >
-              <ExternalLink size={13} />
-              LinkedIn
-            </a>
-          </div>
         </Reveal>
 
         <div className="mt-14 grid grid-cols-1 gap-5 md:grid-cols-3">
