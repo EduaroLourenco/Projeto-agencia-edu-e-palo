@@ -1,7 +1,6 @@
 import { Hero } from "../components/Hero";
 import { ServiceCards } from "../components/ServiceCards";
 import { CaseStudy } from "../components/CaseStudy";
-import { Differentiators } from "../components/Differentiators";
 import { HowItWorks } from "../components/HowItWorks";
 import { FAQ } from "../components/FAQ";
 import { ContactCTA } from "../components/ContactCTA";
@@ -29,7 +28,6 @@ export function HomePage() {
       <Hero />
       <ServiceCards />
       <CaseStudy />
-      <Differentiators />
       <HowItWorks />
       <FAQ />
       <ContactCTA />
