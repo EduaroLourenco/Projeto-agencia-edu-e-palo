@@ -12,7 +12,6 @@ const LINKS = [
   { href: "/#servicos", label: "Serviços" },
   { href: "/servicos", label: "Todos os serviços" },
   { href: "/#case", label: "Cases" },
-  { href: "/#diferenciais", label: "Diferenciais" },
   { href: "/#como-funciona", label: "Como funciona" },
   { href: "/#faq", label: "FAQ" },
 ];

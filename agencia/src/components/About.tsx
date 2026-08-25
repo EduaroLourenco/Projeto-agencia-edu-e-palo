@@ -1,6 +1,6 @@
 import { Reveal } from "./Reveal";
-import { TIME, AGENCIA } from "../data/content";
-import { Globe, ExternalLink, MapPin } from "lucide-react";
+import { TIME } from "../data/content";
+import { ExternalLink } from "lucide-react";
 
 export function About() {
   return (
@@ -19,23 +19,17 @@ export function About() {
             online. Cada projeto passa pelas três mãos: código e operação, números e margem,
             atendimento e time.
           </p>
-
         </Reveal>
 
         <div className="mt-14 grid grid-cols-1 gap-5 md:grid-cols-3">
           {TIME.map((pessoa, i) => (
-            <Reveal key={pessoa.iniciais} delay={0.08 + i * 0.07} className="h-full">
-              <div className="flex h-full flex-col gap-4 rounded-2xl border border-white/[0.08] bg-surface p-6 transition-colors hover:border-white/20">
-                <div className="flex items-center gap-4">
-                  <span
-                    className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-white/[0.08] bg-white/[0.04] font-display text-lg font-bold text-white/80"
-                  >
-                    {pessoa.iniciais}
-                  </span>
-                  <p className="font-display text-base font-bold leading-snug text-white">
-                    {pessoa.nome}
-                  </p>
-                </div>
+            <Reveal key={pessoa.nome} delay={0.08 + i * 0.07} className="h-full">
+              {/* Sem avatar de inicial: uma letra dentro de um quadrado não
+                  diz nada sobre a pessoa e só empurra o texto pra baixo. */}
+              <div className="flex h-full flex-col gap-3 rounded-2xl border border-white/[0.08] bg-surface p-6 transition-colors hover:border-white/20">
+                <p className="font-display text-base font-bold leading-snug text-white">
+                  {pessoa.nome}
+                </p>
 
                 <p className="text-xs font-semibold leading-relaxed text-violet-300">{pessoa.papel}</p>
                 <p className="flex-1 text-xs leading-relaxed text-white/55">{pessoa.bio}</p>

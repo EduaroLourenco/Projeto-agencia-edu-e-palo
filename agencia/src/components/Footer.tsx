@@ -91,16 +91,9 @@ export function Footer() {
           <div className="flex flex-col gap-3">
             <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-white/30">Quem somos</p>
             {TIME.map((pessoa) => (
-              <div key={pessoa.nome} className="flex items-center gap-2.5">
-                <span
-                  className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br ${pessoa.cor} font-display text-xs font-bold text-white`}
-                >
-                  {pessoa.iniciais}
-                </span>
-                <div className="min-w-0">
-                  <p className="text-sm font-medium text-white/70">{pessoa.nome}</p>
-                  <p className="truncate text-[11px] text-white/40">{pessoa.papel.split("·")[0].trim()}</p>
-                </div>
+              <div key={pessoa.nome} className="min-w-0">
+                <p className="text-sm font-medium text-white/70">{pessoa.nome}</p>
+                <p className="truncate text-[11px] text-white/40">{pessoa.papel.split("·")[0].trim()}</p>
               </div>
             ))}
           </div>
