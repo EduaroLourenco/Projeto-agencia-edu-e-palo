@@ -28,35 +28,36 @@ export function About() {
             <Reveal
               key={pessoa.nome}
               delay={0.08 + i * 0.07}
-              className="h-full w-[78%] shrink-0 snap-center sm:w-[56%] md:w-auto"
+              className="h-full w-[85%] shrink-0 snap-center sm:w-[60%] md:w-auto"
             >
-              <div className="group flex h-full flex-col overflow-hidden rounded-3xl border border-white/[0.08] bg-surface transition-colors hover:border-white/20">
-                {/* A foto é o cartão. Nome e profissão vão por cima dela, no
-                    degradê, pra não empurrar a bio pra fora da tela. As três
-                    fotos vêm de câmeras e fundos diferentes: a saturação
-                    contida faz elas lerem como um conjunto. */}
-                <div className="relative aspect-[3/4] overflow-hidden bg-surface-2">
+              <div className="group flex h-full flex-col overflow-hidden rounded-3xl border border-white/[0.08] bg-surface transition-colors hover:border-violet-400/40">
+                {/* A foto é o cartão. Nome e papel vão por cima dela, no
+                    degradê, pra não empurrar a bio pra fora da tela. O fundo
+                    das três já foi desfocado e puxado pro tom do site na
+                    exportação: elas vieram de câmeras e cenários diferentes e
+                    precisavam ler como um conjunto. */}
+                <div className="relative aspect-[4/5] overflow-hidden bg-surface-2">
                   <img
                     src={pessoa.foto}
                     alt={`Retrato de ${pessoa.nome}`}
-                    width={660}
-                    height={880}
+                    width={680}
+                    height={850}
                     loading="lazy"
                     decoding="async"
-                    className="h-full w-full object-cover saturate-[0.9] transition-transform duration-500 group-hover:scale-[1.03]"
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
                   />
-                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink via-ink/75 to-transparent px-5 pb-5 pt-16">
-                    <p className="font-display text-lg font-bold leading-tight text-white">
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink via-ink/80 to-transparent px-5 pb-5 pt-20">
+                    <p className="font-display text-xl font-extrabold leading-tight tracking-tight text-white sm:text-2xl">
                       {pessoa.nome}
                     </p>
-                    <p className="mt-1 text-xs font-semibold leading-snug text-violet-300">
+                    <p className="mt-1.5 text-xs font-semibold leading-snug text-violet-300">
                       {pessoa.papel}
                     </p>
                   </div>
                 </div>
 
-                <div className="flex flex-1 flex-col p-5">
-                  <p className="flex-1 text-xs leading-relaxed text-white/55">{pessoa.bio}</p>
+                <div className="flex flex-1 flex-col p-5 sm:p-6">
+                  <p className="flex-1 text-[13px] leading-relaxed text-white/55">{pessoa.bio}</p>
                 </div>
               </div>
             </Reveal>

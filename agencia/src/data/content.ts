@@ -5,7 +5,7 @@ export const AGENCIA = {
   nomeCompleto: "BEPA Consultoria, Assessoria e Serviços",
   iniciais: "B",
   tagline: "Consultoria, Assessoria e Serviços",
-  whatsapp: "5516994447044",
+  whatsapp: "55169920093456",
   mensagemPadrao: "Oi! Vi o site de vocês e quero entender como posso digitalizar meu negócio.",
   email: "contato@bepa.com.br",
   // Guardados, mas fora do ar por decisão de conteúdo: nenhuma tela
