@@ -4,11 +4,12 @@ export const AGENCIA = {
   nome: "BEPA",
   nomeCompleto: "BEPA Consultoria, Assessoria e Serviços",
   iniciais: "B",
-  tagline: "Consultoria, Assessoria e Serviços · Goiânia",
-  cidade: "Goiânia",
+  tagline: "Consultoria, Assessoria e Serviços",
   whatsapp: "5516994447044",
   mensagemPadrao: "Oi! Vi o site de vocês e quero entender como posso digitalizar meu negócio.",
   email: "contato@bepa.com.br",
+  // Guardados, mas fora do ar por decisão de conteúdo: nenhuma tela
+  // renderiza esses dois hoje. Ficam aqui pra não se perderem.
   instagram: "https://instagram.com/bepa.consultoria",
   linkedin: "https://linkedin.com/company/bepa-consultoria",
 };
@@ -451,7 +452,8 @@ export interface MembroTime {
   foto: string;
   /** Recorte quadrado do rosto, 320x320, pros lugares apertados. */
   fotoQuadrada: string;
-  /** Vazio quando a pessoa ainda não tem perfil pra divulgar. */
+  /** Guardado, mas não renderizado hoje — o cartão do Quem somos não
+      mostra mais link de LinkedIn. */
   linkedin: string;
 }
 

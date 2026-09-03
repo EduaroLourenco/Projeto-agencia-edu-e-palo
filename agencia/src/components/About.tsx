@@ -1,6 +1,5 @@
 import { Reveal } from "./Reveal";
 import { TIME } from "../data/content";
-import { ExternalLink } from "lucide-react";
 
 export function About() {
   return (
@@ -56,20 +55,8 @@ export function About() {
                   </div>
                 </div>
 
-                <div className="flex flex-1 flex-col gap-3 p-5">
+                <div className="flex flex-1 flex-col p-5">
                   <p className="flex-1 text-xs leading-relaxed text-white/55">{pessoa.bio}</p>
-
-                  {pessoa.linkedin && (
-                    <a
-                      href={pessoa.linkedin}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="-mb-1 flex min-h-[44px] items-center gap-1.5 border-t border-white/8 pt-3 text-[11px] font-semibold text-white/45 transition-colors hover:text-white"
-                    >
-                      <ExternalLink size={12} />
-                      LinkedIn
-                    </a>
-                  )}
                 </div>
               </div>
             </Reveal>
