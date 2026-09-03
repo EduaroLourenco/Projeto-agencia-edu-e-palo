@@ -12,8 +12,8 @@ import { ContactCTA } from "../components/ContactCTA";
  * 1. Hero — título + subtítulo + CTAs
  * 2. ServiceCards — os 6 grupos macro, em grid, logo de cara
  * 3. Case — prova social (Zap-Commerce)
- * 4. Diferenciais — compactos
- * 5. Como funciona — as 5 etapas
+ * 4. Como funciona — as 5 etapas
+ * 5. Quem somos — as três pessoas por trás
  * 6. FAQ
  * 7. CTA final — formulário
  *
@@ -21,7 +21,7 @@ import { ContactCTA } from "../components/ContactCTA";
  * - Modules (carrossel) → substituído por ServiceCards
  * - OutrosProjetos → compacta com CaseStudy ou sai
  * - ConversasReais → prova social secundária
- * - About → info do time vai compacta no footer
+ * - Diferenciais → promessas que qualquer concorrente também faz
  */
 export function HomePage() {
   return (

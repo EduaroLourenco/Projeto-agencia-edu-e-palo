@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Globe, ExternalLink, MessageCircle, Share2 } from "lucide-react";
+import { MessageCircle, Share2 } from "lucide-react";
 import { AGENCIA, TIME, linkWhatsApp } from "../data/content";
 import { rastrear } from "../lib/analytics";
 
@@ -11,17 +11,8 @@ const LINKS_NAV = [
   { href: "/#faq", label: "FAQ" },
 ];
 
+// Sem Instagram e LinkedIn: só canais em que a conversa começa de verdade.
 const REDES = [
-  {
-    href: AGENCIA.instagram,
-    icon: <Globe size={16} />,
-    label: "Instagram",
-  },
-  {
-    href: AGENCIA.linkedin,
-    icon: <ExternalLink size={16} />,
-    label: "LinkedIn",
-  },
   {
     href: linkWhatsApp(),
     icon: <MessageCircle size={16} />,
@@ -49,10 +40,6 @@ export function Footer() {
               <span className="font-display text-base font-bold text-white">{AGENCIA.nome}</span>
             </Link>
             <p className="text-xs text-white/40">{AGENCIA.tagline}</p>
-            <p className="mt-1 flex items-center gap-1.5 text-xs text-white/30">
-              <span className="h-1.5 w-1.5 rounded-full bg-blue-400/70" />
-              Feito em Goiânia, GO
-            </p>
           </div>
 
           {/* Navegação */}
@@ -92,14 +79,18 @@ export function Footer() {
             <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-white/30">Quem somos</p>
             {TIME.map((pessoa) => (
               <div key={pessoa.nome} className="flex items-center gap-2.5">
-                <span
-                  className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br ${pessoa.cor} font-display text-xs font-bold text-white`}
-                >
-                  {pessoa.iniciais}
-                </span>
+                <img
+                  src={pessoa.fotoQuadrada}
+                  alt={`Foto de ${pessoa.nome}`}
+                  width={320}
+                  height={320}
+                  loading="lazy"
+                  decoding="async"
+                  className="h-9 w-9 shrink-0 rounded-lg border border-white/10 object-cover"
+                />
                 <div className="min-w-0">
                   <p className="text-sm font-medium text-white/70">{pessoa.nome}</p>
-                  <p className="truncate text-[11px] text-white/40">{pessoa.papel.split("·")[0].trim()}</p>
+                  <p className="truncate text-[11px] text-white/40">{pessoa.profissao}</p>
                 </div>
               </div>
             ))}
@@ -112,7 +103,7 @@ export function Footer() {
             © {new Date().getFullYear()} {AGENCIA.nome}. Todos os direitos reservados.
           </p>
           <p className="text-[11px] text-white/20">
-            Tecnologia, estratégia e resultado · Goiânia, GO
+            Tecnologia, estratégia e resultado
           </p>
         </div>
       </div>

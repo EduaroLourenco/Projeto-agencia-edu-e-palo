@@ -4,11 +4,12 @@ export const AGENCIA = {
   nome: "BEPA",
   nomeCompleto: "BEPA Consultoria, Assessoria e Serviços",
   iniciais: "B",
-  tagline: "Consultoria, Assessoria e Serviços · Goiânia",
-  cidade: "Goiânia",
+  tagline: "Consultoria, Assessoria e Serviços",
   whatsapp: "5516994447044",
   mensagemPadrao: "Oi! Vi o site de vocês e quero entender como posso digitalizar meu negócio.",
   email: "contato@bepa.com.br",
+  // Guardados, mas fora do ar por decisão de conteúdo: nenhuma tela
+  // renderiza esses dois hoje. Ficam aqui pra não se perderem.
   instagram: "https://instagram.com/bepa.consultoria",
   linkedin: "https://linkedin.com/company/bepa-consultoria",
 };
@@ -209,40 +210,6 @@ export const ETAPAS: Etapa[] = [
     numero: "05",
     titulo: "Suporte",
     descricao: "Acompanhamento pós-lançamento pra ajustar, melhorar e crescer junto com você.",
-  },
-];
-
-export interface Diferencial {
-  titulo: string;
-  descricao: string;
-  destaque?: boolean;
-}
-
-/* Cada item aqui precisa dizer algo que um concorrente NÃO possa copiar
-   sem mentir. "Processo transparente" e "suporte de verdade" toda agência
-   promete — então não diferenciam nada e viram enchimento. */
-export const DIFERENCIAIS: Diferencial[] = [
-  {
-    titulo: "Uma dupla, não uma esteira",
-    descricao:
-      "Sistema, site, finanças e automação saem das mesmas duas pessoas. Você não vira gerente de projeto coordenando três fornecedores que se apontam quando algo quebra.",
-    destaque: true,
-  },
-  {
-    titulo: "Preço fechado antes da primeira linha",
-    descricao: "Escopo, prazo e valor definidos na proposta. Sem “isso aí vai dar um extra”.",
-  },
-  {
-    titulo: "Sem fidelidade de 12 meses",
-    descricao: "Contrate o módulo que resolve agora. Se parar de fazer sentido, para, sem multa.",
-  },
-  {
-    titulo: "Construído do zero, não configurado",
-    descricao: "Os sistemas em Projetos nasceram da operação de um cliente real. Nenhum é template.",
-  },
-  {
-    titulo: "Ajuste depois do ar é combinado",
-    descricao: "Correção e melhoria entram no acordo desde o início, não viram cobrança surpresa.",
   },
 ];
 
@@ -475,39 +442,48 @@ export const CONVERSAS: Conversa[] = [
 ];
 
 export interface MembroTime {
-  iniciais: string;
   nome: string;
+  /** Profissão principal em uma linha, pra faixa do hero e pro rodapé.
+      O `papel` completo só aparece no cartão do Quem somos, que tem espaço. */
+  profissao: string;
   papel: string;
   bio: string;
-  cor: string;
-  /** Vazio quando a pessoa ainda não tem perfil pra divulgar. */
+  /** Retrato 3:4, 660x880. */
+  foto: string;
+  /** Recorte quadrado do rosto, 320x320, pros lugares apertados. */
+  fotoQuadrada: string;
+  /** Guardado, mas não renderizado hoje — o cartão do Quem somos não
+      mostra mais link de LinkedIn. */
   linkedin: string;
 }
 
 export const TIME: MembroTime[] = [
   {
-    iniciais: "E",
     nome: "Eduardo Lourenço",
+    profissao: "Engenheiro de Software",
     papel: "Engenheiro de Software · Consultor de E-commerce e Marketplace",
     bio: "Coordenador de e-commerce com estrada em marketplaces (Mercado Livre, Amazon, Shopee) e formação em Engenharia de Software. Cuida das integrações de ERP/API, da automação da operação e do desenvolvimento, com foco em rentabilidade e escala.",
-    cor: "from-violet-500 to-blue-400",
+    foto: "/time/eduardo.jpg",
+    fotoQuadrada: "/time/eduardo-sq.jpg",
     linkedin:
       "https://www.linkedin.com/in/eduardo-louren%C3%A7o-7a5739260?utm_source=share_via&utm_content=profile&utm_medium=member_ios",
   },
   {
-    iniciais: "P",
     nome: "Paloma Amaral",
+    profissao: "Finanças & Business Intelligence",
     papel: "Finanças & Business Intelligence",
     bio: "Gestão financeira e administrativa com foco em Business Intelligence: fluxo de caixa, conciliação bancária e dashboards que mostram onde está a margem. Em formação em Engenharia de Software, une dados, tecnologia e finanças.",
-    cor: "from-blue-400 to-pink-400",
+    foto: "/time/paloma.jpg",
+    fotoQuadrada: "/time/paloma-sq.jpg",
     linkedin: "https://www.linkedin.com/in/palomadias028",
   },
   {
-    iniciais: "B",
     nome: "Bárbara Prata",
+    profissao: "Gestão de Pessoas & Atendimento",
     papel: "Liderança, Gestão de Equipes & Experiência do Cliente",
     bio: "Formação em Gestão de Pessoas e Experiência do Cliente, com experiência em atendimento, acompanhamento de indicadores e desenvolvimento de equipes. Foco em atendimento proativo, eficaz e humanizado, sempre buscando resultado e melhoria contínua.",
-    cor: "from-pink-400 to-violet-500",
+    foto: "/time/barbara.jpg",
+    fotoQuadrada: "/time/barbara-sq.jpg",
     linkedin: "",
   },
 ];
