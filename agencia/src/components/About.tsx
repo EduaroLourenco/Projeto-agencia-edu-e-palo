@@ -21,30 +21,56 @@ export function About() {
           </p>
         </Reveal>
 
-        <div className="mt-14 grid grid-cols-1 gap-5 md:grid-cols-3">
+        {/* No celular vira carrossel. Empilhados, três cartões com foto
+            grande somavam quase três telas só de time; deslizando, as fotos
+            continuam grandes e a seção cabe em uma. */}
+        <div className="mt-12 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4 [-ms-overflow-style:none] [scrollbar-width:none] md:mt-14 md:grid md:grid-cols-3 md:gap-6 md:overflow-visible md:pb-0 [&::-webkit-scrollbar]:hidden">
           {TIME.map((pessoa, i) => (
-            <Reveal key={pessoa.nome} delay={0.08 + i * 0.07} className="h-full">
-              {/* Sem avatar de inicial: uma letra dentro de um quadrado não
-                  diz nada sobre a pessoa e só empurra o texto pra baixo. */}
-              <div className="flex h-full flex-col gap-3 rounded-2xl border border-white/[0.08] bg-surface p-6 transition-colors hover:border-white/20">
-                <p className="font-display text-base font-bold leading-snug text-white">
-                  {pessoa.nome}
-                </p>
+            <Reveal
+              key={pessoa.nome}
+              delay={0.08 + i * 0.07}
+              className="h-full w-[78%] shrink-0 snap-center sm:w-[56%] md:w-auto"
+            >
+              <div className="group flex h-full flex-col overflow-hidden rounded-3xl border border-white/[0.08] bg-surface transition-colors hover:border-white/20">
+                {/* A foto é o cartão. Nome e profissão vão por cima dela, no
+                    degradê, pra não empurrar a bio pra fora da tela. As três
+                    fotos vêm de câmeras e fundos diferentes: a saturação
+                    contida faz elas lerem como um conjunto. */}
+                <div className="relative aspect-[3/4] overflow-hidden bg-surface-2">
+                  <img
+                    src={pessoa.foto}
+                    alt={`Retrato de ${pessoa.nome}`}
+                    width={660}
+                    height={880}
+                    loading="lazy"
+                    decoding="async"
+                    className="h-full w-full object-cover saturate-[0.9] transition-transform duration-500 group-hover:scale-[1.03]"
+                  />
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink via-ink/75 to-transparent px-5 pb-5 pt-16">
+                    <p className="font-display text-lg font-bold leading-tight text-white">
+                      {pessoa.nome}
+                    </p>
+                    <p className="mt-1 text-xs font-semibold leading-snug text-violet-300">
+                      {pessoa.papel}
+                    </p>
+                  </div>
+                </div>
 
-                <p className="text-xs font-semibold leading-relaxed text-violet-300">{pessoa.papel}</p>
-                <p className="flex-1 text-xs leading-relaxed text-white/55">{pessoa.bio}</p>
+                <div className="flex flex-1 flex-col gap-3 p-5">
+                  <p className="flex-1 text-xs leading-relaxed text-white/55">{pessoa.bio}</p>
 
-                {pessoa.linkedin && (
-                  <a
-                    href={pessoa.linkedin}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="-mb-2 flex min-h-[44px] items-center gap-1.5 border-t border-white/8 pt-4 text-[11px] font-semibold text-white/45 transition-colors hover:text-white"
-                  >
-                    <ExternalLink size={12} />
-                    LinkedIn
-                  </a>
-                )}
+                  {pessoa.linkedin && (
+                    <a
+                      href={pessoa.linkedin}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="-mb-1 flex min-h-[44px] items-center gap-1.5 border-t border-white/8 pt-3 text-[11px] font-semibold text-white/45 transition-colors hover:text-white"
+                    >
+                      <ExternalLink size={12} />
+                      LinkedIn
+                    </a>
+                  )}
+                </div>
               </div>
             </Reveal>
           ))}

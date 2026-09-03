@@ -91,9 +91,20 @@ export function Footer() {
           <div className="flex flex-col gap-3">
             <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-white/30">Quem somos</p>
             {TIME.map((pessoa) => (
-              <div key={pessoa.nome} className="min-w-0">
-                <p className="text-sm font-medium text-white/70">{pessoa.nome}</p>
-                <p className="truncate text-[11px] text-white/40">{pessoa.papel.split("·")[0].trim()}</p>
+              <div key={pessoa.nome} className="flex items-center gap-2.5">
+                <img
+                  src={pessoa.fotoQuadrada}
+                  alt={`Foto de ${pessoa.nome}`}
+                  width={320}
+                  height={320}
+                  loading="lazy"
+                  decoding="async"
+                  className="h-9 w-9 shrink-0 rounded-lg border border-white/10 object-cover"
+                />
+                <div className="min-w-0">
+                  <p className="text-sm font-medium text-white/70">{pessoa.nome}</p>
+                  <p className="truncate text-[11px] text-white/40">{pessoa.profissao}</p>
+                </div>
               </div>
             ))}
           </div>

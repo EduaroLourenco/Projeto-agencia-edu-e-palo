@@ -442,8 +442,15 @@ export const CONVERSAS: Conversa[] = [
 
 export interface MembroTime {
   nome: string;
+  /** Profissão principal em uma linha, pra faixa do hero e pro rodapé.
+      O `papel` completo só aparece no cartão do Quem somos, que tem espaço. */
+  profissao: string;
   papel: string;
   bio: string;
+  /** Retrato 3:4, 660x880. */
+  foto: string;
+  /** Recorte quadrado do rosto, 320x320, pros lugares apertados. */
+  fotoQuadrada: string;
   /** Vazio quando a pessoa ainda não tem perfil pra divulgar. */
   linkedin: string;
 }
@@ -451,21 +458,30 @@ export interface MembroTime {
 export const TIME: MembroTime[] = [
   {
     nome: "Eduardo Lourenço",
+    profissao: "Engenheiro de Software",
     papel: "Engenheiro de Software · Consultor de E-commerce e Marketplace",
     bio: "Coordenador de e-commerce com estrada em marketplaces (Mercado Livre, Amazon, Shopee) e formação em Engenharia de Software. Cuida das integrações de ERP/API, da automação da operação e do desenvolvimento, com foco em rentabilidade e escala.",
+    foto: "/time/eduardo.jpg",
+    fotoQuadrada: "/time/eduardo-sq.jpg",
     linkedin:
       "https://www.linkedin.com/in/eduardo-louren%C3%A7o-7a5739260?utm_source=share_via&utm_content=profile&utm_medium=member_ios",
   },
   {
     nome: "Paloma Amaral",
+    profissao: "Finanças & Business Intelligence",
     papel: "Finanças & Business Intelligence",
     bio: "Gestão financeira e administrativa com foco em Business Intelligence: fluxo de caixa, conciliação bancária e dashboards que mostram onde está a margem. Em formação em Engenharia de Software, une dados, tecnologia e finanças.",
+    foto: "/time/paloma.jpg",
+    fotoQuadrada: "/time/paloma-sq.jpg",
     linkedin: "https://www.linkedin.com/in/palomadias028",
   },
   {
     nome: "Bárbara Prata",
+    profissao: "Gestão de Pessoas & Atendimento",
     papel: "Liderança, Gestão de Equipes & Experiência do Cliente",
     bio: "Formação em Gestão de Pessoas e Experiência do Cliente, com experiência em atendimento, acompanhamento de indicadores e desenvolvimento de equipes. Foco em atendimento proativo, eficaz e humanizado, sempre buscando resultado e melhoria contínua.",
+    foto: "/time/barbara.jpg",
+    fotoQuadrada: "/time/barbara-sq.jpg",
     linkedin: "",
   },
 ];
