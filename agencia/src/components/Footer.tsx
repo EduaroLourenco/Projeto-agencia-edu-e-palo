@@ -82,8 +82,8 @@ export function Footer() {
                 <img
                   src={pessoa.fotoQuadrada}
                   alt={`Foto de ${pessoa.nome}`}
-                  width={320}
-                  height={320}
+                  width={360}
+                  height={360}
                   loading="lazy"
                   decoding="async"
                   className="h-9 w-9 shrink-0 rounded-lg border border-white/10 object-cover"
