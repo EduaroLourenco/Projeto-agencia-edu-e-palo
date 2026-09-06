@@ -5,7 +5,8 @@ export const AGENCIA = {
   nomeCompleto: "BEPA Consultoria, Assessoria e Serviços",
   iniciais: "B",
   tagline: "Consultoria, Assessoria e Serviços",
-  whatsapp: "55169920093456",
+  // +55 16 92009-3456 — 55 (país) + 16 (DDD) + 9 dígitos, como o wa.me exige.
+  whatsapp: "5516920093456",
   mensagemPadrao: "Oi! Vi o site de vocês e quero entender como posso digitalizar meu negócio.",
   email: "contato@bepa.com.br",
   // Guardados, mas fora do ar por decisão de conteúdo: nenhuma tela
