@@ -127,7 +127,7 @@ export function Checkout({
           <span
             key={p.id}
             className={`h-1 flex-1 rounded-full transition-colors ${
-              i <= indice ? "bg-[var(--marca-500)]" : "bg-papel-3"
+              i <= indice ? "bg-[var(--marca-grafico)]" : "bg-papel-3"
             }`}
           />
         ))}

@@ -111,7 +111,7 @@ export function Botao({
   pequeno?: boolean;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>) {
   const tons: Record<TomBotao, string> = {
-    marca: "text-[var(--sobre-marca)] bg-[var(--marca-500)] hover:brightness-95 disabled:bg-tinta-25 disabled:text-papel",
+    marca: "text-[var(--sobre-marca)] bg-[var(--marca-500)] shadow-[var(--sombra-1)] hover:brightness-[0.96] disabled:bg-tinta-12 disabled:text-tinta-45 disabled:shadow-none",
     contorno: "border border-borda-forte bg-papel text-tinta hover:bg-papel-2",
     fantasma: "text-tinta-70 hover:bg-papel-3 hover:text-tinta",
     perigo: "border border-erro/30 bg-erro-fraco text-erro hover:bg-erro/10",
@@ -119,8 +119,8 @@ export function Botao({
   return (
     <button
       {...resto}
-      className={`inline-flex items-center justify-center gap-2 font-semibold transition disabled:cursor-not-allowed ${
-        pequeno ? "min-h-[38px] px-3 text-[13px]" : "min-h-[48px] px-5 text-[15px]"
+      className={`inline-flex items-center justify-center gap-2 tracking-[var(--tr-corpo)] disabled:cursor-not-allowed disabled:active:scale-100 ${
+        pequeno ? "min-h-[38px] px-3.5 text-[13px] font-semibold" : "min-h-[50px] px-5 text-[15px] font-bold"
       } ${largo ? "w-full" : ""} ${tons[tom]} ${resto.className ?? ""}`}
       style={{ borderRadius: "var(--canto-m)", ...resto.style }}
     >
@@ -321,7 +321,50 @@ export function Esqueleto({ className = "" }: { className?: string }) {
    ============================================================ */
 
 export function Sobrescrito({ children }: { children: ReactNode }) {
+  return <p className="rotulo text-tinta-45">{children}</p>;
+}
+
+/* ============================================================
+   PREÇO
+
+   Num sistema de venda o número é o conteúdo, não um detalhe. "R$ 24,90"
+   em negrito uniforme é o que faz a tela parecer planilha. Aqui o símbolo
+   recua, o inteiro domina e os centavos ficam menores e alinhados no topo —
+   é a convenção de vitrine e de app de banco, e lê muito mais rápido.
+   ============================================================ */
+
+const TAMANHOS_PRECO = {
+  p: { inteiro: "text-[15px]", simbolo: "text-[10px]", centavos: "text-[10px]" },
+  m: { inteiro: "text-[19px]", simbolo: "text-[11px]", centavos: "text-[11px]" },
+  g: { inteiro: "text-[27px]", simbolo: "text-[13px]", centavos: "text-[13px]" },
+  gg: { inteiro: "text-[34px]", simbolo: "text-[15px]", centavos: "text-[15px]" },
+} as const;
+
+export function Preco({
+  valor,
+  tamanho = "m",
+  sufixo,
+  className = "",
+}: {
+  valor: number;
+  tamanho?: keyof typeof TAMANHOS_PRECO;
+  sufixo?: string;
+  className?: string;
+}) {
+  const t = TAMANHOS_PRECO[tamanho];
+  const [inteiro, centavos] = Math.abs(valor)
+    .toFixed(2)
+    .split(".");
+  const comPonto = Number(inteiro).toLocaleString("pt-BR");
+
   return (
-    <p className="text-[10.5px] font-bold uppercase tracking-[0.13em] text-tinta-45">{children}</p>
+    <span className={`num-tab inline-flex items-start font-display leading-none text-tinta ${className}`}>
+      <span className={`${t.simbolo} mr-[0.18em] mt-[0.32em] font-semibold text-tinta-45`}>R$</span>
+      <span className={`${t.inteiro} font-extrabold tracking-[var(--tr-display)]`}>{comPonto}</span>
+      <span className={`${t.centavos} ml-[0.06em] mt-[0.28em] font-bold`}>{centavos}</span>
+      {sufixo && (
+        <span className={`${t.simbolo} ml-[0.35em] mt-[0.42em] font-medium text-tinta-45`}>{sufixo}</span>
+      )}
+    </span>
   );
 }

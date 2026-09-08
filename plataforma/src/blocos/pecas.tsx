@@ -1,8 +1,7 @@
 import { Plus, Check } from "lucide-react";
-import { formatarReal } from "../nucleo/preco";
 import { modulosAtivos } from "../nucleo/registro";
 import type { Loja, Oferta } from "../nucleo/tipos";
-import { Stepper } from "../design/Primitivos";
+import { Preco as PrecoTipografico, Stepper } from "../design/Primitivos";
 import { useVitrine } from "../vitrine/contexto";
 
 /** A oferta exige escolha antes de entrar na sacola? */
@@ -14,14 +13,16 @@ export function Foto({
   oferta,
   className = "",
   prioridade = false,
+  style,
 }: {
   oferta: Oferta;
   className?: string;
   prioridade?: boolean;
+  style?: React.CSSProperties;
 }) {
   const m = oferta.midia[0];
   if (!m) {
-    return <div className={`bg-papel-3 ${className}`} aria-hidden="true" />;
+    return <div className={`bg-papel-3 ${className}`} style={style} aria-hidden="true" />;
   }
   return (
     <img
@@ -31,18 +32,20 @@ export function Foto({
       height={m.altura}
       loading={prioridade ? "eager" : "lazy"}
       decoding="async"
+      onLoad={(e) => e.currentTarget.classList.add("anima-revelar")}
+      style={style}
       className={`bg-papel-3 object-cover ${className}`}
     />
   );
 }
 
-/** Preço com a etapa que pegou, quando pegou alguma. */
-export function Preco({ oferta, compacto = false }: { oferta: Oferta; compacto?: boolean }) {
+export function Preco({ oferta, tamanho = "p" }: { oferta: Oferta; tamanho?: "p" | "m" | "g" | "gg" }) {
   return (
-    <p className={`num-tab font-display font-bold tracking-tight ${compacto ? "text-[14px]" : "text-[15px]"}`}>
-      {formatarReal(oferta.precoBase)}
-      {oferta.tipo === "servico" && <span className="ml-1 text-[11px] font-medium text-tinta-45">/sessão</span>}
-    </p>
+    <PrecoTipografico
+      valor={oferta.precoBase}
+      tamanho={tamanho}
+      sufixo={oferta.tipo === "servico" ? "/sessão" : undefined}
+    />
   );
 }
 
@@ -55,38 +58,49 @@ export function CartaoOferta({ oferta, prioridade = false }: { oferta: Oferta; p
   const naSacola = quantidadeNaSacola(oferta.id);
   const escolher = precisaEscolher(oferta, loja);
 
+  // Sem moldura: a foto é o objeto, e o texto respira embaixo dela. Borda em
+  // volta de tudo achata a hierarquia e é o que faz grade de produto parecer
+  // tabela.
   return (
-    <div
-      className="group flex flex-col overflow-hidden border border-borda bg-papel transition hover:border-borda-forte"
-      style={{ borderRadius: "var(--canto-g)" }}
-    >
+    <div className="group flex flex-col">
       <button
         onClick={() => abrirOferta(oferta)}
-        className="relative block aspect-square w-full overflow-hidden text-left"
+        className="relative block aspect-square w-full overflow-hidden bg-papel-3 text-left"
+        style={{ borderRadius: "var(--canto-g)" }}
         aria-label={`Ver ${oferta.nome}`}
       >
-        <Foto oferta={oferta} prioridade={prioridade} className="h-full w-full transition duration-500 group-hover:scale-[1.03]" />
+        <Foto
+          oferta={oferta}
+          prioridade={prioridade}
+          className="h-full w-full transition-transform duration-[600ms] ease-out group-hover:scale-[1.04]"
+        />
         {naSacola > 0 && (
-          <span className="num-tab absolute left-2 top-2 flex h-6 min-w-6 items-center justify-center rounded-full bg-[var(--marca-500)] px-1.5 text-[11px] font-bold text-[var(--sobre-marca)]">
+          <span className="num-tab anima-pipoca absolute left-2.5 top-2.5 flex h-[26px] min-w-[26px] items-center justify-center rounded-full bg-tinta px-1.5 text-[11.5px] font-bold text-white shadow-[var(--sombra-2)]">
             {naSacola}
           </span>
         )}
       </button>
 
-      <div className="flex flex-1 flex-col gap-2 p-3">
+      <div className="flex flex-1 flex-col gap-1.5 pt-2.5">
         <button onClick={() => abrirOferta(oferta)} className="text-left">
-          <p className="line-clamp-2 text-[13.5px] font-semibold leading-snug">{oferta.nome}</p>
+          <p className="line-clamp-2 text-[13.5px] font-medium leading-snug tracking-[var(--tr-corpo)] text-tinta-70">
+            {oferta.nome}
+          </p>
         </button>
 
-        <div className="mt-auto flex items-center justify-between gap-2">
-          <Preco oferta={oferta} compacto />
+        <div className="mt-auto flex items-end justify-between gap-2 pt-0.5">
+          <Preco oferta={oferta} />
           <button
             onClick={() => (escolher ? abrirAdicionar(oferta) : somar(oferta, 1))}
             aria-label={`Adicionar ${oferta.nome}`}
-            className="flex h-9 w-9 shrink-0 items-center justify-center bg-[var(--marca-500)] text-[var(--sobre-marca)] transition hover:brightness-95"
+            className={`flex h-9 w-9 shrink-0 items-center justify-center transition-colors ${
+              naSacola > 0
+                ? "bg-tinta text-white"
+                : "bg-papel-3 text-tinta hover:bg-[var(--marca-500)] hover:text-[var(--sobre-marca)]"
+            }`}
             style={{ borderRadius: "var(--canto-m)" }}
           >
-            {naSacola > 0 ? <Check size={16} strokeWidth={2.6} /> : <Plus size={17} strokeWidth={2.6} />}
+            {naSacola > 0 ? <Check size={16} strokeWidth={2.8} /> : <Plus size={17} strokeWidth={2.8} />}
           </button>
         </div>
       </div>
@@ -109,13 +123,17 @@ export function LinhaOferta({ oferta }: { oferta: Oferta }) {
   return (
     <div className="flex items-center gap-3 border-b border-borda py-2.5 last:border-b-0">
       <button onClick={() => abrirOferta(oferta)} className="shrink-0" aria-label={`Ver ${oferta.nome}`}>
-        <Foto oferta={oferta} className="h-12 w-12" />
+        <Foto oferta={oferta} className="h-14 w-14" style={{ borderRadius: "var(--canto-p)" }} />
       </button>
 
       <button onClick={() => abrirOferta(oferta)} className="min-w-0 flex-1 text-left">
         {/* Duas linhas, não corte: o que distingue "500g" de "1kg" mora no fim do nome. */}
-        <p className="line-clamp-2 text-[13.5px] font-semibold leading-tight">{oferta.nome}</p>
-        <p className="num-tab mt-0.5 text-[12.5px] text-tinta-45">{formatarReal(oferta.precoBase)}</p>
+        <p className="line-clamp-2 text-[13.5px] font-medium leading-tight tracking-[var(--tr-corpo)]">
+          {oferta.nome}
+        </p>
+        <span className="mt-1 block">
+          <Preco oferta={oferta} />
+        </span>
       </button>
 
       {escolher ? (
@@ -168,13 +186,17 @@ export function TituloBloco({
   return (
     <div className="mb-3 flex items-end justify-between gap-3">
       <div className="min-w-0">
-        {titulo && <h2 className="font-display text-[17px] font-bold leading-tight tracking-tight">{titulo}</h2>}
-        {subtitulo && <p className="mt-0.5 text-[13px] text-tinta-45">{subtitulo}</p>}
+        {titulo && (
+          <h2 className="font-display text-[length:var(--t-titulo)] font-bold leading-[1.15] tracking-[var(--tr-titulo)]">
+            {titulo}
+          </h2>
+        )}
+        {subtitulo && <p className="mt-1 text-[length:var(--t-menor)] text-tinta-45">{subtitulo}</p>}
       </div>
       {acao && (
         <button
           onClick={acao.onClick}
-          className="shrink-0 whitespace-nowrap text-[13px] font-semibold text-[var(--marca-600)]"
+          className="shrink-0 whitespace-nowrap text-[length:var(--t-menor)] font-semibold text-[var(--marca-600)]"
         >
           {acao.rotulo}
         </button>

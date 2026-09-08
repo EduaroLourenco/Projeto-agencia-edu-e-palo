@@ -147,7 +147,7 @@ function ListaRapida({ props, ofertas, editando }: PropsBloco<PropsLista>) {
   return (
     <div>
       <TituloBloco titulo={props.titulo} subtitulo="Some a quantidade sem sair daqui" />
-      <div className="border border-borda bg-papel px-3.5" style={{ borderRadius: "var(--canto-g)" }}>
+      <div className="flex flex-col">
         {lista.map((o) => (
           <LinhaOferta key={o.id} oferta={o} />
         ))}
@@ -291,7 +291,7 @@ function RepetirPedido({ props, loja, editando }: PropsBloco<{ titulo: string }>
         substituir(pedido.linhas.map((l) => l.linha));
         irPara("sacola");
       }}
-      className="flex w-full items-center gap-3.5 border border-borda bg-papel p-4 text-left transition hover:border-borda-forte"
+      className="placa flex w-full items-center gap-3.5 p-4 text-left transition hover:shadow-[var(--sombra-2)]"
       style={{ borderRadius: "var(--canto-g)" }}
     >
       <span
@@ -301,8 +301,10 @@ function RepetirPedido({ props, loja, editando }: PropsBloco<{ titulo: string }>
         <RotateCcw size={19} />
       </span>
       <span className="min-w-0 flex-1">
-        <span className="block text-[14.5px] font-bold leading-tight">{props.titulo || "Repetir último pedido"}</span>
-        <span className="num-tab mt-0.5 block text-[12.5px] text-tinta-45">
+        <span className="block text-[length:var(--t-corpo)] font-bold leading-tight tracking-[var(--tr-corpo)]">
+          {props.titulo || "Repetir último pedido"}
+        </span>
+        <span className="num-tab mt-1 block text-[length:var(--t-mini)] text-tinta-45">
           {quando} · {pedido.linhas.length} {pedido.linhas.length === 1 ? "item" : "itens"} · {formatarReal(pedido.total)}
         </span>
       </span>

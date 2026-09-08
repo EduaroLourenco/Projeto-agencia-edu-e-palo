@@ -117,19 +117,19 @@ function BarraFaixaPreco({ props, loja, editando }: PropsBloco<{ titulo: string 
   const progresso = Math.min(100, (resumo.totalItens / teto) * 100);
 
   return (
-    <div className="border border-borda bg-papel p-4" style={{ borderRadius: "var(--canto-g)" }}>
+    <div className="placa p-4" style={{ borderRadius: "var(--canto-g)" }}>
       <div className="flex items-center justify-between gap-3">
         <Sobrescrito>{props.titulo || "Sua faixa de preço"}</Sobrescrito>
         {atual && (
-          <span className="bg-ok-fraco px-2 py-0.5 text-[11.5px] font-bold text-ok" style={{ borderRadius: "999px" }}>
+          <span className="num-tab bg-ok-fraco px-2 py-0.5 text-[11.5px] font-bold text-ok" style={{ borderRadius: "999px" }}>
             −{atual.desconto}% aplicado
           </span>
         )}
       </div>
 
-      <div className="mt-3 h-2 w-full overflow-hidden bg-papel-3" style={{ borderRadius: "999px" }}>
+      <div className="mt-3 h-[7px] w-full overflow-hidden bg-papel-3" style={{ borderRadius: "999px" }}>
         <div
-          className="h-full bg-[var(--marca-500)] transition-[width] duration-500"
+          className="h-full bg-[var(--marca-grafico)] transition-[width] duration-500"
           style={{ width: `${progresso}%`, borderRadius: "999px" }}
         />
       </div>

@@ -15,7 +15,7 @@ import type { DefinicaoBloco, PropsBloco } from "../nucleo/tipos";
 import { modulosAtivos } from "../nucleo/registro";
 import { formatarReal } from "../nucleo/preco";
 import { useSacola } from "../nucleo/sacola";
-import { Aviso, Botao, Chip, Entrada, Stepper } from "../design/Primitivos";
+import { Aviso, Botao, Chip, Entrada, Preco as PrecoTipografico, Sobrescrito, Stepper } from "../design/Primitivos";
 import { CartaoOferta, Foto, LinhaOferta, filtrarOfertas } from "./pecas";
 import { useVitrine } from "../vitrine/contexto";
 
@@ -112,7 +112,7 @@ function CatalogoLista({ props, ofertas }: PropsBloco<{ mostrarBusca: boolean; m
         </div>
       )}
 
-      <p className="num-tab text-[12.5px] text-tinta-45">
+      <p className="num-tab rotulo text-tinta-45">
         {lista.length} {lista.length === 1 ? "item" : "itens"}
       </p>
 
@@ -122,13 +122,13 @@ function CatalogoLista({ props, ofertas }: PropsBloco<{ mostrarBusca: boolean; m
           <p className="mt-1 text-[13px] text-tinta-45">Tente outra palavra ou volte pra "Todas".</p>
         </div>
       ) : modo === "lista" ? (
-        <div className="border border-borda bg-papel px-3.5" style={{ borderRadius: "var(--canto-g)" }}>
+        <div className="flex flex-col">
           {lista.map((o) => (
             <LinhaOferta key={o.id} oferta={o} />
           ))}
         </div>
       ) : (
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+        <div className="grid grid-cols-2 gap-x-3.5 gap-y-6 sm:grid-cols-3">
           {lista.map((o, i) => (
             <CartaoOferta key={o.id} oferta={o} prioridade={i < 4} />
           ))}
@@ -197,7 +197,7 @@ function OfertaGaleria({ oferta }: PropsBloco<Record<string, never>>) {
           {midia.map((m, i) => (
             <span
               key={m.url}
-              className={`h-1.5 rounded-full transition-all ${i === ativa ? "w-5 bg-[var(--marca-500)]" : "w-1.5 bg-tinta-25"}`}
+              className={`h-1.5 rounded-full transition-all ${i === ativa ? "w-5 bg-[var(--marca-grafico)]" : "w-1.5 bg-tinta-25"}`}
             />
           ))}
         </div>
@@ -224,19 +224,26 @@ function OfertaCabecalho({ oferta }: PropsBloco<Record<string, never>>) {
       {oferta.categorias.length > 0 && (
         <div className="flex flex-wrap gap-1.5">
           {oferta.categorias.map((c) => (
-            <span key={c} className="inline-flex items-center gap-1 bg-papel-3 px-2 py-1 text-[11.5px] font-semibold text-tinta-45" style={{ borderRadius: "999px" }}>
-              <Tag size={11} />
+            <span key={c} className="rotulo inline-flex items-center gap-1 text-tinta-45">
+              <Tag size={10} />
               {c}
             </span>
           ))}
         </div>
       )}
-      <h1 className="font-display text-[22px] font-extrabold leading-tight tracking-tight">{oferta.nome}</h1>
-      {oferta.resumo && <p className="text-[14px] leading-relaxed text-tinta-70">{oferta.resumo}</p>}
-      <p className="num-tab font-display text-[26px] font-extrabold tracking-tight">
-        {formatarReal(oferta.precoBase)}
-        {oferta.tipo === "servico" && <span className="ml-1.5 text-[13px] font-medium text-tinta-45">por sessão</span>}
-      </p>
+      <h1 className="font-display text-[length:var(--t-secao)] font-extrabold leading-[1.1] tracking-[var(--tr-secao)]">
+        {oferta.nome}
+      </h1>
+      {oferta.resumo && (
+        <p className="text-[length:var(--t-corpo)] leading-relaxed text-tinta-70">{oferta.resumo}</p>
+      )}
+      <div className="pt-1">
+        <PrecoTipografico
+          valor={oferta.precoBase}
+          tamanho="gg"
+          sufixo={oferta.tipo === "servico" ? "por sessão" : undefined}
+        />
+      </div>
     </div>
   );
 }
@@ -363,16 +370,24 @@ function SacolaItens({ loja }: PropsBloco<Record<string, never>>) {
         </div>
       )}
 
-      <div className="flex flex-col divide-y divide-borda border border-borda bg-papel px-3.5" style={{ borderRadius: "var(--canto-g)" }}>
+      <div className="flex flex-col divide-y divide-borda">
         {resumo.linhas.map((l) => (
-          <div key={l.linha.chave} className="flex gap-3 py-3.5">
-            <Foto oferta={l.oferta} className="h-16 w-16 shrink-0" />
+          <div key={l.linha.chave} className="flex gap-3.5 py-4 first:pt-0">
+            <Foto
+              oferta={l.oferta}
+              className="h-[72px] w-[72px] shrink-0"
+              style={{ borderRadius: "var(--canto-m)" }}
+            />
 
             <div className="flex min-w-0 flex-1 flex-col gap-1.5">
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
-                  <p className="text-[13.5px] font-semibold leading-tight">{l.oferta.nome}</p>
-                  {l.resumoSelecao && <p className="mt-0.5 text-[12.5px] text-tinta-45">{l.resumoSelecao}</p>}
+                  <p className="text-[length:var(--t-menor)] font-medium leading-snug tracking-[var(--tr-corpo)]">
+                    {l.oferta.nome}
+                  </p>
+                  {l.resumoSelecao && (
+                    <p className="mt-0.5 text-[length:var(--t-mini)] text-tinta-45">{l.resumoSelecao}</p>
+                  )}
                 </div>
                 <button
                   onClick={() => remover(l.linha.chave)}
@@ -397,8 +412,10 @@ function SacolaItens({ loja }: PropsBloco<Record<string, never>>) {
               <div className="mt-auto flex items-center justify-between gap-2">
                 <Stepper valor={l.linha.quantidade} onMudar={(n) => definirQuantidade(l.linha.chave, n)} compacto />
                 <div className="text-right">
-                  <p className="num-tab text-[14px] font-bold">{formatarReal(l.subtotal)}</p>
-                  <p className="num-tab text-[11.5px] text-tinta-45">{formatarReal(l.preco.unitario)}/un</p>
+                  <PrecoTipografico valor={l.subtotal} tamanho="p" />
+                  <p className="num-tab mt-0.5 text-[11px] text-tinta-45">
+                    {formatarReal(l.preco.unitario)}/un
+                  </p>
                 </div>
               </div>
             </div>
@@ -406,11 +423,11 @@ function SacolaItens({ loja }: PropsBloco<Record<string, never>>) {
         ))}
       </div>
 
-      <div className="flex items-center justify-between border-t border-borda pt-3.5">
-        <span className="num-tab text-[13px] text-tinta-45">
+      <div className="flex items-end justify-between border-t-2 border-tinta pt-3.5">
+        <span className="num-tab rotulo text-tinta-45">
           {resumo.totalItens} {resumo.totalItens === 1 ? "item" : "itens"}
         </span>
-        <span className="num-tab font-display text-[21px] font-extrabold tracking-tight">{formatarReal(resumo.total)}</span>
+        <PrecoTipografico valor={resumo.total} tamanho="g" />
       </div>
 
       <p className="text-[12px] text-tinta-45">
@@ -448,10 +465,10 @@ function ConfirmacaoRecibo({ props, ofertas }: PropsBloco<{ titulo: string; text
         >
           <Check size={26} strokeWidth={2.5} />
         </span>
-        <h1 className="mt-4 font-display text-[21px] font-extrabold leading-tight tracking-tight">
+        <h1 className="mt-4 font-display text-[length:var(--t-secao)] font-extrabold leading-[1.1] tracking-[var(--tr-secao)]">
           {props.titulo || "Pedido enviado"}
         </h1>
-        <p className="mx-auto mt-2 max-w-sm text-[14px] leading-relaxed text-tinta-70">
+        <p className="mx-auto mt-2.5 max-w-sm text-[length:var(--t-corpo)] leading-relaxed text-tinta-70">
           {props.texto || "Abrimos o WhatsApp com o pedido pronto. Confirme o envio na conversa."}
         </p>
       </div>
@@ -462,8 +479,10 @@ function ConfirmacaoRecibo({ props, ofertas }: PropsBloco<{ titulo: string; text
 
       {sugestoes.length > 0 && (
         <div>
-          <p className="mb-3 text-[13px] font-semibold text-tinta-70">Costumam pedir junto</p>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="mb-3">
+            <Sobrescrito>Costumam pedir junto</Sobrescrito>
+          </div>
+          <div className="grid grid-cols-2 gap-x-3.5 gap-y-6">
             {sugestoes.map((o) => (
               <CartaoOferta key={o.id} oferta={o} />
             ))}

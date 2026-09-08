@@ -1,4 +1,4 @@
-import { bloco as buscarBloco } from "../nucleo/registro";
+import { bloco as buscarBloco, propsPadrao } from "../nucleo/registro";
 import { PAGINAS } from "../paginas/definicoes";
 import type { BlocoNaPagina, Loja, Oferta, TipoPagina } from "../nucleo/tipos";
 
@@ -14,14 +14,28 @@ export function ordenarComAncoras(pagina: TipoPagina, blocos: BlocoNaPagina[]): 
   const def = PAGINAS[pagina];
   const saida: BlocoNaPagina[] = [];
 
-  const noEspaco = (espacoId: string) => blocos.filter((b) => (b.props.__espaco ?? "corpo") === espacoId);
+  // Âncora não entra nos espaços livres: ela tem lugar próprio.
+  const tiposAncora = new Set(def.ancoras);
+  const livres = blocos.filter((b) => !tiposAncora.has(b.tipo));
+  const noEspaco = (espacoId: string) => livres.filter((b) => (b.props.__espaco ?? "corpo") === espacoId);
 
   // Antes da primeira âncora
   const primeiro = def.espacos.find((e) => e.depoisDaAncora === null);
   if (primeiro) saida.push(...noEspaco(primeiro.id));
 
   for (const ancora of def.ancoras) {
-    saida.push({ id: `ancora-${ancora}`, tipo: ancora, props: {} });
+    // Âncora também tem campos com valor padrão — a busca do catálogo é um
+    // deles. Injetar `props: {}` fazia esses padrões nunca chegarem.
+    // Se a loja salvou uma configuração pra esta âncora, ela ganha.
+    const salva = blocos.find((b) => b.tipo === ancora);
+    const definicao = buscarBloco(ancora);
+    saida.push(
+      salva ?? {
+        id: `ancora-${ancora}`,
+        tipo: ancora,
+        props: definicao ? propsPadrao(definicao) : {},
+      },
+    );
     const espaco = def.espacos.find((e) => e.depoisDaAncora === ancora);
     if (espaco) saida.push(...noEspaco(espaco.id));
   }

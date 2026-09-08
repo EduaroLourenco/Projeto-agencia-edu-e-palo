@@ -69,7 +69,7 @@ export const moduloPagamento: Modulo = {
                       ativo ? "border-[var(--marca-500)]" : "border-borda-forte"
                     }`}
                   >
-                    {ativo && <span className="h-2 w-2 rounded-full bg-[var(--marca-500)]" />}
+                    {ativo && <span className="h-2 w-2 rounded-full bg-[var(--marca-grafico)]" />}
                   </span>
                   <span className="min-w-0">
                     <span className="block text-[14px] font-semibold">{f.nome}</span>

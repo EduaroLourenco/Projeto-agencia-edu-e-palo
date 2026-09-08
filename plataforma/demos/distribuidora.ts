@@ -108,6 +108,7 @@ export const distribuidora: Loja = {
 
   paginas: {
     inicio: [
+      { id: "b0", tipo: "banner", props: { imagemCelular: "/catalogo/hero-distribuidora.jpg", imagemDesktop: "/catalogo/hero-distribuidora.jpg", titulo: "Seu estoque, sem sair do balcão", texto: "Mercearia, bebidas e limpeza. Entrega na sua região em 48h.", rotuloBotao: "", linkBotao: "", variante: "sobreposto", altura: "alta" } },
       { id: "b1", tipo: "faixa-aviso", props: { texto: "Pedido mínimo R$ 300 · entrega em 48h na rota", tom: "marca" } },
       { id: "b2", tipo: "repetir-pedido", props: { titulo: "Repetir último pedido" } },
       { id: "b3", tipo: "barra-faixa-preco", props: { titulo: "Sua faixa de preço" } },

@@ -58,14 +58,26 @@ function Banner({ props, editando }: PropsBloco<PropsBanner>) {
 
       {variante === "sobreposto" && temTexto && (
         <>
-          <div className="absolute inset-0 bg-gradient-to-t from-tinta/80 via-tinta/25 to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 p-5">
-            {titulo && <h2 className="font-display text-[22px] font-extrabold leading-tight tracking-tight text-white">{titulo}</h2>}
-            {texto && <p className="mt-1 max-w-sm text-[13.5px] leading-snug text-white/85">{texto}</p>}
+          {/* Véu forte de verdade. A arte do banner pode ser clara — e texto
+              branco sobre imagem clara é o furo de legibilidade mais comum
+              em vitrine. Aqui o degradê cobre mais da metade e chega quase
+              opaco embaixo, onde o texto mora. */}
+          <div className="absolute inset-0 bg-gradient-to-t from-tinta via-tinta/70 via-45% to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 p-5 pt-14">
+            {titulo && (
+              <h2 className="font-display text-[length:var(--t-secao)] font-extrabold leading-[1.08] tracking-[var(--tr-secao)] text-white [text-shadow:0_1px_12px_rgba(0,0,0,0.35)]">
+                {titulo}
+              </h2>
+            )}
+            {texto && (
+              <p className="mt-1.5 max-w-sm text-[length:var(--t-menor)] leading-snug text-white/90 [text-shadow:0_1px_10px_rgba(0,0,0,0.4)]">
+                {texto}
+              </p>
+            )}
             {rotuloBotao && (
               <a
                 href={linkBotao || "#"}
-                className="mt-3 inline-flex min-h-[42px] items-center bg-white px-4 text-[14px] font-bold text-tinta"
+                className="mt-3.5 inline-flex min-h-[44px] items-center bg-white px-5 text-[14px] font-bold text-tinta shadow-[var(--sombra-2)]"
                 style={{ borderRadius: "var(--canto-m)" }}
               >
                 {rotuloBotao}
@@ -221,7 +233,7 @@ function CarrosselBanners({ props, editando }: PropsBloco<PropsCarrossel>) {
               aria-current={i === ativo}
               className="flex h-6 w-6 items-center justify-center"
             >
-              <span className={`h-1.5 rounded-full transition-all ${i === ativo ? "w-5 bg-[var(--marca-500)]" : "w-1.5 bg-tinta-25"}`} />
+              <span className={`h-1.5 rounded-full transition-all ${i === ativo ? "w-5 bg-[var(--marca-grafico)]" : "w-1.5 bg-tinta-25"}`} />
             </button>
           ))}
         </div>
@@ -327,9 +339,15 @@ function Texto({ props, editando }: PropsBloco<PropsTexto>) {
   if (!props.titulo && !props.corpo) return editando ? <VazioNoEstudio>Escreva um título ou um texto.</VazioNoEstudio> : null;
   return (
     <div className={alinha}>
-      {props.titulo && <h2 className="font-display text-[18px] font-bold leading-tight tracking-tight">{props.titulo}</h2>}
+      {props.titulo && (
+        <h2 className="font-display text-[length:var(--t-titulo)] font-bold leading-[1.15] tracking-[var(--tr-titulo)]">
+          {props.titulo}
+        </h2>
+      )}
       {props.corpo && (
-        <p className="mt-2 whitespace-pre-line text-[14px] leading-relaxed text-tinta-70">{props.corpo}</p>
+        <p className="mt-2.5 whitespace-pre-line text-[length:var(--t-corpo)] leading-relaxed text-tinta-70">
+          {props.corpo}
+        </p>
       )}
     </div>
   );
@@ -378,7 +396,7 @@ function ProvaSocial({ props, editando }: PropsBloco<{ titulo: string; depoiment
         {lista.map((d, i) => (
           <figure
             key={i}
-            className="flex w-[82%] shrink-0 snap-center flex-col gap-3 border border-borda bg-papel p-4 sm:w-[46%]"
+            className="placa flex w-[82%] shrink-0 snap-center flex-col gap-3 p-5 sm:w-[46%]"
             style={{ borderRadius: "var(--canto-g)" }}
           >
             <Quote size={18} className="text-[var(--marca-400)]" />
@@ -489,9 +507,13 @@ export const blocoVideo: DefinicaoBloco<{ titulo: string; url: string }> = {
 
 function Contato({ props, loja }: PropsBloco<{ titulo: string; texto: string; rotuloBotao: string }>) {
   return (
-    <div className="border border-borda bg-papel p-5 text-center" style={{ borderRadius: "var(--canto-g)" }}>
-      <h2 className="font-display text-[17px] font-bold tracking-tight">{props.titulo}</h2>
-      {props.texto && <p className="mx-auto mt-1.5 max-w-sm text-[13.5px] text-tinta-70">{props.texto}</p>}
+    <div className="placa p-6 text-center" style={{ borderRadius: "var(--canto-g)" }}>
+      <h2 className="font-display text-[length:var(--t-titulo)] font-bold leading-tight tracking-[var(--tr-titulo)]">
+        {props.titulo}
+      </h2>
+      {props.texto && (
+        <p className="mx-auto mt-2 max-w-sm text-[length:var(--t-menor)] leading-relaxed text-tinta-70">{props.texto}</p>
+      )}
       <a
         href={`https://wa.me/${loja.whatsapp.replace(/\D/g, "")}`}
         target="_blank"

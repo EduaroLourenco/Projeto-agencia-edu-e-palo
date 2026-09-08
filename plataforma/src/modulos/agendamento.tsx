@@ -66,6 +66,18 @@ export function proximosDias(cfg: ConfigAgendamento, quantos = 14): Date[] {
   return dias;
 }
 
+/**
+ * Ocupação simulada, estável por dia.
+ *
+ * Sem isto a agenda mostra o mesmo número de vagas em todos os dias, o que
+ * denuncia demonstração na hora. Quando a agenda real entrar (API), esta
+ * função sai e o horário ocupado vem do banco.
+ */
+function ocupado(dia: Date, minutos: number): boolean {
+  const semente = dia.getDate() * 137 + dia.getMonth() * 31 + minutos * 7;
+  return ((semente * 2654435761) % 1000) / 1000 < 0.42;
+}
+
 /** Os horários de um dia, já descontando o que passou se for hoje. */
 export function horariosDoDia(cfg: ConfigAgendamento, dia: Date, duracaoMin: number): string[] {
   const [hi, mi] = cfg.horaInicio.split(":").map(Number);
@@ -80,6 +92,7 @@ export function horariosDoDia(cfg: ConfigAgendamento, dia: Date, duracaoMin: num
   const out: string[] = [];
   for (let m = inicio; m + duracaoMin <= fim; m += cfg.intervalo) {
     if (ehHoje && m <= minutosAgora + 60) continue; // não oferece daqui a 10 minutos
+    if (ocupado(dia, m)) continue;
     out.push(`${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`);
   }
   return out;
@@ -104,13 +117,14 @@ function ProximosHorarios({ props, loja, ofertas, editando }: PropsBloco<{ titul
   }
 
   const dias = proximosDias(cfg, 5);
+  const menorDuracao = Math.min(...servicos.map((o) => dadosDa(o)?.duracaoMin ?? 30));
 
   return (
-    <div className="border border-borda bg-papel p-4" style={{ borderRadius: "var(--canto-g)" }}>
+    <div className="placa p-4" style={{ borderRadius: "var(--canto-g)" }}>
       <Sobrescrito>{props.titulo || "Próximos horários"}</Sobrescrito>
       <div className="sem-barra mt-3 flex gap-2 overflow-x-auto">
         {dias.map((d) => {
-          const livres = horariosDoDia(cfg, d, 30).length;
+          const livres = horariosDoDia(cfg, d, menorDuracao).length;
           return (
             <div
               key={d.toISOString()}

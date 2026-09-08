@@ -5,8 +5,7 @@ import { ProvedorSacola, useSacola } from "../nucleo/sacola";
 import { montarResumo } from "../nucleo/resumo";
 import { modulosAtivos } from "../nucleo/registro";
 import { aplicarTema, garantirFontes } from "../nucleo/tema";
-import { formatarReal } from "../nucleo/preco";
-import { Botao } from "../design/Primitivos";
+import { Botao, Preco } from "../design/Primitivos";
 import { ProvedorVitrine } from "./contexto";
 import { Montador } from "./Montador";
 import { FolhaAdicionar } from "./FolhaAdicionar";
@@ -175,29 +174,35 @@ function Cabecalho({
   const titulo = pagina === "oferta" && oferta ? oferta.nome : pagina === "sacola" ? "Sua sacola" : loja.nome;
 
   return (
-    <header className={`z-30 border-b border-borda bg-papel/95 backdrop-blur ${fixo ? "sticky top-0" : ""}`}>
-      <div className="flex items-center gap-2 px-3 py-2.5">
-        {naRaiz ? (
-          <span
-            className="flex h-10 w-10 shrink-0 items-center justify-center bg-[var(--marca-500)] font-display text-[15px] font-extrabold text-[var(--sobre-marca)]"
-            style={{ borderRadius: "var(--canto-m)" }}
-          >
-            {loja.nome.slice(0, 1)}
-          </span>
-        ) : (
+    <header
+      className={`z-30 bg-papel/92 backdrop-blur-xl ${fixo ? "sticky top-0 shadow-[0_1px_0_var(--color-borda)]" : "border-b border-borda"}`}
+    >
+      <div className="flex items-center gap-1.5 px-3 py-2.5">
+        {!naRaiz && (
           <button
             onClick={() => irPara(pagina === "oferta" ? "catalogo" : "inicio")}
             aria-label="Voltar"
-            className="flex h-10 w-10 shrink-0 items-center justify-center text-tinta-70"
+            className="-ml-1 flex h-10 w-10 shrink-0 items-center justify-center text-tinta-70"
           >
             <ArrowLeft size={20} />
           </button>
         )}
 
-        <div className="min-w-0 flex-1">
-          <p className="truncate font-display text-[15px] font-bold leading-tight tracking-tight">{titulo}</p>
+        {/* O nome da loja é a marca. Um quadradinho com a inicial é o que
+            todo template faz — e não identifica ninguém. */}
+        <div className={`min-w-0 flex-1 ${naRaiz ? "pl-1" : ""}`}>
+          <p
+            className={`truncate font-display font-extrabold leading-none tracking-[var(--tr-secao)] ${
+              naRaiz ? "text-[length:var(--t-titulo)]" : "text-[15px] font-bold tracking-[var(--tr-titulo)]"
+            }`}
+          >
+            {titulo}
+          </p>
           {naRaiz && (
-            <p className="truncate text-[11.5px] text-tinta-45">
+            <p className="mt-1 flex items-center gap-1.5 truncate text-[length:var(--t-mini)] text-tinta-45">
+              <span
+                className={`h-1.5 w-1.5 shrink-0 rounded-full ${loja.aberta ? "bg-ok" : "bg-tinta-25"}`}
+              />
               {loja.aberta ? "Aberta agora" : "Fechada — pedidos ficam pra amanhã"}
             </p>
           )}
@@ -220,7 +225,10 @@ function Cabecalho({
         >
           <ShoppingBag size={19} />
           {totalItens > 0 && (
-            <span className="num-tab absolute right-0.5 top-0.5 flex h-[17px] min-w-[17px] items-center justify-center rounded-full bg-[var(--marca-500)] px-1 text-[10px] font-bold text-[var(--sobre-marca)]">
+            <span
+              key={totalItens}
+              className="num-tab anima-pipoca absolute right-0 top-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-tinta px-1 text-[10px] font-bold text-white"
+            >
               {totalItens}
             </span>
           )}
@@ -246,17 +254,17 @@ function BarraInferior({
 
   return (
     <div
-      className="fixed inset-x-0 bottom-0 z-30 mx-auto w-full max-w-lg border-t border-borda bg-papel/95 px-4 pt-3 backdrop-blur"
+      className="fixed inset-x-0 bottom-0 z-30 mx-auto w-full max-w-lg bg-papel/92 px-4 pt-3 shadow-[0_-1px_0_var(--color-borda),0_-12px_28px_-18px_rgba(22,19,15,0.25)] backdrop-blur-xl"
       style={{ paddingBottom: "max(0.85rem, env(safe-area-inset-bottom))" }}
     >
       <div className="flex items-center gap-3">
         <div className="min-w-0 flex-1">
-          <p className="num-tab text-[11.5px] text-tinta-45">
+          <p className="num-tab rotulo text-tinta-45">
             {resumo.totalItens} {resumo.totalItens === 1 ? "item" : "itens"}
           </p>
-          <p className="num-tab font-display text-[18px] font-extrabold leading-tight tracking-tight">
-            {formatarReal(resumo.total)}
-          </p>
+          <div className="mt-1">
+            <Preco valor={resumo.total} tamanho="m" />
+          </div>
         </div>
 
         <Botao

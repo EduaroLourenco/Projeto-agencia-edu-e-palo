@@ -15,7 +15,7 @@ import {
   Undo2,
 } from "lucide-react";
 import type { BlocoNaPagina, DefinicaoBloco, Loja, TipoPagina } from "../nucleo/tipos";
-import { propsPadrao } from "../nucleo/registro";
+import { bloco as buscarDefinicao, propsPadrao } from "../nucleo/registro";
 import { publicar, salvarRascunho, temRascunho } from "../nucleo/loja";
 import { ORDEM_PAGINAS, PAGINAS } from "../paginas/definicoes";
 import { aplicarTema, garantirFontes } from "../nucleo/tema";
@@ -92,6 +92,29 @@ export function Estudio({ lojaInicial }: { lojaInicial: Loja }) {
 
   const emEdicao = blocosDaPagina.find((b) => b.id === editandoId) ?? null;
 
+  /**
+   * Âncora só existe na lista salva depois que alguém mexe nela. No primeiro
+   * toque ela é materializada com os padrões, e a partir daí é um bloco
+   * normal — só que sem alça de arrastar nem lixeira.
+   */
+  function abrirPropriedades(id: string) {
+    if (!id.startsWith("ancora-")) {
+      setEditandoId(id);
+      return;
+    }
+    const tipo = id.slice("ancora-".length);
+    const jaExiste = blocosDaPagina.find((b) => b.tipo === tipo);
+    if (jaExiste) {
+      setEditandoId(jaExiste.id);
+      return;
+    }
+    const def = buscarDefinicao(tipo);
+    if (!def) return;
+    const novo: BlocoNaPagina = { id: `a_${tipo}`, tipo, props: propsPadrao(def) };
+    definirBlocos([...blocosDaPagina, novo]);
+    setEditandoId(novo.id);
+  }
+
   return (
     <div className="mx-auto flex min-h-dvh w-full max-w-lg flex-col bg-papel-2">
       {!verComoCliente && (
@@ -117,7 +140,7 @@ export function Estudio({ lojaInicial }: { lojaInicial: Loja }) {
             editando={!verComoCliente}
             blocos={blocosDaPagina}
             onDefinirBlocos={definirBlocos}
-            onAbrirPropriedades={setEditandoId}
+            onAbrirPropriedades={abrirPropriedades}
             onDuplicar={duplicar}
           />
         </div>
@@ -223,7 +246,7 @@ function PreviaEditavel({
 
           return (
             <>
-              {mostrarGuia && <div className="my-1 h-1 rounded-full bg-[var(--marca-500)]" />}
+              {mostrarGuia && <div className="my-1 h-1 rounded-full bg-[var(--marca-grafico)]" />}
 
               <div
                 data-bloco={b.id}

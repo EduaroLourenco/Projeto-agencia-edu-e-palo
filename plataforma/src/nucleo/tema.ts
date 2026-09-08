@@ -30,41 +30,182 @@ function hexParaHsl(hex: string): [number, number, number] {
   return [h * 360, s * 100, l * 100];
 }
 
-/** Luminosidade alvo de cada degrau. A saturação cai nas pontas pra não berrar. */
-const DEGRAUS: { nome: string; l: number; sMult: number }[] = [
-  { nome: "50", l: 97, sMult: 0.5 },
-  { nome: "100", l: 93, sMult: 0.7 },
-  { nome: "200", l: 85, sMult: 0.85 },
-  { nome: "300", l: 74, sMult: 0.95 },
-  { nome: "400", l: 62, sMult: 1 },
-  { nome: "500", l: 52, sMult: 1 },
-  { nome: "600", l: 44, sMult: 1 },
-  { nome: "700", l: 36, sMult: 0.95 },
-  { nome: "800", l: 28, sMult: 0.9 },
-  { nome: "900", l: 20, sMult: 0.8 },
+/* ============================================================
+   A ESCALA
+
+   A primeira versão fixava a luminosidade de cada degrau — 600 = 44% de
+   lightness, sempre. Estava errado: o olho não lê HSL. Verde a 44% é bem
+   mais claro que violeta a 44%, então a mesma regra dava 2,7 de contraste
+   no verde e 8,7 no violeta. Cinco de oito cores testadas reprovavam.
+
+   Agora todo degrau que carrega texto ou serve de fundo de botão é resolvido
+   POR CONTRASTE: busca binária na luminosidade até bater a razão alvo contra
+   o papel. Funciona pra qualquer matiz, inclusive amarelo.
+   ============================================================ */
+
+function hslParaRgb(h: number, s: number, l: number): [number, number, number] {
+  const S = s / 100;
+  const L = l / 100;
+  const c = (1 - Math.abs(2 * L - 1)) * S;
+  const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
+  const m = L - c / 2;
+  const [r, g, b] =
+    h < 60 ? [c, x, 0] :
+    h < 120 ? [x, c, 0] :
+    h < 180 ? [0, c, x] :
+    h < 240 ? [0, x, c] :
+    h < 300 ? [x, 0, c] : [c, 0, x];
+  return [r + m, g + m, b + m];
+}
+
+function luminancia([r, g, b]: [number, number, number]): number {
+  const f = (c: number) => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
+  return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b);
+}
+
+function razao(a: [number, number, number], b: [number, number, number]): number {
+  const la = luminancia(a);
+  const lb = luminancia(b);
+  return (Math.max(la, lb) + 0.05) / (Math.min(la, lb) + 0.05);
+}
+
+const PAPEL: [number, number, number] = [1, 1, 1];
+const TINTA: [number, number, number] = [0.078, 0.071, 0.102];
+
+/**
+ * A luminosidade que faz esta matiz bater o contraste pedido contra o papel.
+ * Escurecer sempre aumenta o contraste, então a função é monótona e 20 passos
+ * de busca binária chegam mais perto do que a tela consegue mostrar.
+ */
+function luminosidadeParaContraste(h: number, s: number, alvo: number): number {
+  let baixo = 0;
+  let alto = 100;
+  for (let i = 0; i < 20; i++) {
+    const meio = (baixo + alto) / 2;
+    if (razao(hslParaRgb(h, s, meio), PAPEL) >= alvo) baixo = meio;
+    else alto = meio;
+  }
+  return baixo;
+}
+
+/**
+ * Quem tem `contraste` é resolvido por busca — são os tons que carregam
+ * TEXTO em cima do papel. Quem tem `l` é tinta clara, que só serve de fundo.
+ *
+ * O 500 não está aqui: ele é a superfície da marca (fundo de botão) e segue
+ * outra regra, logo abaixo.
+ */
+const DEGRAUS: { nome: string; l?: number; contraste?: number; sMult: number }[] = [
+  { nome: "50", l: 97.5, sMult: 0.45 },
+  { nome: "100", l: 94, sMult: 0.6 },
+  { nome: "200", l: 87, sMult: 0.75 },
+  { nome: "300", l: 76, sMult: 0.9 },
+  { nome: "400", contraste: 2.2, sMult: 1 },
+  { nome: "600", contraste: 4.6, sMult: 1 },
+  { nome: "700", contraste: 7.2, sMult: 0.95 },
+  { nome: "800", contraste: 10.5, sMult: 0.9 },
+  { nome: "900", contraste: 14, sMult: 0.85 },
 ];
 
+/**
+ * A SUPERFÍCIE DA MARCA — o fundo do botão principal.
+ *
+ * Aqui forçar contraste contra o papel seria errado nas duas pontas: um alvo
+ * baixo obriga texto escuro até no azul, e um alvo alto transforma amarelo em
+ * marrom. Some a marca nos dois casos.
+ *
+ * A regra é outra: parte da luminosidade que a pessoa escolheu, e só se afasta
+ * dela se o melhor texto possível (branco ou tinta) não chegar a 4,5. Amarelo
+ * continua amarelo, com texto escuro; azul escurece o suficiente pro branco.
+ */
+function superficieDaMarca(h: number, s: number, lEscolhida: number) {
+  const melhorTexto = (l: number) => {
+    const fundo = hslParaRgb(h, s, l);
+    const comBranco = razao(fundo, PAPEL);
+    const comTinta = razao(fundo, TINTA);
+    return comBranco >= comTinta
+      ? { cor: "#ffffff", contraste: comBranco, escurecer: true }
+      : { cor: "#14121a", contraste: comTinta, escurecer: false };
+  };
+
+  const partida = Math.min(72, Math.max(30, lEscolhida));
+
+  // Preferência por texto branco quando ele está por perto.
+  //
+  // Sem isto, um rosa de 56% de luminosidade ganha texto escuro — passa no
+  // contraste, mas rosa com preto não é a cara de marca nenhuma. Escurecer
+  // até 14 pontos costuma bastar pra liberar o branco em rosa, vermelho e
+  // laranja. Amarelo precisaria de 30+ e vira marrom: nesse caso o branco
+  // não vale o preço, e o texto escuro fica.
+  for (let d = 0; d <= 14; d++) {
+    const l = partida - d;
+    if (l < 12) break;
+    const contraste = razao(hslParaRgb(h, s, l), PAPEL);
+    if (contraste >= 4.5) return { l, texto: "#ffffff", contraste };
+  }
+
+  let l = partida;
+  let escolha = melhorTexto(l);
+  // Anda 1% por vez na direção que aumenta o contraste do texto vencedor.
+  for (let i = 0; i < 70 && escolha.contraste < 4.5; i++) {
+    l += escolha.escurecer ? -1 : 1;
+    if (l < 6 || l > 96) break;
+    escolha = melhorTexto(l);
+  }
+
+  return { l, texto: escolha.cor, contraste: escolha.contraste };
+}
+
+function satDe(s: number, mult: number) {
+  return Math.min(100, Math.max(8, s * mult));
+}
+
+function luzDe(h: number, s: number, d: (typeof DEGRAUS)[number]) {
+  return d.contraste !== undefined ? luminosidadeParaContraste(h, s, d.contraste) : d.l!;
+}
+
 export function escalaDaMarca(hex: string): Record<string, string> {
-  const [h, s] = hexParaHsl(hex);
+  const [h, s, l] = hexParaHsl(hex);
   const out: Record<string, string> = {};
   for (const d of DEGRAUS) {
-    const sat = Math.min(100, Math.max(8, s * d.sMult));
-    out[d.nome] = `hsl(${h.toFixed(1)} ${sat.toFixed(1)}% ${d.l}%)`;
+    const sat = satDe(s, d.sMult);
+    out[d.nome] = `hsl(${h.toFixed(1)} ${sat.toFixed(1)}% ${luzDe(h, sat, d).toFixed(1)}%)`;
   }
+  const sup = superficieDaMarca(h, satDe(s, 1), l);
+  out["500"] = `hsl(${h.toFixed(1)} ${satDe(s, 1).toFixed(1)}% ${sup.l.toFixed(1)}%)`;
+
+  // Barra de progresso, pontinho de carrossel, traço fino: são gráfico, não
+  // texto, e precisam de 3:1 contra o papel. A superfície da marca pode ser
+  // amarela e não bater isso — então esse tom é resolvido em separado.
+  out["grafico"] = `hsl(${h.toFixed(1)} ${satDe(s, 1).toFixed(1)}% ${luminosidadeParaContraste(h, satDe(s, 1), 3.1).toFixed(1)}%)`;
+  return out;
+}
+
+/** Só pra conferência: o contraste real de cada degrau contra o papel. */
+export function conferirEscala(hex: string): Record<string, number> {
+  const [h, s, l] = hexParaHsl(hex);
+  const out: Record<string, number> = {};
+  for (const d of DEGRAUS) {
+    const sat = satDe(s, d.sMult);
+    out[d.nome] = razao(hslParaRgb(h, sat, luzDe(h, sat, d)), PAPEL);
+  }
+  const sup = superficieDaMarca(h, satDe(s, 1), l);
+  out["500"] = razao(hslParaRgb(h, satDe(s, 1), sup.l), PAPEL);
+  out["textoNoBotao"] = sup.contraste;
+  out["grafico"] = razao(hslParaRgb(h, satDe(s, 1), luminosidadeParaContraste(h, satDe(s, 1), 3.1)), PAPEL);
   return out;
 }
 
 /**
- * Texto que lê em cima da cor da marca. Calculado, não escolhido:
- * marca amarela pede texto escuro, marca azul pede texto claro.
+ * O texto que vai POR CIMA do botão.
+ *
+ * Media contra o hex cru antes — mas o fundo do botão é o `marca-500`
+ * derivado, que pode ser bem diferente da cor escolhida. Agora compara
+ * contra o fundo real e devolve o candidato com mais contraste.
  */
 export function textoSobreMarca(hex: string): string {
-  const limpo = hex.replace("#", "");
-  const n = limpo.length === 3 ? limpo.split("").map((c) => c + c).join("") : limpo;
-  const [r, g, b] = [0, 2, 4].map((i) => parseInt(n.slice(i, i + 2), 16) / 255);
-  const lin = (c: number) => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
-  const lum = 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
-  return lum > 0.45 ? "#15121a" : "#ffffff";
+  const [h, s, l] = hexParaHsl(hex);
+  return superficieDaMarca(h, satDe(s, 1), l).texto;
 }
 
 const DENSIDADE: Record<Densidade, { gap: string; padY: string; linha: string; cartao: string }> = {
