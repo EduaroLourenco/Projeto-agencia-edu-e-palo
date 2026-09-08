@@ -60,7 +60,7 @@ const ofertasProduto: Oferta[] = [
     nome: "Kit Home Care",
     resumo: "Shampoo e máscara pra manter em casa",
     descricao: "Shampoo 300ml + máscara 250g da linha que usamos no studio.",
-    midia: foto("detergente", "Kit Home Care"),
+    midia: foto("home-care", "Kit Home Care"),
     categorias: ["Produtos"],
     precoBase: 145,
     ativa: true,
@@ -103,7 +103,7 @@ export const salao: Loja = {
 
   paginas: {
     inicio: [
-      { id: "b1", tipo: "banner", props: { imagemCelular: urlFoto("hero-salao"), imagemDesktop: urlFoto("hero-salao"), titulo: "Seu horário, sem precisar ligar", texto: "Escolha o serviço, o dia e a profissional. A confirmação chega no WhatsApp.", rotuloBotao: "", linkBotao: "", variante: "sobreposto", altura: "alta" } },
+      { id: "b1", tipo: "banner", props: { imagemCelular: urlFoto("hero-salao"), imagemDesktop: urlFoto("hero-salao-largo"), titulo: "Seu horário, sem precisar ligar", texto: "Escolha o serviço, o dia e a profissional. A confirmação chega no WhatsApp.", rotuloBotao: "", linkBotao: "", variante: "sobreposto", altura: "alta" } },
       { id: "b2", tipo: "proximos-horarios", props: { titulo: "Próximos horários" } },
       { id: "b3", tipo: "grade-ofertas", props: { titulo: "Mais agendados", regra: "destaques", categoria: "", limite: 4, colunas: "2" } },
       { id: "b4", tipo: "faixa-categorias", props: { titulo: "O que a gente faz", estilo: "pilulas" } },

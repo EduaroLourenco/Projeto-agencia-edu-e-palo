@@ -111,7 +111,11 @@ export function Botao({
   pequeno?: boolean;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>) {
   const tons: Record<TomBotao, string> = {
-    marca: "text-[var(--sobre-marca)] bg-[var(--marca-500)] shadow-[var(--sombra-1)] hover:brightness-[0.96] disabled:bg-tinta-12 disabled:text-tinta-45 disabled:shadow-none",
+    // Travado é papel, não cinza-chumbo: o `tinta-12` de antes lia como
+    // erro. Quem diz o que falta é o rótulo do botão, não a cor.
+    marca:
+      "text-[var(--sobre-marca)] bg-[var(--marca-500)] shadow-[var(--sombra-1)] hover:brightness-[0.96] " +
+      "disabled:bg-papel-3 disabled:text-tinta-45 disabled:shadow-none",
     contorno: "border border-borda-forte bg-papel text-tinta hover:bg-papel-2",
     fantasma: "text-tinta-70 hover:bg-papel-3 hover:text-tinta",
     perigo: "border border-erro/30 bg-erro-fraco text-erro hover:bg-erro/10",
@@ -119,8 +123,8 @@ export function Botao({
   return (
     <button
       {...resto}
-      className={`inline-flex items-center justify-center gap-2 tracking-[var(--tr-corpo)] disabled:cursor-not-allowed disabled:active:scale-100 ${
-        pequeno ? "min-h-[38px] px-3.5 text-[13px] font-semibold" : "min-h-[50px] px-5 text-[15px] font-bold"
+      className={`inline-flex items-center justify-center gap-2 whitespace-nowrap tracking-[var(--tr-corpo)] disabled:cursor-not-allowed disabled:active:scale-100 ${
+        pequeno ? "min-h-[38px] px-3.5 text-[13px] font-semibold" : "min-h-[50px] px-4 text-[15px] font-bold"
       } ${largo ? "w-full" : ""} ${tons[tom]} ${resto.className ?? ""}`}
       style={{ borderRadius: "var(--canto-m)", ...resto.style }}
     >

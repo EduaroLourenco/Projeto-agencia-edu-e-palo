@@ -58,11 +58,10 @@ function Banner({ props, editando }: PropsBloco<PropsBanner>) {
 
       {variante === "sobreposto" && temTexto && (
         <>
-          {/* Véu forte de verdade. A arte do banner pode ser clara — e texto
-              branco sobre imagem clara é o furo de legibilidade mais comum
-              em vitrine. Aqui o degradê cobre mais da metade e chega quase
-              opaco embaixo, onde o texto mora. */}
-          <div className="absolute inset-0 bg-gradient-to-t from-tinta via-tinta/70 via-45% to-transparent" />
+          {/* Véu ancorado embaixo, onde o texto mora — não por cima de tudo.
+              Cobrindo a imagem inteira ele resolvia a legibilidade e matava
+              a arte junto: o banner virava um retângulo cinza com título. */}
+          <div className="absolute inset-x-0 bottom-0 h-[62%] bg-gradient-to-t from-[rgba(16,13,10,0.95)] via-[rgba(16,13,10,0.46)] via-40% to-transparent" />
           <div className="absolute inset-x-0 bottom-0 p-5 pt-14">
             {titulo && (
               <h2 className="font-display text-[length:var(--t-secao)] font-extrabold leading-[1.08] tracking-[var(--tr-secao)] text-white [text-shadow:0_1px_12px_rgba(0,0,0,0.35)]">
@@ -192,7 +191,7 @@ function CarrosselBanners({ props, editando }: PropsBloco<PropsCarrossel>) {
       <div
         ref={trilho}
         onScroll={(e) => setAtivo(Math.round(e.currentTarget.scrollLeft / e.currentTarget.clientWidth))}
-        className="sem-barra flex snap-x snap-mandatory overflow-x-auto"
+        className="sem-barra sangra flex snap-x snap-mandatory overflow-x-auto"
         style={{ borderRadius: "var(--canto-g)" }}
       >
         {slides.map((s, i) => (
@@ -287,17 +286,42 @@ interface PropsFaixa {
 
 function FaixaAviso({ props, editando }: PropsBloco<PropsFaixa>) {
   if (!props.texto) return editando ? <VazioNoEstudio>Escreva o texto da faixa.</VazioNoEstudio> : null;
-  const tons: Record<string, string> = {
-    marca: "bg-[var(--marca-500)] text-[var(--sobre-marca)]",
-    escuro: "bg-tinta text-white",
-    claro: "bg-papel-3 text-tinta-70",
+
+  /**
+   * "Pedido mínimo R$ 300 · entrega em 48h" tem duas informações, e o ponto
+   * do meio já separa elas. Aproveitando isso a faixa ganha hierarquia sem
+   * pedir mais nenhum campo pro lojista — a primeira parte é a regra, o
+   * resto é detalhe.
+   */
+  const [chamada, ...resto] = props.texto.split("·").map((p) => p.trim());
+  const detalhe = resto.join(" · ");
+
+  const tons: Record<string, { fundo: string; texto: string; selo: string }> = {
+    marca: {
+      fundo: "linear-gradient(180deg, var(--marca-500), var(--marca-600))",
+      texto: "var(--sobre-marca)",
+      selo: "rgba(255,255,255,0.22)",
+    },
+    escuro: { fundo: "linear-gradient(180deg, #2b2419, #16130f)", texto: "#fff", selo: "rgba(255,255,255,0.16)" },
+    claro: { fundo: "var(--marca-50)", texto: "var(--marca-800)", selo: "rgba(255,255,255,0.7)" },
   };
+  const t = tons[props.tom] ?? tons.marca;
+
   return (
     <div
-      className={`px-4 py-2.5 text-center text-[13px] font-semibold ${tons[props.tom] ?? tons.marca}`}
-      style={{ borderRadius: "var(--canto-m)" }}
+      className="flex items-center gap-2.5 px-3 py-2.5 shadow-[var(--sombra-1)]"
+      style={{ background: t.fundo, color: t.texto, borderRadius: "var(--canto-m)" }}
     >
-      {props.texto}
+      <span
+        className="flex h-7 w-7 shrink-0 items-center justify-center"
+        style={{ background: t.selo, borderRadius: "999px" }}
+      >
+        <Megaphone size={14} strokeWidth={2.4} />
+      </span>
+      <p className="min-w-0 text-[13px] leading-snug">
+        <span className="font-bold">{chamada}</span>
+        {detalhe && <span className="opacity-80"> · {detalhe}</span>}
+      </p>
     </div>
   );
 }
@@ -392,7 +416,7 @@ function ProvaSocial({ props, editando }: PropsBloco<{ titulo: string; depoiment
   return (
     <div>
       <TituloBloco titulo={props.titulo} />
-      <div className="sem-barra flex snap-x snap-mandatory gap-3 overflow-x-auto pb-1">
+      <div className="sem-barra sangra flex snap-x snap-mandatory gap-3 overflow-x-auto pb-1">
         {lista.map((d, i) => (
           <figure
             key={i}

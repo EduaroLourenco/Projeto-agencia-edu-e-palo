@@ -301,15 +301,21 @@ function PreviaEditavel({
                   )}
                 </div>
 
-                <button
-                  onClick={() => onAbrirPropriedades(b.id)}
-                  className="block w-full cursor-pointer text-left outline-2 outline-offset-4 outline-transparent transition-all hover:outline-[var(--marca-300)]"
-                  style={{ borderRadius: "var(--canto-m)" }}
-                >
+                {/* O alvo de toque é uma camada por cima, não um <button> em
+                    volta. O bloco tem botões dentro dele ("Ver tudo", "+"), e
+                    botão dentro de botão é HTML inválido: o navegador pode
+                    tirar o de dentro do lugar e desmontar o layout. */}
+                <div className="relative">
                   <div className={b.oculto ? "pointer-events-none opacity-40" : "pointer-events-none"}>
                     {conteudo}
                   </div>
-                </button>
+                  <button
+                    onClick={() => onAbrirPropriedades(b.id)}
+                    aria-label="Editar este bloco"
+                    className="absolute inset-0 cursor-pointer outline-2 outline-offset-4 outline-transparent transition-all hover:outline-[var(--marca-300)]"
+                    style={{ borderRadius: "var(--canto-m)" }}
+                  />
+                </div>
               </div>
             </>
           );
@@ -435,13 +441,17 @@ function BarraInferior({
           </>
         )}
 
+        {/* Editando, a barra tem quatro coisas e 390px: "Ver como cliente"
+            por extenso empurrava "Publicar" pra fora da tela. Na prévia
+            sobra espaço, e aí o rótulo longo volta. */}
         <button
           onClick={onAlternarVista}
+          aria-label={verComoCliente ? "Voltar a editar" : "Ver como cliente"}
           className="flex h-12 shrink-0 items-center gap-1.5 border border-borda-forte bg-papel px-3.5 text-[13px] font-semibold text-tinta-70"
           style={{ borderRadius: "var(--canto-m)" }}
         >
           {verComoCliente ? <EyeOff size={16} /> : <Eye size={16} />}
-          {verComoCliente ? "Voltar a editar" : "Ver como cliente"}
+          {verComoCliente ? "Voltar a editar" : "Prévia"}
         </button>
 
         <div className="min-w-0 flex-1">

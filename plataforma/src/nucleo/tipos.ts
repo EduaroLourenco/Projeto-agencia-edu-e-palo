@@ -224,6 +224,14 @@ export interface Modulo {
     }>;
     /** Impede adicionar sem escolher. */
     completo: (oferta: Oferta, selecao: Record<string, unknown>) => boolean;
+    /**
+     * O que ainda falta escolher, em uma palavra ("tamanho", "horário").
+     *
+     * Vira o rótulo do botão travado. "Escolha as opções" não diz nada e
+     * ainda quebra em duas linhas; "Escolha o tamanho" resolve a dúvida na
+     * hora em que ela aparece.
+     */
+    queFalta?: (oferta: Oferta, selecao: Record<string, unknown>) => string | undefined;
     /** Texto curto da escolha, pra sacola e mensagem. */
     resumir: (oferta: Oferta, selecao: Record<string, unknown>) => string;
   };

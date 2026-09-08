@@ -122,7 +122,7 @@ function ProximosHorarios({ props, loja, ofertas, editando }: PropsBloco<{ titul
   return (
     <div className="placa p-4" style={{ borderRadius: "var(--canto-g)" }}>
       <Sobrescrito>{props.titulo || "Próximos horários"}</Sobrescrito>
-      <div className="sem-barra mt-3 flex gap-2 overflow-x-auto">
+      <div className="sem-barra sangra mt-3 flex gap-2 overflow-x-auto">
         {dias.map((d) => {
           const livres = horariosDoDia(cfg, d, menorDuracao).length;
           return (
@@ -169,6 +169,8 @@ export const moduloAgendamento: Modulo = {
     aplicaA: (oferta) => oferta.tipo === "servico" && dadosDa(oferta) !== null,
 
     completo: (_oferta, selecao) => Boolean(selecao.inicio),
+
+    queFalta: (_oferta, selecao) => (selecao.inicio ? undefined : "horário"),
 
     resumir: (_oferta, selecao) => {
       if (!selecao.inicio) return "";

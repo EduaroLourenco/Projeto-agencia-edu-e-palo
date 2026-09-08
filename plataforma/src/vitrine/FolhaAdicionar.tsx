@@ -40,6 +40,7 @@ export function FolhaAdicionar({
 
   if (!oferta) return null;
   const completo = configurador ? configurador.completo(oferta, selecao) : true;
+  const falta = completo ? undefined : configurador?.queFalta?.(oferta, selecao);
 
   return (
     <Folha
@@ -59,7 +60,11 @@ export function FolhaAdicionar({
             }}
           >
             <ShoppingBag size={17} />
-            {completo ? `Adicionar · ${formatarReal(oferta.precoBase * quantidade)}` : "Escolha as opções"}
+            {completo
+              ? `Adicionar · ${formatarReal(oferta.precoBase * quantidade)}`
+              : falta
+                ? `Escolha o ${falta}`
+                : "Escolha as opções"}
           </Botao>
         </div>
       }

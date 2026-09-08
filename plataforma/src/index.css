@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./fontes.css";
 
 /*
   Tokens fixos da plataforma. O que muda por loja (cor da marca, densidade,
@@ -46,6 +47,9 @@
   --sobre-marca: #ffffff;
 
   --gap: 0.9rem;
+
+  /* A margem lateral da página. O carrossel usa ela invertida pra sangrar. */
+  --pad-pagina: 1rem;
   --pad-y: 0.85rem;
   --pad-cartao: 0.9rem;
   --altura-linha: 1.6;
@@ -128,6 +132,19 @@ button { -webkit-appearance: none; appearance: none; }
   scrollbar-width: none;
   -ms-overflow-style: none;
   &::-webkit-scrollbar { display: none; }
+}
+
+/*
+  Carrossel que vaza até a borda da tela.
+
+  Um carrossel cortado 16px antes da borda parece quebrado; cortado na borda
+  parece que tem mais coisa pra arrastar. É a mesma peça, muda só onde a
+  faca cai — e é o detalhe que separa app nativo de site espremido.
+*/
+@utility sangra {
+  margin-inline: calc(var(--pad-pagina) * -1);
+  padding-inline: var(--pad-pagina);
+  scroll-padding-inline: var(--pad-pagina);
 }
 
 @utility num-tab {

@@ -81,22 +81,24 @@ export function CartaoOferta({ oferta, prioridade = false }: { oferta: Oferta; p
         )}
       </button>
 
-      <div className="flex flex-1 flex-col gap-1.5 pt-2.5">
+      <div className="flex flex-1 flex-col gap-1 pt-2.5">
         <button onClick={() => abrirOferta(oferta)} className="text-left">
-          <p className="line-clamp-2 text-[13.5px] font-medium leading-snug tracking-[var(--tr-corpo)] text-tinta-70">
+          <p className="line-clamp-2 text-[13.5px] font-medium leading-snug tracking-[var(--tr-corpo)] text-tinta">
             {oferta.nome}
           </p>
         </button>
 
-        <div className="mt-auto flex items-end justify-between gap-2 pt-0.5">
-          <Preco oferta={oferta} />
+        {/* Preço e botão na mesma linha de base, não um no chão e outro no
+            alto: separados, lêem como dois elementos sem relação. */}
+        <div className="mt-auto flex items-center justify-between gap-2 pt-1.5">
+          <Preco oferta={oferta} tamanho="m" />
           <button
             onClick={() => (escolher ? abrirAdicionar(oferta) : somar(oferta, 1))}
             aria-label={`Adicionar ${oferta.nome}`}
             className={`flex h-9 w-9 shrink-0 items-center justify-center transition-colors ${
               naSacola > 0
                 ? "bg-tinta text-white"
-                : "bg-papel-3 text-tinta hover:bg-[var(--marca-500)] hover:text-[var(--sobre-marca)]"
+                : "bg-[var(--marca-50)] text-[var(--marca-700)] hover:bg-[var(--marca-500)] hover:text-[var(--sobre-marca)]"
             }`}
             style={{ borderRadius: "var(--canto-m)" }}
           >
@@ -211,8 +213,11 @@ export function filtrarOfertas(
   regra: string,
   categoria: string,
   limite: number,
+  /** Item que já está na tela. "Combina com" sugerindo o próprio item é o
+   *  tipo de detalhe que faz o cliente desconfiar da loja inteira. */
+  excluir?: string,
 ): Oferta[] {
-  let lista = ofertas.filter((o) => o.ativa);
+  let lista = ofertas.filter((o) => o.ativa && o.id !== excluir);
   if (regra === "categoria" && categoria) {
     lista = lista.filter((o) => o.categorias.includes(categoria));
   } else if (regra === "destaques") {

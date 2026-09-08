@@ -32,11 +32,11 @@ interface PropsGrade {
   colunas: string;
 }
 
-function GradeOfertas({ props, ofertas, editando }: PropsBloco<PropsGrade>) {
+function GradeOfertas({ props, ofertas, oferta, editando }: PropsBloco<PropsGrade>) {
   const { irPara } = useVitrine();
   const lista = useMemo(
-    () => filtrarOfertas(ofertas, props.regra, props.categoria, props.limite),
-    [ofertas, props.regra, props.categoria, props.limite],
+    () => filtrarOfertas(ofertas, props.regra, props.categoria, props.limite, oferta?.id),
+    [ofertas, props.regra, props.categoria, props.limite, oferta?.id],
   );
 
   if (!lista.length) return editando ? <VazioNoEstudio>Nenhum item bate com este filtro.</VazioNoEstudio> : null;
@@ -82,17 +82,17 @@ export const blocoGradeOfertas: DefinicaoBloco<PropsGrade> = {
    CARROSSEL DE OFERTAS
    ============================================================ */
 
-function CarrosselOfertas({ props, ofertas, editando }: PropsBloco<Omit<PropsGrade, "colunas">>) {
+function CarrosselOfertas({ props, ofertas, oferta, editando }: PropsBloco<Omit<PropsGrade, "colunas">>) {
   const lista = useMemo(
-    () => filtrarOfertas(ofertas, props.regra, props.categoria, props.limite),
-    [ofertas, props.regra, props.categoria, props.limite],
+    () => filtrarOfertas(ofertas, props.regra, props.categoria, props.limite, oferta?.id),
+    [ofertas, props.regra, props.categoria, props.limite, oferta?.id],
   );
   if (!lista.length) return editando ? <VazioNoEstudio>Nenhum item bate com este filtro.</VazioNoEstudio> : null;
 
   return (
     <div>
       <TituloBloco titulo={props.titulo} />
-      <div className="sem-barra -mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-1">
+      <div className="sem-barra sangra flex snap-x snap-mandatory gap-3 overflow-x-auto pb-1">
         {lista.map((o) => (
           <div key={o.id} className="w-[46%] shrink-0 snap-start sm:w-[31%] lg:w-[23%]">
             <CartaoOferta oferta={o} />
@@ -133,15 +133,15 @@ interface PropsLista {
   esconderNaSacola: boolean;
 }
 
-function ListaRapida({ props, ofertas, editando }: PropsBloco<PropsLista>) {
+function ListaRapida({ props, ofertas, oferta, editando }: PropsBloco<PropsLista>) {
   const { resumo } = useVitrine();
   const lista = useMemo(() => {
-    const base = filtrarOfertas(ofertas, props.regra, props.categoria, 0);
+    const base = filtrarOfertas(ofertas, props.regra, props.categoria, 0, oferta?.id);
     // "Esqueceu algo?" não pode sugerir o que a pessoa não esqueceu.
     const naSacola = new Set(resumo.linhas.map((l) => l.oferta.id));
     const filtrada = props.esconderNaSacola ? base.filter((o) => !naSacola.has(o.id)) : base;
     return props.limite > 0 ? filtrada.slice(0, props.limite) : filtrada;
-  }, [ofertas, props.regra, props.categoria, props.limite, props.esconderNaSacola, resumo.linhas]);
+  }, [ofertas, props.regra, props.categoria, props.limite, props.esconderNaSacola, resumo.linhas, oferta?.id]);
   if (!lista.length) return editando ? <VazioNoEstudio>Nenhum item bate com este filtro.</VazioNoEstudio> : null;
 
   return (
@@ -211,7 +211,9 @@ function FaixaCategorias({ props, ofertas, editando }: PropsBloco<{ titulo: stri
                 ) : (
                   <div className="h-full w-full bg-papel-3" />
                 )}
-                <div className="absolute inset-0 bg-gradient-to-t from-tinta/80 to-transparent" />
+                {/* Só a faixa de baixo escurece. Degradê na altura inteira
+                    lavava a foto e a categoria virava um retângulo cinza. */}
+                <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-[rgba(18,15,11,0.86)] via-[rgba(18,15,11,0.38)] via-42% to-transparent" />
                 <span className="absolute inset-x-0 bottom-0 p-3 text-[13.5px] font-bold text-white">{c}</span>
               </button>
             );
@@ -224,7 +226,7 @@ function FaixaCategorias({ props, ofertas, editando }: PropsBloco<{ titulo: stri
   return (
     <div>
       <TituloBloco titulo={props.titulo} />
-      <div className="sem-barra -mx-1 flex gap-2 overflow-x-auto px-1">
+      <div className="sem-barra sangra flex gap-2 overflow-x-auto">
         {categorias.map((c) => (
           <button
             key={c}

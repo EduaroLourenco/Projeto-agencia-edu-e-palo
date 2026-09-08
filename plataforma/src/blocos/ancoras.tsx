@@ -103,7 +103,7 @@ function CatalogoLista({ props, ofertas }: PropsBloco<{ mostrarBusca: boolean; m
       </div>
 
       {categorias.length > 2 && (
-        <div className="sem-barra -mx-1 flex gap-2 overflow-x-auto px-1">
+        <div className="sem-barra sangra flex gap-2 overflow-x-auto">
           {categorias.map((c) => (
             <Chip key={c} ativo={c === categoria} onClick={() => setCategoria(c)}>
               {c}
@@ -175,7 +175,7 @@ function OfertaGaleria({ oferta }: PropsBloco<Record<string, never>>) {
     <div className="flex flex-col gap-2">
       <div
         onScroll={(e) => setAtiva(Math.round(e.currentTarget.scrollLeft / e.currentTarget.clientWidth))}
-        className="sem-barra flex snap-x snap-mandatory overflow-x-auto"
+        className="sem-barra sangra flex snap-x snap-mandatory overflow-x-auto"
         style={{ borderRadius: "var(--canto-g)" }}
       >
         {midia.map((m, i) => (
@@ -280,6 +280,7 @@ function OfertaComprar({ oferta, loja }: PropsBloco<{ rotulo: string }>) {
 
   if (!oferta) return null;
   const completo = configurador ? configurador.completo(oferta, selecao) : true;
+  const falta = completo ? undefined : configurador?.queFalta?.(oferta, selecao);
 
   return (
     <div className="flex flex-col gap-4">
@@ -309,7 +310,7 @@ function OfertaComprar({ oferta, loja }: PropsBloco<{ rotulo: string }>) {
             </>
           ) : (
             <>
-              <ShoppingBag size={17} /> {completo ? "Adicionar" : "Escolha as opções"}
+              <ShoppingBag size={17} /> {completo ? "Adicionar" : falta ? `Escolha o ${falta}` : "Escolha as opções"}
             </>
           )}
         </Botao>

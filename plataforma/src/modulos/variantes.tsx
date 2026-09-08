@@ -50,6 +50,12 @@ export const moduloVariantes: Modulo = {
     completo: (oferta, selecao) =>
       eixosDa(oferta).every((e) => Boolean(selecao[e.nome])) && !esgotada(oferta, selecao),
 
+    queFalta: (oferta, selecao) => {
+      const eixo = eixosDa(oferta).find((e) => !selecao[e.nome]);
+      if (eixo) return eixo.nome.toLowerCase();
+      return esgotada(oferta, selecao) ? "outra combinação" : undefined;
+    },
+
     resumir: (oferta, selecao) =>
       eixosDa(oferta)
         .map((e) => selecao[e.nome])

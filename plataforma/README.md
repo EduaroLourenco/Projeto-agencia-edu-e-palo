@@ -13,6 +13,27 @@ npm install
 npm run dev      # http://localhost:5180
 ```
 
+### Redesenhar a arte das demos
+
+```bash
+node scripts/arte/render.mjs            # tudo
+node scripts/arte/render.mjs arroz cafe # só esses, pra iterar
+node scripts/arte/render.mjs --folha    # contact sheet em /tmp
+```
+
+As 41 imagens de `demos/fotos` são desenhadas, não fotografadas. O desenho
+é SVG (`scripts/arte/formas.mjs`), rasterizado no Chromium pra ter gradiente,
+sombra e grão de verdade, e reduzido pela metade com reamostragem boa.
+
+A escolha é assumida: sem banco de imagem, fingir foto com desenho chapado é
+o que faz catálogo parecer template. Então são poucos moldes — saco, caixa,
+garrafa, pote — repetidos com proporção, cor e rótulo diferentes, todos com a
+mesma luz e a mesma escala. Lê como coleção.
+
+Cada loja tem duas capas: retrato (900×1200) pro celular e faixa
+(1600×640) pro computador, com composições diferentes. Uma arte só nos dois
+formatos perde metade da imagem no recorte.
+
 ### Mandar a demo pra alguém
 
 ```bash

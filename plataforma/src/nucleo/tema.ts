@@ -220,6 +220,8 @@ const CANTO: Record<Canto, { p: string; m: string; g: string }> = {
   redondo: { p: "14px", m: "20px", g: "28px" },
 };
 
+/** `googleFonts` não é lido em runtime: é a receita que scripts/fontes.py usa
+ *  pra baixar os arquivos que ficam em src/fontes. */
 export const PARES_DE_FONTE: Record<ParFontes, { nome: string; display: string; corpo: string; googleFonts: string }> = {
   "sora-inter": {
     nome: "Sora + Inter",
@@ -272,13 +274,11 @@ export function aplicarTema(el: HTMLElement, tema: Tema) {
   el.style.setProperty("--fonte-corpo", f.corpo);
 }
 
-/** Carrega da Google Fonts só o par que a loja usa. */
-export function garantirFontes(par: ParFontes) {
-  const id = `fontes-${par}`;
-  if (document.getElementById(id)) return;
-  const link = document.createElement("link");
-  link.id = id;
-  link.rel = "stylesheet";
-  link.href = `https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=${PARES_DE_FONTE[par].googleFonts}&display=swap`;
-  document.head.appendChild(link);
-}
+/**
+ * As fontes vêm com o pacote (src/fontes.css), então não há nada pra buscar.
+ *
+ * A função continua existindo porque a Vitrine chama ela sempre que o tema
+ * muda — e um dia pode voltar a ter trabalho, se o lojista puder subir a
+ * fonte da marca dele.
+ */
+export function garantirFontes(_par: ParFontes) {}
