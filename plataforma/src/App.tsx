@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes, useParams } from "react-router-dom";
+import { Link, Navigate, Route, Routes, useParams } from "react-router-dom";
 import { carregarLoja, carregarRascunho } from "./nucleo/loja";
 import { Vitrine } from "./vitrine/Vitrine";
 import { Estudio } from "./estudio/Estudio";
@@ -10,9 +10,9 @@ function NaoEncontrada() {
     <div className="flex min-h-dvh flex-col items-center justify-center gap-2 px-6 text-center">
       <p className="font-display text-[17px] font-bold">Loja não encontrada</p>
       <p className="text-[13.5px] text-tinta-45">Confira o link ou volte pra lista de demonstrações.</p>
-      <a href="/" className="mt-3 text-[13.5px] font-semibold text-[var(--marca-600)]">
+      <Link to="/" className="mt-3 text-[13.5px] font-semibold text-[var(--marca-600)]">
         Ver as demonstrações
-      </a>
+      </Link>
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import type { Loja, Oferta } from "../src/nucleo/tipos";
+import { foto, urlFoto } from "./midia";
 
 /**
  * STUDIO NARA — a demo que prova a tese.
@@ -10,10 +11,6 @@ import type { Loja, Oferta } from "../src/nucleo/tipos";
  * Repare que tem produto junto (a linha de home care): serviço e produto
  * convivem na mesma sacola porque o núcleo nunca soube a diferença.
  */
-
-function foto(arquivo: string, alt: string) {
-  return [{ url: `/catalogo/${arquivo}.jpg`, alt, largura: 600, altura: 600 }];
-}
 
 type Servico = {
   id: string;
@@ -106,7 +103,7 @@ export const salao: Loja = {
 
   paginas: {
     inicio: [
-      { id: "b1", tipo: "banner", props: { imagemCelular: "/catalogo/hero-salao.jpg", imagemDesktop: "/catalogo/hero-salao.jpg", titulo: "Seu horário, sem precisar ligar", texto: "Escolha o serviço, o dia e a profissional. A confirmação chega no WhatsApp.", rotuloBotao: "", linkBotao: "", variante: "sobreposto", altura: "alta" } },
+      { id: "b1", tipo: "banner", props: { imagemCelular: urlFoto("hero-salao"), imagemDesktop: urlFoto("hero-salao"), titulo: "Seu horário, sem precisar ligar", texto: "Escolha o serviço, o dia e a profissional. A confirmação chega no WhatsApp.", rotuloBotao: "", linkBotao: "", variante: "sobreposto", altura: "alta" } },
       { id: "b2", tipo: "proximos-horarios", props: { titulo: "Próximos horários" } },
       { id: "b3", tipo: "grade-ofertas", props: { titulo: "Mais agendados", regra: "destaques", categoria: "", limite: 4, colunas: "2" } },
       { id: "b4", tipo: "faixa-categorias", props: { titulo: "O que a gente faz", estilo: "pilulas" } },

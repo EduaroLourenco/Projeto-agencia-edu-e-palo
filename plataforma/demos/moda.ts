@@ -1,4 +1,5 @@
 import type { Loja, Oferta } from "../src/nucleo/tipos";
+import { foto, urlFoto } from "./midia";
 
 /**
  * BELLA ATACADO — o case do Zap-Commerce renascido na plataforma.
@@ -7,10 +8,6 @@ import type { Loja, Oferta } from "../src/nucleo/tipos";
  * no v1 (grade, variação de tamanho, preço de atacado por quantidade,
  * pedido no WhatsApp) tem que sair aqui só com configuração, sem código.
  */
-
-function foto(arquivo: string, alt: string) {
-  return [{ url: `/catalogo/${arquivo}.jpg`, alt, largura: 600, altura: 600 }];
-}
 
 const TAMANHOS = ["P", "M", "G", "GG"];
 
@@ -92,7 +89,7 @@ export const moda: Loja = {
 
   paginas: {
     inicio: [
-      { id: "b1", tipo: "banner", props: { imagemCelular: "/catalogo/hero-moda.jpg", imagemDesktop: "/catalogo/hero-moda.jpg", titulo: "Coleção que chegou", texto: "Peças novas toda semana, direto do showroom.", rotuloBotao: "", linkBotao: "", variante: "sobreposto", altura: "alta" } },
+      { id: "b1", tipo: "banner", props: { imagemCelular: urlFoto("hero-moda"), imagemDesktop: urlFoto("hero-moda"), titulo: "Coleção que chegou", texto: "Peças novas toda semana, direto do showroom.", rotuloBotao: "", linkBotao: "", variante: "sobreposto", altura: "alta" } },
       { id: "b2", tipo: "faixa-aviso", props: { texto: "Atacado a partir de 6 peças · até 24% off", tom: "marca" } },
       { id: "b3", tipo: "faixa-categorias", props: { titulo: "Categorias", estilo: "cartoes" } },
       { id: "b4", tipo: "grade-ofertas", props: { titulo: "Queridinhas", regra: "destaques", categoria: "", limite: 4, colunas: "2" } },

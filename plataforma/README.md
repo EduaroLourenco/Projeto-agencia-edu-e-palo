@@ -13,6 +13,20 @@ npm install
 npm run dev      # http://localhost:5180
 ```
 
+### Mandar a demo pra alguém
+
+```bash
+npm run demo     # gera dist/index.html
+```
+
+Sai a plataforma inteira num arquivo HTML só — CSS, JavaScript e as fotos em
+base64, rota depois do `#`. Abre com dois cliques, sem servidor, sem internet.
+É o que se manda por WhatsApp pro cliente antes da reunião, ou se sobe em
+qualquer hospedagem estática sem configurar regra de reescrita.
+
+O `dist/corpo.html` que sai junto é o mesmo conteúdo sem `<html>`/`<head>`/
+`<body>`, pra publicadores que montam o esqueleto por fora.
+
 ---
 
 ## O que abrir primeiro
