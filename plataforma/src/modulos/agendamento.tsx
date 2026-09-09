@@ -165,6 +165,33 @@ export const moduloAgendamento: Modulo = {
   icone: CalendarClock,
   blocos: [blocoProximosHorarios as unknown as DefinicaoBloco<never>],
 
+  camposDaOferta: {
+    aplicaA: (tipo) => tipo === "servico",
+    campos: {
+      duracaoMin: { tipo: "numero", rotulo: "Duração", padrao: 60, min: 5, max: 480, sufixo: "minutos" },
+      profissionaisIds: {
+        tipo: "texto",
+        rotulo: "Quem atende",
+        padrao: "",
+        dica: "Ids separados por vírgula. Vazio = qualquer profissional da equipe.",
+      },
+    },
+    paraFormulario: (dados) => {
+      const d = (dados ?? {}) as DadosAgendamentoDaOferta;
+      return { duracaoMin: d.duracaoMin ?? 60, profissionaisIds: (d.profissionaisIds ?? []).join(", ") };
+    },
+    paraDados: (form) => {
+      const ids = String(form.profissionaisIds ?? "")
+        .split(",")
+        .map((p) => p.trim())
+        .filter(Boolean);
+      return {
+        duracaoMin: Number(form.duracaoMin) || 60,
+        ...(ids.length ? { profissionaisIds: ids } : {}),
+      };
+    },
+  },
+
   configurador: {
     aplicaA: (oferta) => oferta.tipo === "servico" && dadosDa(oferta) !== null,
 

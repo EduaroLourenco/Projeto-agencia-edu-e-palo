@@ -1,13 +1,15 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Package, Receipt, Wand2 } from "lucide-react";
+import { ArrowLeft, Check, Package, Receipt, Settings, Store, Wand2 } from "lucide-react";
 import type { Loja } from "../nucleo/tipos";
 import { formatarReal } from "../nucleo/preco";
 import { listarPedidos } from "../nucleo/pedidos";
 import { modulosAtivos } from "../nucleo/registro";
-import { aplicarTema, garantirFontes } from "../nucleo/tema";
+import { aplicarMarca } from "../nucleo/tema";
+import { salvarLoja } from "../nucleo/loja";
+import { Catalogo } from "./Catalogo";
+import { Configuracoes } from "./Configuracoes";
 import { Sobrescrito } from "../design/Primitivos";
-import { Foto } from "../blocos/pecas";
 
 /**
  * O backstage.
@@ -15,14 +17,30 @@ import { Foto } from "../blocos/pecas";
  * As telas que um módulo acrescenta entram na navegação junto com as do
  * núcleo — o painel não sabe quais existem, ele pergunta ao registro.
  */
-export function Painel({ loja }: { loja: Loja }) {
+export function Painel({ loja: lojaInicial }: { loja: Loja }) {
   const [aba, setAba] = useState("pedidos");
+  const [loja, setLoja] = useState(lojaInicial);
+  const [salvo, setSalvo] = useState<null | "ok" | string>(null);
+  const relogio = useRef<number | null>(null);
 
-  useMemo(() => {
-    aplicarTema(document.documentElement, loja.tema);
-    garantirFontes(loja.tema.fontes);
-    return null;
+  // Só a marca: o painel tem interface própria e não herda o papel da loja.
+  useEffect(() => {
+    aplicarMarca(document.documentElement, loja.tema);
   }, [loja.tema]);
+
+  /**
+   * Painel salva na hora, sem botão de publicar.
+   *
+   * Preço de produto e telefone da loja não são "layout em construção".
+   * Quem mexe aqui mexeu de verdade — o rascunho é coisa do estúdio.
+   */
+  function alterar(proxima: Loja) {
+    setLoja(proxima);
+    const r = salvarLoja(proxima);
+    setSalvo(r.ok ? "ok" : r.erro);
+    if (relogio.current) window.clearTimeout(relogio.current);
+    relogio.current = window.setTimeout(() => setSalvo(null), r.ok ? 1800 : 8000);
+  }
 
   const telasDeModulos = useMemo(
     () => modulosAtivos(loja.modulos).flatMap((m) => m.telasPainel ?? []),
@@ -31,8 +49,10 @@ export function Painel({ loja }: { loja: Loja }) {
 
   const abas = [
     { id: "pedidos", nome: "Pedidos", icone: Receipt },
-    { id: "itens", nome: "Itens", icone: Package },
+    { id: "itens", nome: `Catálogo · ${loja.ofertas.length}`, icone: Package },
+    { id: "loja", nome: "Loja", icone: Store },
     ...telasDeModulos.map((t) => ({ id: t.id, nome: t.nome, icone: t.icone })),
+    { id: "ajuda", nome: "Como funciona", icone: Settings },
   ];
 
   return (
@@ -77,9 +97,30 @@ export function Painel({ loja }: { loja: Loja }) {
         </div>
       </header>
 
+      {salvo && (
+        <div
+          className={`anima-surgir fixed inset-x-0 bottom-4 z-40 mx-auto flex w-fit max-w-[92%] items-center gap-2 px-4 py-2.5 text-[13px] font-semibold shadow-[var(--sombra-3)] ${
+            salvo === "ok" ? "bg-tinta text-white" : "bg-erro text-white"
+          }`}
+          style={{ borderRadius: "999px" }}
+          role="status"
+        >
+          {salvo === "ok" ? (
+            <>
+              <Check size={15} strokeWidth={3} />
+              Salvo
+            </>
+          ) : (
+            salvo
+          )}
+        </div>
+      )}
+
       <main className="px-4 py-5">
         {aba === "pedidos" && <Pedidos loja={loja} />}
-        {aba === "itens" && <Itens loja={loja} />}
+        {aba === "itens" && <Catalogo loja={loja} onMudar={alterar} />}
+        {aba === "loja" && <Configuracoes loja={loja} onMudar={alterar} />}
+        {aba === "ajuda" && <Ajuda />}
         {telasDeModulos.map((t) => aba === t.id && <t.Componente key={t.id} loja={loja} />)}
       </main>
     </div>
@@ -157,28 +198,32 @@ function Pedidos({ loja }: { loja: Loja }) {
   );
 }
 
-function Itens({ loja }: { loja: Loja }) {
+function Ajuda() {
+  const passos = [
+    ["Catálogo", "Cadastre produto ou serviço. O que aparece na ficha muda conforme os recursos ligados no estúdio."],
+    ["Estúdio", "Monte as telas com blocos, pinte as seções e escolha as cores. Só vai pro ar quando você publicar."],
+    ["Loja", "Nome, recado e o WhatsApp que recebe os pedidos."],
+    ["Pedidos", "Tudo que sair da vitrine cai aqui, com a mensagem exata que foi pro WhatsApp."],
+  ];
   return (
     <div className="flex flex-col gap-3">
-      <p className="text-[13px] text-tinta-45">
-        {loja.ofertas.length} itens no catálogo. Editar item ainda é feito no arquivo da loja — entra no
-        painel quando a API estiver de pé.
+      <p className="text-[13px] leading-relaxed text-tinta-70">
+        Esta é a mesa de trabalho do lojista. A vitrine é o que o cliente vê.
       </p>
-
-      <div className="border border-borda bg-papel px-3.5" style={{ borderRadius: "var(--canto-g)" }}>
-        {loja.ofertas.map((o) => (
-          <div key={o.id} className="flex items-center gap-3 border-b border-borda py-2.5 last:border-b-0">
-            <Foto oferta={o} className="h-11 w-11 shrink-0" />
-            <div className="min-w-0 flex-1">
-              <p className="truncate text-[13.5px] font-semibold leading-tight">{o.nome}</p>
-              <p className="mt-0.5 truncate text-[12px] text-tinta-45">
-                {o.categorias.join(", ")} · {o.tipo === "servico" ? "serviço" : "produto"}
-              </p>
-            </div>
-            <p className="num-tab shrink-0 text-[13px] font-semibold">{formatarReal(o.precoBase)}</p>
-          </div>
-        ))}
-      </div>
+      {passos.map(([titulo, texto], i) => (
+        <div key={titulo} className="flex gap-3 border border-borda bg-papel p-3.5" style={{ borderRadius: "var(--canto-g)" }}>
+          <span
+            className="num-tab flex h-7 w-7 shrink-0 items-center justify-center bg-[var(--marca-50)] text-[12px] font-bold text-[var(--marca-700)]"
+            style={{ borderRadius: "999px" }}
+          >
+            {i + 1}
+          </span>
+          <span className="min-w-0">
+            <span className="block text-[13.5px] font-bold">{titulo}</span>
+            <span className="mt-0.5 block text-[12.5px] leading-snug text-tinta-45">{texto}</span>
+          </span>
+        </div>
+      ))}
     </div>
   );
 }

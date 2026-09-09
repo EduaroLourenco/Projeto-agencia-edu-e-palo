@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { ChevronDown, ChevronUp, ImagePlus, Plus, Trash2 } from "lucide-react";
+import { ChevronDown, ChevronUp, Plus, Trash2, Upload } from "lucide-react";
 import type { CampoBloco } from "../nucleo/tipos";
 import { Campo, Entrada, Selecao, Stepper } from "../design/Primitivos";
+import { pesoEmKB, prepararImagem } from "../nucleo/imagem";
 
 /**
  * Os controles se desenham sozinhos.
@@ -134,56 +135,12 @@ export function ControleCampo({
 
     case "imagem":
       return (
-        <Campo rotulo={campo.rotulo} dica={campo.dica}>
-          {() => (
-            <div className="flex flex-col gap-2">
-              {valor ? (
-                <div className="relative">
-                  <img
-                    src={String(valor)}
-                    alt=""
-                    className="h-28 w-full object-cover"
-                    style={{ borderRadius: "var(--canto-m)" }}
-                  />
-                  <button
-                    onClick={() => onMudar("")}
-                    aria-label="Tirar imagem"
-                    className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center bg-papel/90 text-tinta-70 shadow"
-                    style={{ borderRadius: "999px" }}
-                  >
-                    <Trash2 size={14} />
-                  </button>
-                </div>
-              ) : (
-                <div
-                  className="flex h-20 items-center justify-center gap-2 border border-dashed border-borda-forte text-[13px] text-tinta-45"
-                  style={{ borderRadius: "var(--canto-m)" }}
-                >
-                  <ImagePlus size={16} />
-                  Escolha abaixo
-                </div>
-              )}
-
-              {/* Sem upload ainda: a pessoa escolhe entre as imagens que já
-                  estão no catálogo da loja. Quando a API entrar, aqui vira
-                  um seletor de arquivo. */}
-              <div className="sem-barra -mx-1 flex gap-2 overflow-x-auto px-1">
-                {imagensDisponiveis.map((url) => (
-                  <button
-                    key={url}
-                    onClick={() => onMudar(url)}
-                    className={`h-14 w-14 shrink-0 overflow-hidden border-2 ${
-                      valor === url ? "border-[var(--marca-500)]" : "border-transparent"
-                    }`}
-                    style={{ borderRadius: "var(--canto-p)" }}
-                  >
-                    <img src={url} alt="" className="h-full w-full object-cover" />
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-        </Campo>
+        <ControleImagem
+          campo={campo}
+          valor={valor}
+          onMudar={onMudar}
+          imagensDisponiveis={imagensDisponiveis}
+        />
       );
 
     case "lista":
@@ -191,6 +148,131 @@ export function ControleCampo({
         <ControleLista campo={campo} valor={valor} onMudar={onMudar} imagensDisponiveis={imagensDisponiveis} />
       );
   }
+}
+
+/**
+ * Escolher uma imagem: subir do aparelho ou reaproveitar do catálogo.
+ *
+ * O botão de subir vem primeiro de propósito. A lista de reaproveitar
+ * existia sozinha antes, e era a prova de que não dava pra montar uma loja
+ * de verdade — só dava pra remontar a demo.
+ */
+function ControleImagem({
+  campo,
+  valor,
+  onMudar,
+  imagensDisponiveis,
+}: {
+  campo: Extract<CampoBloco, { tipo: "imagem" }>;
+  valor: unknown;
+  onMudar: (v: unknown) => void;
+  imagensDisponiveis: string[];
+}) {
+  const [ocupado, setOcupado] = useState(false);
+  const [erro, setErro] = useState<string | null>(null);
+
+  async function subir(arquivo: File | undefined) {
+    if (!arquivo) return;
+    setErro(null);
+    setOcupado(true);
+    try {
+      const { url } = await prepararImagem(arquivo, { lado: 1000 });
+      onMudar(url);
+    } catch (e) {
+      setErro(e instanceof Error ? e.message : "Não consegui usar esta imagem.");
+    } finally {
+      setOcupado(false);
+    }
+  }
+
+  const url = String(valor ?? "");
+
+  return (
+    <Campo rotulo={campo.rotulo} dica={campo.dica}>
+      {() => (
+        <div className="flex flex-col gap-2">
+          {url ? (
+            <div className="relative">
+              <img
+                src={url}
+                alt=""
+                className="h-32 w-full object-cover"
+                style={{ borderRadius: "var(--canto-m)" }}
+              />
+              <div className="absolute right-2 top-2 flex gap-1.5">
+                {url.startsWith("data:") && (
+                  <span className="num-tab flex h-8 items-center bg-tinta/70 px-2 text-[11px] font-bold text-white" style={{ borderRadius: "999px" }}>
+                    {pesoEmKB(url)} KB
+                  </span>
+                )}
+                <button
+                  onClick={() => onMudar("")}
+                  aria-label="Tirar imagem"
+                  className="flex h-8 w-8 items-center justify-center bg-papel/90 text-tinta-70 shadow"
+                  style={{ borderRadius: "999px" }}
+                >
+                  <Trash2 size={14} />
+                </button>
+              </div>
+            </div>
+          ) : (
+            <label
+              className="flex h-24 cursor-pointer flex-col items-center justify-center gap-1.5 border border-dashed border-borda-forte text-[13px] font-semibold text-tinta-70"
+              style={{ borderRadius: "var(--canto-m)" }}
+            >
+              {ocupado ? (
+                <span className="anima-pulsar">Preparando…</span>
+              ) : (
+                <>
+                  <Upload size={18} />
+                  Subir uma foto
+                </>
+              )}
+              <input
+                type="file"
+                accept="image/*"
+                className="sr-only"
+                onChange={(e) => subir(e.target.files?.[0])}
+              />
+            </label>
+          )}
+
+          {erro && <p className="text-[12px] font-semibold text-erro">{erro}</p>}
+
+          {url && (
+            <label
+              className="flex min-h-[40px] cursor-pointer items-center justify-center gap-1.5 border border-borda-forte text-[12.5px] font-semibold text-tinta-70"
+              style={{ borderRadius: "var(--canto-m)" }}
+            >
+              <Upload size={14} />
+              {ocupado ? "Preparando…" : "Trocar a foto"}
+              <input type="file" accept="image/*" className="sr-only" onChange={(e) => subir(e.target.files?.[0])} />
+            </label>
+          )}
+
+          {imagensDisponiveis.length > 0 && (
+            <>
+              <p className="mt-0.5 text-[11.5px] text-tinta-45">ou reaproveite uma do catálogo</p>
+              <div className="sem-barra -mx-1 flex gap-2 overflow-x-auto px-1">
+                {imagensDisponiveis.map((u) => (
+                  <button
+                    key={u}
+                    onClick={() => onMudar(u)}
+                    className={`h-14 w-14 shrink-0 overflow-hidden border-2 ${
+                      valor === u ? "border-[var(--marca-500)]" : "border-transparent"
+                    }`}
+                    style={{ borderRadius: "var(--canto-p)" }}
+                  >
+                    <img src={u} alt="" className="h-full w-full object-cover" />
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+      )}
+    </Campo>
+  );
 }
 
 function ControleLista({

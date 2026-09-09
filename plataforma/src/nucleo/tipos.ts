@@ -211,6 +211,31 @@ export interface Modulo {
   descricao: string;
   icone: ComponentType<{ size?: number | string; strokeWidth?: number }>;
   blocos?: DefinicaoBloco<never>[];
+
+  /**
+   * O que este módulo acrescenta à ficha de um item.
+   *
+   * Mesma ideia dos `campos` de um bloco: o painel não conhece módulo
+   * nenhum: ele pergunta ao registro quais campos existem e desenha o
+   * formulário sozinho. Ligar "Atacado" faz aparecer pedido mínimo e
+   * múltiplo na ficha; desligar faz sumir. Sem tocar no painel.
+   *
+   * `aplicaA` filtra por tipo — duração só faz sentido em serviço.
+   */
+  camposDaOferta?: {
+    aplicaA?: (tipo: TipoOferta) => boolean;
+    campos: Record<string, CampoBloco>;
+    /**
+     * Tradução entre o que o módulo guarda e o que o formulário mostra.
+     *
+     * "P, M, G" é bom de digitar e ruim de programar; `["P","M","G"]` é o
+     * contrário. Em vez de o painel aprender o formato de cada módulo — que
+     * era o caminho pra ele voltar a conhecer módulo — cada um traduz o
+     * próprio pedaço aqui.
+     */
+    paraFormulario?: (dados: unknown) => Record<string, unknown>;
+    paraDados?: (formulario: Record<string, unknown>) => unknown;
+  };
   passos?: PassoCheckout[];
   regrasPreco?: RegraPreco[];
   /** Roda antes do checkout: é aqui que os 33% de pedido com erro morrem. */

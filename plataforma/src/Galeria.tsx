@@ -1,9 +1,11 @@
-import { Link } from "react-router-dom";
-import { ArrowRight, LayoutDashboard, RotateCcw, Wand2 } from "lucide-react";
-import { DEMOS } from "../demos/indice";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { ArrowRight, Copy, LayoutDashboard, Plus, RotateCcw, Trash2, Wand2 } from "lucide-react";
 import { modulo as buscarModulo } from "./nucleo/registro";
 import { escalaDaMarca, textoSobreMarca } from "./nucleo/tema";
-import { restaurarDemo } from "./nucleo/loja";
+import { apagarLoja, criarLoja, duplicarLoja, listarLojas, restaurarDemo } from "./nucleo/loja";
+import { MODELOS, type IdModelo } from "./nucleo/modelos";
+import { Botao, Campo, Entrada, Folha } from "./design/Primitivos";
 import type { Loja } from "./nucleo/tipos";
 
 /**
@@ -32,25 +34,34 @@ function capa(loja: Loja): string | undefined {
 }
 
 export function Galeria() {
-  const lojas = Object.values(DEMOS);
+  const navegar = useNavigate();
+  const [criando, setCriando] = useState(false);
+  const lojas = listarLojas();
 
   return (
     <div className="mx-auto min-h-dvh w-full max-w-3xl px-5 pb-14 pt-10">
       <header className="mb-8">
-        <p className="rotulo text-tinta-45">Zap Commerce · demonstrações</p>
+        <p className="rotulo text-tinta-45">Zap Commerce</p>
         <h1 className="mt-2.5 font-display text-[clamp(28px,8vw,38px)] font-extrabold leading-[1.06] tracking-[-0.028em]">
-          Três ramos,
-          <br />
-          um sistema só
+          Suas lojas
         </h1>
         <p className="mt-3 max-w-xl text-[14.5px] leading-relaxed text-tinta-70">
-          As três lojas rodam o mesmo código. O que muda entre elas é um arquivo de
-          configuração: quais blocos aparecem, quais módulos estão ligados e o tema.
+          As três primeiras são demonstrações prontas, uma de cada ramo. Abaixo delas ficam
+          as que você criar — com catálogo, telas e cores próprios.
         </p>
+
+        <button
+          onClick={() => setCriando(true)}
+          className="mt-4 flex min-h-[50px] w-full items-center justify-center gap-2 border border-dashed border-borda-forte text-[14.5px] font-bold text-tinta-70 transition hover:border-[var(--marca-500)] hover:text-tinta"
+          style={{ borderRadius: "14px" }}
+        >
+          <Plus size={18} strokeWidth={2.6} />
+          Criar uma loja
+        </button>
       </header>
 
       <div className="flex flex-col gap-5">
-        {lojas.map((loja) => {
+        {lojas.map(({ loja, propria }) => {
           const escala = escalaDaMarca(loja.tema.corMarca);
           const modulos = loja.modulos.map((id) => buscarModulo(id)).filter(Boolean);
           const sobre = textoSobreMarca(loja.tema.corMarca);
@@ -135,17 +146,46 @@ export function Galeria() {
                     <LayoutDashboard size={15} />
                     Painel
                   </Link>
+                  {propria ? (
+                    <button
+                      onClick={() => {
+                        if (!confirm(`Apagar "${loja.nome}"? Não dá pra desfazer.`)) return;
+                        apagarLoja(loja.slug);
+                        location.reload();
+                      }}
+                      title="Apagar esta loja"
+                      aria-label={`Apagar ${loja.nome}`}
+                      className="flex h-[42px] w-[42px] shrink-0 items-center justify-center border border-borda-forte text-tinta-45 hover:border-erro hover:text-erro"
+                      style={{ borderRadius: "11px" }}
+                    >
+                      <Trash2 size={15} />
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => {
+                        restaurarDemo(loja.slug);
+                        location.reload();
+                      }}
+                      title="Voltar esta loja ao estado de fábrica"
+                      aria-label={`Restaurar ${loja.nome}`}
+                      className="flex h-[42px] w-[42px] shrink-0 items-center justify-center border border-borda-forte text-tinta-45"
+                      style={{ borderRadius: "11px" }}
+                    >
+                      <RotateCcw size={15} />
+                    </button>
+                  )}
                   <button
                     onClick={() => {
-                      restaurarDemo(loja.slug);
-                      location.reload();
+                      const r = duplicarLoja(loja.slug, `${loja.nome} (cópia)`);
+                      if (r.ok) navegar(`/${r.slug}/estudio`);
+                      else alert(r.erro);
                     }}
-                    title="Voltar esta loja ao estado de fábrica"
-                    aria-label={`Restaurar ${loja.nome}`}
+                    title="Duplicar esta loja"
+                    aria-label={`Duplicar ${loja.nome}`}
                     className="flex h-[42px] w-[42px] shrink-0 items-center justify-center border border-borda-forte text-tinta-45"
                     style={{ borderRadius: "11px" }}
                   >
-                    <RotateCcw size={15} />
+                    <Copy size={15} />
                   </button>
                 </div>
               </div>
@@ -155,9 +195,96 @@ export function Galeria() {
       </div>
 
       <p className="mt-8 text-[12.5px] leading-relaxed text-tinta-45">
-        O que você editar no estúdio fica guardado no seu navegador. O botão de restaurar
-        devolve a loja ao estado original — use antes de mostrar pra outra pessoa.
+        Tudo fica guardado neste navegador — não há servidor ainda. Nas demos, o botão de
+        restaurar devolve a loja ao estado de fábrica; nas suas, a lixeira apaga de vez.
       </p>
+
+      {criando && <FolhaNovaLoja onFechar={() => setCriando(false)} onCriada={(slug) => navegar(`/${slug}/estudio`)} />}
     </div>
+  );
+}
+
+/* ============================================================
+   CRIAR UMA LOJA
+   ============================================================ */
+
+function FolhaNovaLoja({ onFechar, onCriada }: { onFechar: () => void; onCriada: (slug: string) => void }) {
+  const [modelo, setModelo] = useState<IdModelo>("produtos");
+  const [nome, setNome] = useState("");
+  const [whatsapp, setWhatsapp] = useState("");
+  const [erro, setErro] = useState<string | null>(null);
+
+  const digitos = whatsapp.replace(/\D/g, "");
+  const pronto = nome.trim().length >= 2 && digitos.length >= 12;
+
+  return (
+    <Folha
+      aberta
+      onFechar={onFechar}
+      altura="quase-cheia"
+      titulo="Criar uma loja"
+      subtitulo="Ela já nasce montada. Depois você troca tudo."
+      rodape={
+        <Botao
+          largo
+          disabled={!pronto}
+          onClick={() => {
+            const r = criarLoja({ nome: nome.trim(), whatsapp: digitos, modelo });
+            if (r.ok) onCriada(r.slug);
+            else setErro(r.erro);
+          }}
+        >
+          {pronto ? "Criar e abrir o estúdio" : "Preencha nome e WhatsApp"}
+        </Botao>
+      }
+    >
+      <div className="flex flex-col gap-4 pt-1">
+        <div className="flex flex-col gap-2.5">
+          {MODELOS.map((m) => {
+            const ativo = modelo === m.id;
+            return (
+              <button
+                key={m.id}
+                onClick={() => setModelo(m.id)}
+                aria-pressed={ativo}
+                className={`flex items-center gap-3.5 border p-4 text-left transition ${
+                  ativo ? "border-[var(--marca-500)] bg-[var(--marca-50)]" : "border-borda-forte bg-papel"
+                }`}
+                style={{ borderRadius: "var(--canto-g)" }}
+              >
+                <span
+                  className="h-10 w-10 shrink-0"
+                  style={{ background: m.corMarca, borderRadius: "var(--canto-m)" }}
+                />
+                <span className="min-w-0">
+                  <span className="block text-[14.5px] font-bold">{m.nome}</span>
+                  <span className="mt-0.5 block text-[12.5px] leading-snug text-tinta-45">{m.descricao}</span>
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        <Campo rotulo="Nome da loja">
+          {(p) => <Entrada {...p} value={nome} onChange={(e) => setNome(e.target.value)} placeholder="Mercearia do Bairro" />}
+        </Campo>
+
+        <Campo rotulo="WhatsApp que recebe os pedidos" dica="Com país e DDD: 55 + 16 + o número.">
+          {(p) => (
+            <Entrada
+              {...p}
+              type="tel"
+              inputMode="numeric"
+              value={whatsapp}
+              onChange={(e) => setWhatsapp(e.target.value)}
+              className="num-tab"
+              placeholder="5516920093456"
+            />
+          )}
+        </Campo>
+
+        {erro && <p className="text-[12.5px] font-semibold text-erro">{erro}</p>}
+      </div>
+    </Folha>
   );
 }

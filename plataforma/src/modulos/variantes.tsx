@@ -44,6 +44,39 @@ export const moduloVariantes: Modulo = {
   descricao: "Tamanho, cor, voltagem — quantos eixos o item precisar.",
   icone: Shirt,
 
+  camposDaOferta: {
+    campos: {
+      eixos: {
+        tipo: "lista",
+        rotulo: "Opções que o cliente escolhe",
+        max: 3,
+        de: {
+          nome: { tipo: "texto", rotulo: "Nome da opção", padrao: "Tamanho" },
+          valores: { tipo: "texto", rotulo: "Valores", padrao: "P, M, G", dica: "Separados por vírgula." },
+        },
+        padrao: [],
+      },
+    },
+    paraFormulario: (dados) => ({
+      eixos: ((dados as DadosVariantes | undefined)?.eixos ?? []).map((e) => ({
+        nome: e.nome,
+        valores: e.valores.join(", "),
+      })),
+    }),
+    paraDados: (form) => ({
+      eixos: ((form.eixos as { nome?: string; valores?: string }[]) ?? [])
+        .filter((e) => e.nome?.trim())
+        .map((e) => ({
+          nome: String(e.nome).trim(),
+          valores: String(e.valores ?? "")
+            .split(",")
+            .map((v) => v.trim())
+            .filter(Boolean),
+        }))
+        .filter((e) => e.valores.length > 0),
+    }),
+  },
+
   configurador: {
     aplicaA: (oferta) => eixosDa(oferta).length > 0,
 

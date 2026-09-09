@@ -146,6 +146,18 @@ não precisa saber que ele existe.
 - Pedido gravado **e** aberto no WhatsApp — é o histórico que faz "repetir
   último pedido" existir
 - Agenda com profissional, dia e horário, descontando o que já passou
+- **Criar loja do zero**: três modelos (produtos, serviços com agenda,
+  atacado) que já nascem com páginas montadas, recursos ligados e itens de
+  exemplo. Duplicar e apagar também.
+- **Cadastro de itens no painel**: criar, editar, duplicar e apagar produto
+  **ou** serviço, com foto subida do aparelho. O formulário é montado pelos
+  MÓDULOS — ligar Atacado faz aparecer pedido mínimo e caixa fechada; ligar
+  Agenda faz aparecer duração e quem atende. O painel não conhece nenhum dos
+  dois.
+- **Upload de foto**: escolhe do aparelho, recorta no quadrado, reduz e
+  guarda em base64. Sem servidor.
+- **Ficha da loja**: nome, recado, WhatsApp que recebe os pedidos e
+  aberta/fechada
 - Estúdio: arrastar **ou** subir/descer pelas setas, editar, ocultar, duplicar,
   apagar, desfazer/refazer, trocar tema, ligar e desligar módulos, ver como
   cliente, publicar
@@ -175,8 +187,8 @@ existem lado a lado em cada bloco.
 
 ## O que falta
 
-- **API.** Hoje as lojas vêm de `demos/` e o que o estúdio salva fica no
-  `localStorage`. `src/nucleo/loja.ts` e `src/nucleo/pedidos.ts` são as duas
+- **API.** Hoje as lojas vêm de `demos/` (as três demonstrações) e do
+  `localStorage` (as que o lojista cria). `src/nucleo/loja.ts` e `src/nucleo/pedidos.ts` são as duas
   únicas peças que mudam quando o back entrar.
 - **Upload de imagem.** O estúdio escolhe entre as imagens já no catálogo.
 - **Editar item pelo painel.** Item ainda se edita no arquivo da loja.

@@ -306,6 +306,15 @@ export const moduloB2B: Modulo = {
   nome: "Atacado (B2B)",
   descricao: "Tabela por cliente, faixa de quantidade, mínimo e caixa fechada.",
   icone: Building2,
+  camposDaOferta: {
+    aplicaA: (tipo) => tipo === "produto",
+    campos: {
+      minimo: { tipo: "numero", rotulo: "Quantidade mínima", padrao: 0, min: 0, max: 999, sufixo: "unidades" },
+      multiplo: { tipo: "numero", rotulo: "Vende de N em N", padrao: 0, min: 0, max: 999, sufixo: "caixa fechada" },
+      unidadeCaixa: { tipo: "texto", rotulo: "Como chama a unidade", padrao: "un", dica: "un, pct, cx, fardo…" },
+    },
+  },
+
   regrasPreco: [regraTabelaDoCliente, regraFaixaDeQuantidade],
   blocos: [blocoBarraFaixa as unknown as DefinicaoBloco<never>],
   passos: passoIdentificacao,
