@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ArrowLeft, LayoutGrid, ShoppingBag, Store } from "lucide-react";
 import type { ClienteIdentificado, Loja, Oferta, TipoPagina } from "../nucleo/tipos";
 import { ProvedorSacola, useSacola } from "../nucleo/sacola";
@@ -291,10 +291,29 @@ export function Vitrine({
   editando?: boolean;
   envolverBloco?: EnvolverBloco;
 }) {
+  const raiz = useRef<HTMLDivElement>(null);
+
+  /**
+   * O tema é pintado no contêiner da loja, não no documento.
+   *
+   * No estúdio a loja é uma prévia dentro de uma página que tem interface
+   * própria. Quando o papel virou variável, pintar o documento inteiro
+   * deixava o editor escuro junto com a loja escura — e os controles
+   * sumiam. Fora do estúdio, o corpo da página acompanha à parte.
+   */
   useEffect(() => {
-    aplicarTema(document.documentElement, loja.tema);
+    if (raiz.current) aplicarTema(raiz.current, loja.tema);
     garantirFontes(loja.tema.fontes);
   }, [loja.tema]);
+
+  useEffect(() => {
+    if (editando || !raiz.current) return;
+    const anterior = document.body.style.background;
+    document.body.style.background = getComputedStyle(raiz.current).getPropertyValue("--color-papel");
+    return () => {
+      document.body.style.background = anterior;
+    };
+  }, [editando, loja.tema]);
 
   // Um módulo pode ter sido desligado depois que a loja foi salva.
   const lojaSegura = useMemo(
@@ -304,12 +323,15 @@ export function Vitrine({
 
   return (
     <ProvedorSacola slug={loja.slug}>
-      <VitrineInterna
-        loja={lojaSegura}
-        paginaInicial={paginaInicial}
-        editando={editando}
-        envolverBloco={envolverBloco}
-      />
+      {/* `contents` não cria caixa: serve só de dono das variáveis do tema. */}
+      <div ref={raiz} className="contents">
+        <VitrineInterna
+          loja={lojaSegura}
+          paginaInicial={paginaInicial}
+          editando={editando}
+          envolverBloco={envolverBloco}
+        />
+      </div>
     </ProvedorSacola>
   );
 }

@@ -111,11 +111,15 @@ export function Botao({
   pequeno?: boolean;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>) {
   const tons: Record<TomBotao, string> = {
+    // A roupa do botão principal vem do tema (sólido, contorno ou suave),
+    // em variáveis — o componente não sabe qual está valendo.
+    //
     // Travado é papel, não cinza-chumbo: o `tinta-12` de antes lia como
     // erro. Quem diz o que falta é o rótulo do botão, não a cor.
     marca:
-      "text-[var(--sobre-marca)] bg-[var(--marca-500)] shadow-[var(--sombra-1)] hover:brightness-[0.96] " +
-      "disabled:bg-papel-3 disabled:text-tinta-45 disabled:shadow-none",
+      "text-[var(--botao-texto)] bg-[var(--botao-fundo)] border border-[var(--botao-borda)] " +
+      "shadow-[var(--sombra-1)] hover:brightness-[0.96] " +
+      "disabled:border-transparent disabled:bg-papel-3 disabled:text-tinta-45 disabled:shadow-none",
     contorno: "border border-borda-forte bg-papel text-tinta hover:bg-papel-2",
     fantasma: "text-tinta-70 hover:bg-papel-3 hover:text-tinta",
     perigo: "border border-erro/30 bg-erro-fraco text-erro hover:bg-erro/10",

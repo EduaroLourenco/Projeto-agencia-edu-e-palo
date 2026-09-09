@@ -135,6 +135,8 @@ export interface BlocoNaPagina {
   tipo: string;
   props: Record<string, unknown>;
   oculto?: boolean;
+  /** Fundo, respiro e moldura desta seção. Ver `EstiloBloco`. */
+  estilo?: EstiloBloco;
 }
 
 /* ============================================================
@@ -244,14 +246,64 @@ export interface Modulo {
    ============================================================ */
 
 export type Densidade = "confortavel" | "media" | "compacta";
-export type Canto = "reto" | "suave" | "redondo";
+export type Canto = "reto" | "suave" | "redondo" | "pilula";
 export type ParFontes = "sora-inter" | "fraunces-inter" | "archivo-inter" | "instrument-inter";
+export type EstiloBotao = "solido" | "contorno" | "suave";
+export type NivelSombra = "plana" | "suave" | "elevada";
+export type EscalaTexto = "pequeno" | "normal" | "grande";
 
 export interface Tema {
   corMarca: string;
   densidade: Densidade;
   canto: Canto;
   fontes: ParFontes;
+
+  /**
+   * Os eixos abaixo entraram depois. São opcionais porque loja salva antes
+   * deles existir tem que continuar abrindo — `temaCompleto()` preenche.
+   */
+
+  /** O papel da loja. Escolher um escuro produz modo escuro inteiro: as
+   *  tintas, bordas e a escala da marca são recalculadas contra ele. */
+  corPapel?: string;
+  estiloBotao?: EstiloBotao;
+  sombra?: NivelSombra;
+  escalaTexto?: EscalaTexto;
+}
+
+/* ============================================================
+   ESTILO DE BLOCO
+
+   Cada seção pode ter fundo, respiro e moldura próprios. É o que
+   permite fazer uma faixa escura no meio de uma loja clara sem
+   inventar um bloco novo pra cada combinação.
+
+   A cor do texto NÃO está aqui de propósito: ela é derivada do fundo
+   escolhido, senão volta o problema de texto claro em fundo claro.
+   ============================================================ */
+
+export type FundoBloco =
+  | "nenhum"
+  | "papel"
+  | "suave"
+  | "marca-suave"
+  | "marca"
+  | "escuro"
+  | "propria";
+
+export interface EstiloBloco {
+  fundo?: FundoBloco;
+  /** Só quando `fundo` é "propria". */
+  corFundo?: string;
+  respiro?: "nenhum" | "p" | "m" | "g";
+  canto?: "herdar" | "reto" | "suave" | "redondo";
+  borda?: boolean;
+  sombra?: "nenhuma" | "leve" | "media";
+  /** Ocupa a largura toda da tela, ignorando a margem da página. */
+  sangrar?: boolean;
+  alinhamento?: "esquerda" | "centro";
+  /** Espaço extra depois do bloco, pra separar seções. */
+  espacoDepois?: "nenhum" | "normal" | "grande";
 }
 
 /* ============================================================

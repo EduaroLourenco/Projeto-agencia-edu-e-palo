@@ -1,11 +1,12 @@
-import type { Canto, Densidade, ParFontes, Tema } from "./tipos";
+import type { Canto, Densidade, EstiloBotao, EscalaTexto, NivelSombra, ParFontes, Tema } from "./tipos";
 
 /**
- * O lojista escolhe UMA cor. A gente gera a escala inteira.
+ * O lojista escolhe as cores. A gente gera as escalas inteiras.
  *
- * É a decisão que garante contraste em todo lugar: ele nunca escolhe "cor do
- * texto do botão", então nunca sai texto cinza-claro em fundo bege. Ver a
- * seção "Limitar pra ficar bonito" da proposta.
+ * A regra que sustenta tudo: ele nunca escolhe "cor do texto do botão" nem
+ * "cor da borda". Escolhe a marca e o papel; todo o resto é derivado POR
+ * CONTRASTE MEDIDO. É o que permite abrir a personalização sem abrir a porta
+ * pra loja ilegível — inclusive papel escuro, que vira modo escuro sozinho.
  */
 
 function hexParaHsl(hex: string): [number, number, number] {
@@ -29,19 +30,6 @@ function hexParaHsl(hex: string): [number, number, number] {
 
   return [h * 360, s * 100, l * 100];
 }
-
-/* ============================================================
-   A ESCALA
-
-   A primeira versão fixava a luminosidade de cada degrau — 600 = 44% de
-   lightness, sempre. Estava errado: o olho não lê HSL. Verde a 44% é bem
-   mais claro que violeta a 44%, então a mesma regra dava 2,7 de contraste
-   no verde e 8,7 no violeta. Cinco de oito cores testadas reprovavam.
-
-   Agora todo degrau que carrega texto ou serve de fundo de botão é resolvido
-   POR CONTRASTE: busca binária na luminosidade até bater a razão alvo contra
-   o papel. Funciona pra qualquer matiz, inclusive amarelo.
-   ============================================================ */
 
 function hslParaRgb(h: number, s: number, l: number): [number, number, number] {
   const S = s / 100;
@@ -69,37 +57,129 @@ function razao(a: [number, number, number], b: [number, number, number]): number
   return (Math.max(la, lb) + 0.05) / (Math.min(la, lb) + 0.05);
 }
 
-const PAPEL: [number, number, number] = [1, 1, 1];
-const TINTA: [number, number, number] = [0.078, 0.071, 0.102];
-
-/**
- * A luminosidade que faz esta matiz bater o contraste pedido contra o papel.
- * Escurecer sempre aumenta o contraste, então a função é monótona e 20 passos
- * de busca binária chegam mais perto do que a tela consegue mostrar.
- */
-function luminosidadeParaContraste(h: number, s: number, alvo: number): number {
-  let baixo = 0;
-  let alto = 100;
-  for (let i = 0; i < 20; i++) {
-    const meio = (baixo + alto) / 2;
-    if (razao(hslParaRgb(h, s, meio), PAPEL) >= alvo) baixo = meio;
-    else alto = meio;
-  }
-  return baixo;
+function rgbDoHex(hex: string): [number, number, number] {
+  const [h, s, l] = hexParaHsl(hex);
+  return hslParaRgb(h, s, l);
 }
 
+const BRANCO: [number, number, number] = [1, 1, 1];
+const PRETO: [number, number, number] = [0.078, 0.071, 0.102];
+
+const hsl = (h: number, s: number, l: number) => `hsl(${h.toFixed(1)} ${s.toFixed(1)}% ${l.toFixed(1)}%)`;
+
 /**
- * Quem tem `contraste` é resolvido por busca — são os tons que carregam
- * TEXTO em cima do papel. Quem tem `l` é tinta clara, que só serve de fundo.
+ * A luminosidade que bate o contraste pedido contra uma referência.
  *
- * O 500 não está aqui: ele é a superfície da marca (fundo de botão) e segue
- * outra regra, logo abaixo.
+ * Afastar-se da referência sempre aumenta o contraste, então em cada lado a
+ * função é monótona e a busca binária converge. `paraBaixo` diz de que lado
+ * procurar: papel claro pede tinta escura, papel escuro pede tinta clara.
  */
-const DEGRAUS: { nome: string; l?: number; contraste?: number; sMult: number }[] = [
-  { nome: "50", l: 97.5, sMult: 0.45 },
-  { nome: "100", l: 94, sMult: 0.6 },
-  { nome: "200", l: 87, sMult: 0.75 },
-  { nome: "300", l: 76, sMult: 0.9 },
+function luzParaContraste(
+  h: number,
+  s: number,
+  alvo: number,
+  referencia: [number, number, number],
+  paraBaixo: boolean,
+  lReferencia: number,
+): number {
+  let baixo = paraBaixo ? 0 : lReferencia;
+  let alto = paraBaixo ? lReferencia : 100;
+  for (let i = 0; i < 22; i++) {
+    const meio = (baixo + alto) / 2;
+    const bate = razao(hslParaRgb(h, s, meio), referencia) >= alvo;
+    if (paraBaixo) {
+      // Procurando o mais CLARO que ainda bate: se bate, pode subir.
+      if (bate) baixo = meio;
+      else alto = meio;
+    } else {
+      if (bate) alto = meio;
+      else baixo = meio;
+    }
+  }
+  return paraBaixo ? baixo : alto;
+}
+
+/* ============================================================
+   O PAPEL
+
+   Antes o papel era branco fixo e os neutros eram constantes no CSS. Agora
+   ele é escolha do lojista, e tudo que encosta nele — tintas, bordas,
+   superfícies — nasce dele. Papel escuro produz modo escuro sem nenhum
+   caminho separado no código.
+   ============================================================ */
+
+/** Alvos de contraste de cada neutro contra o papel. */
+const TINTAS: { nome: string; alvo: number }[] = [
+  { nome: "tinta", alvo: 14 },
+  { nome: "tinta-70", alvo: 7.2 },
+  { nome: "tinta-45", alvo: 4.6 },
+  { nome: "tinta-25", alvo: 2.4 },
+  { nome: "tinta-12", alvo: 1.45 },
+];
+
+export interface Paleta {
+  escuro: boolean;
+  papel: string;
+  papel2: string;
+  papel3: string;
+  borda: string;
+  bordaForte: string;
+  tintas: Record<string, string>;
+}
+
+export function paletaDoPapel(hex: string): Paleta {
+  const [h, sBruto, l] = hexParaHsl(hex);
+  const rgb = hslParaRgb(h, sBruto, l);
+  const escuro = luminancia(rgb) < 0.2;
+
+  // Neutro puro em tela lê como "não escolhido". Herdar um resto do matiz do
+  // papel é o que dá aquele cinza morno de interface caprichada — mas pouco,
+  // senão a tinta fica colorida.
+  const sTinta = Math.min(14, sBruto * 0.5);
+  const sSuperficie = Math.min(20, sBruto * 0.75);
+
+  const tintas: Record<string, string> = {};
+  for (const t of TINTAS) {
+    tintas[t.nome] = hsl(h, sTinta, luzParaContraste(h, sTinta, t.alvo, rgb, !escuro, l));
+  }
+
+  // Superfícies vizinhas: um degrau e dois degraus na direção do contraste.
+  // No escuro elas clareiam, no claro elas escurecem — em ambos, a hierarquia
+  // "papel < papel-2 < papel-3" continua de pé.
+  const passo = (delta: number) => {
+    const alvo = escuro ? l + delta : l - delta;
+    return hsl(h, sSuperficie, Math.min(98, Math.max(3, alvo)));
+  };
+
+  return {
+    escuro,
+    papel: hsl(h, sSuperficie * 0.7, l),
+    papel2: passo(escuro ? 5 : 3),
+    papel3: passo(escuro ? 10 : 7),
+    borda: hsl(h, sSuperficie, Math.min(98, Math.max(3, escuro ? l + 13 : l - 9))),
+    bordaForte: hsl(h, sSuperficie, Math.min(98, Math.max(3, escuro ? l + 24 : l - 20))),
+    tintas,
+  };
+}
+
+/* ============================================================
+   A ESCALA DA MARCA
+
+   A primeira versão fixava a luminosidade de cada degrau — 600 = 44% de
+   lightness, sempre. Estava errado: o olho não lê HSL. Verde a 44% é bem
+   mais claro que violeta a 44%, então a mesma regra dava 2,7 de contraste
+   no verde e 8,7 no violeta.
+
+   Agora todo degrau que carrega texto ou serve de fundo de botão é resolvido
+   POR CONTRASTE contra o papel de verdade da loja — que agora pode ser
+   escuro, e aí a escala inteira inverte de direção sozinha.
+   ============================================================ */
+
+const DEGRAUS: { nome: string; desvio?: number; contraste?: number; sMult: number }[] = [
+  { nome: "50", desvio: 2.5, sMult: 0.45 },
+  { nome: "100", desvio: 6, sMult: 0.6 },
+  { nome: "200", desvio: 13, sMult: 0.75 },
+  { nome: "300", desvio: 24, sMult: 0.9 },
   { nome: "400", contraste: 2.2, sMult: 1 },
   { nome: "600", contraste: 4.6, sMult: 1 },
   { nome: "700", contraste: 7.2, sMult: 0.95 },
@@ -115,17 +195,16 @@ const DEGRAUS: { nome: string; l?: number; contraste?: number; sMult: number }[]
  * marrom. Some a marca nos dois casos.
  *
  * A regra é outra: parte da luminosidade que a pessoa escolheu, e só se afasta
- * dela se o melhor texto possível (branco ou tinta) não chegar a 4,5. Amarelo
- * continua amarelo, com texto escuro; azul escurece o suficiente pro branco.
+ * dela se o melhor texto possível (branco ou preto) não chegar a 4,5.
  */
 function superficieDaMarca(h: number, s: number, lEscolhida: number) {
   const melhorTexto = (l: number) => {
     const fundo = hslParaRgb(h, s, l);
-    const comBranco = razao(fundo, PAPEL);
-    const comTinta = razao(fundo, TINTA);
-    return comBranco >= comTinta
+    const comBranco = razao(fundo, BRANCO);
+    const comPreto = razao(fundo, PRETO);
+    return comBranco >= comPreto
       ? { cor: "#ffffff", contraste: comBranco, escurecer: true }
-      : { cor: "#14121a", contraste: comTinta, escurecer: false };
+      : { cor: "#14121a", contraste: comPreto, escurecer: false };
   };
 
   const partida = Math.min(72, Math.max(30, lEscolhida));
@@ -133,20 +212,18 @@ function superficieDaMarca(h: number, s: number, lEscolhida: number) {
   // Preferência por texto branco quando ele está por perto.
   //
   // Sem isto, um rosa de 56% de luminosidade ganha texto escuro — passa no
-  // contraste, mas rosa com preto não é a cara de marca nenhuma. Escurecer
-  // até 14 pontos costuma bastar pra liberar o branco em rosa, vermelho e
-  // laranja. Amarelo precisaria de 30+ e vira marrom: nesse caso o branco
-  // não vale o preço, e o texto escuro fica.
+  // contraste, mas rosa com preto não é a cara de marca nenhuma. Amarelo
+  // precisaria de 30+ pontos e viraria marrom: aí o texto escuro fica.
   for (let d = 0; d <= 14; d++) {
     const l = partida - d;
     if (l < 12) break;
-    const contraste = razao(hslParaRgb(h, s, l), PAPEL);
-    if (contraste >= 4.5) return { l, texto: "#ffffff", contraste };
+    if (razao(hslParaRgb(h, s, l), BRANCO) >= 4.5) {
+      return { l, texto: "#ffffff", contraste: razao(hslParaRgb(h, s, l), BRANCO) };
+    }
   }
 
   let l = partida;
   let escolha = melhorTexto(l);
-  // Anda 1% por vez na direção que aumenta o contraste do texto vencedor.
   for (let i = 0; i < 70 && escolha.contraste < 4.5; i++) {
     l += escolha.escurecer ? -1 : 1;
     if (l < 6 || l > 96) break;
@@ -160,39 +237,48 @@ function satDe(s: number, mult: number) {
   return Math.min(100, Math.max(8, s * mult));
 }
 
-function luzDe(h: number, s: number, d: (typeof DEGRAUS)[number]) {
-  return d.contraste !== undefined ? luminosidadeParaContraste(h, s, d.contraste) : d.l!;
-}
+export function escalaDaMarca(hex: string, papelHex = "#ffffff"): Record<string, string> {
+  const [h, s] = hexParaHsl(hex);
+  const l = hexParaHsl(hex)[2];
+  const [hP, sP, lP] = hexParaHsl(papelHex);
+  const papelRgb = hslParaRgb(hP, sP, lP);
+  const escuro = luminancia(papelRgb) < 0.2;
 
-export function escalaDaMarca(hex: string): Record<string, string> {
-  const [h, s, l] = hexParaHsl(hex);
   const out: Record<string, string> = {};
   for (const d of DEGRAUS) {
     const sat = satDe(s, d.sMult);
-    out[d.nome] = `hsl(${h.toFixed(1)} ${sat.toFixed(1)}% ${luzDe(h, sat, d).toFixed(1)}%)`;
+    // Os tons claros (50–300) são "quase papel com um toque da marca": eles
+    // acompanham o papel em vez de serem claros no absoluto, senão viram
+    // manchas brancas numa loja escura.
+    const luz =
+      d.contraste !== undefined
+        ? luzParaContraste(h, sat, d.contraste, papelRgb, !escuro, lP)
+        : Math.min(98, Math.max(3, escuro ? lP + d.desvio! : lP - d.desvio!));
+    out[d.nome] = hsl(h, sat, luz);
   }
+
   const sup = superficieDaMarca(h, satDe(s, 1), l);
-  out["500"] = `hsl(${h.toFixed(1)} ${satDe(s, 1).toFixed(1)}% ${sup.l.toFixed(1)}%)`;
+  out["500"] = hsl(h, satDe(s, 1), sup.l);
 
   // Barra de progresso, pontinho de carrossel, traço fino: são gráfico, não
   // texto, e precisam de 3:1 contra o papel. A superfície da marca pode ser
   // amarela e não bater isso — então esse tom é resolvido em separado.
-  out["grafico"] = `hsl(${h.toFixed(1)} ${satDe(s, 1).toFixed(1)}% ${luminosidadeParaContraste(h, satDe(s, 1), 3.1).toFixed(1)}%)`;
+  out["grafico"] = hsl(h, satDe(s, 1), luzParaContraste(h, satDe(s, 1), 3.1, papelRgb, !escuro, lP));
   return out;
 }
 
 /** Só pra conferência: o contraste real de cada degrau contra o papel. */
-export function conferirEscala(hex: string): Record<string, number> {
-  const [h, s, l] = hexParaHsl(hex);
+export function conferirEscala(hex: string, papelHex = "#ffffff"): Record<string, number> {
+  const escala = escalaDaMarca(hex, papelHex);
+  const papelRgb = rgbDoHex(papelHex);
   const out: Record<string, number> = {};
-  for (const d of DEGRAUS) {
-    const sat = satDe(s, d.sMult);
-    out[d.nome] = razao(hslParaRgb(h, sat, luzDe(h, sat, d)), PAPEL);
+  for (const [nome, cor] of Object.entries(escala)) {
+    const m = cor.match(/hsl\(([\d.]+) ([\d.]+)% ([\d.]+)%\)/);
+    if (!m) continue;
+    out[nome] = razao(hslParaRgb(+m[1], +m[2], +m[3]), papelRgb);
   }
-  const sup = superficieDaMarca(h, satDe(s, 1), l);
-  out["500"] = razao(hslParaRgb(h, satDe(s, 1), sup.l), PAPEL);
-  out["textoNoBotao"] = sup.contraste;
-  out["grafico"] = razao(hslParaRgb(h, satDe(s, 1), luminosidadeParaContraste(h, satDe(s, 1), 3.1)), PAPEL);
+  const [h, s, l] = hexParaHsl(hex);
+  out["textoNoBotao"] = superficieDaMarca(h, satDe(s, 1), l).contraste;
   return out;
 }
 
@@ -208,6 +294,24 @@ export function textoSobreMarca(hex: string): string {
   return superficieDaMarca(h, satDe(s, 1), l).texto;
 }
 
+/**
+ * O texto que vai por cima de QUALQUER fundo — usado pelo estilo de bloco,
+ * onde o lojista pode pintar a seção da cor que quiser.
+ */
+export function textoSobre(hex: string): string {
+  const rgb = rgbDoHex(hex);
+  return razao(rgb, BRANCO) >= razao(rgb, PRETO) ? "#ffffff" : "#14121a";
+}
+
+/** Contraste entre duas cores em hex. Usado pelos avisos do estúdio. */
+export function contrasteEntre(a: string, b: string): number {
+  return razao(rgbDoHex(a), rgbDoHex(b));
+}
+
+/* ============================================================
+   OS OUTROS EIXOS
+   ============================================================ */
+
 const DENSIDADE: Record<Densidade, { gap: string; padY: string; linha: string; cartao: string }> = {
   confortavel: { gap: "1.25rem", padY: "1.15rem", linha: "1.7", cartao: "1.15rem" },
   media: { gap: "0.9rem", padY: "0.85rem", linha: "1.6", cartao: "0.9rem" },
@@ -218,6 +322,39 @@ const CANTO: Record<Canto, { p: string; m: string; g: string }> = {
   reto: { p: "2px", m: "4px", g: "6px" },
   suave: { p: "8px", m: "12px", g: "18px" },
   redondo: { p: "14px", m: "20px", g: "28px" },
+  pilula: { p: "999px", m: "999px", g: "26px" },
+};
+
+const SOMBRA: Record<NivelSombra, { s1: string; s2: string; s3: string }> = {
+  plana: { s1: "none", s2: "none", s3: "0 1px 0 rgba(0,0,0,0.06)" },
+  suave: {
+    s1: "0 1px 2px rgba(22, 19, 15, 0.04)",
+    s2: "0 1px 3px rgba(22, 19, 15, 0.05), 0 6px 16px -8px rgba(22, 19, 15, 0.12)",
+    s3: "0 2px 6px rgba(22, 19, 15, 0.06), 0 18px 40px -16px rgba(22, 19, 15, 0.22)",
+  },
+  elevada: {
+    s1: "0 1px 3px rgba(22, 19, 15, 0.08)",
+    s2: "0 2px 6px rgba(22, 19, 15, 0.10), 0 12px 26px -10px rgba(22, 19, 15, 0.22)",
+    s3: "0 4px 12px rgba(22, 19, 15, 0.12), 0 28px 60px -20px rgba(22, 19, 15, 0.34)",
+  },
+};
+
+/** Corpo base de cada papel tipográfico, em px. A escala multiplica tudo. */
+const TIPOS: Record<string, number> = {
+  micro: 10.5,
+  mini: 12,
+  menor: 13,
+  corpo: 14.5,
+  medio: 16,
+  titulo: 19,
+  secao: 23,
+  display: 30,
+};
+
+const ESCALA_TEXTO: Record<EscalaTexto, number> = {
+  pequeno: 0.94,
+  normal: 1,
+  grande: 1.09,
 };
 
 /** `googleFonts` não é lido em runtime: é a receita que scripts/fontes.py usa
@@ -249,14 +386,82 @@ export const PARES_DE_FONTE: Record<ParFontes, { nome: string; display: string; 
   },
 };
 
-/** Escreve o tema como custom properties no elemento dado. */
-export function aplicarTema(el: HTMLElement, tema: Tema) {
-  const escala = escalaDaMarca(tema.corMarca);
+export const PAPEIS_SUGERIDOS = [
+  "#ffffff", "#faf8f5", "#f6f4ef", "#f4f6f5", "#f5f4f8",
+  "#1c1a17", "#16171c", "#1a1720", "#14181a", "#211c1a",
+];
+
+export const CORES_SUGERIDAS = [
+  "#1f7a4d", "#0f6fae", "#4b3a8f", "#7b4bd8", "#e0356f",
+  "#c2410c", "#a16207", "#15803d", "#0e7490", "#be123c",
+];
+
+/** Valores que uma loja antiga (salva antes destes eixos existirem) assume. */
+export const TEMA_PADRAO: Omit<Tema, "corMarca" | "densidade" | "canto" | "fontes"> = {
+  corPapel: "#ffffff",
+  estiloBotao: "solido",
+  sombra: "suave",
+  escalaTexto: "normal",
+};
+
+export function temaCompleto(tema: Tema): Required<Tema> {
+  return { ...TEMA_PADRAO, ...tema } as Required<Tema>;
+}
+
+/**
+ * Só a marca, sem o papel.
+ *
+ * É o que o estúdio pinta no documento: os controles dele acompanham a cor
+ * da loja (a moldura de seleção, o interruptor), mas o papel do editor
+ * continua neutro mesmo quando a loja é escura.
+ */
+export function aplicarMarca(el: HTMLElement, temaCru: Tema) {
+  const tema = temaCompleto(temaCru);
+  const escala = escalaDaMarca(tema.corMarca, "#ffffff");
   for (const [degrau, cor] of Object.entries(escala)) {
     el.style.setProperty(`--marca-${degrau}`, cor);
   }
   el.style.setProperty("--marca", tema.corMarca);
   el.style.setProperty("--sobre-marca", textoSobreMarca(tema.corMarca));
+}
+
+/**
+ * Escreve o tema como custom properties no elemento dado.
+ *
+ * Recebe um elemento e não o `document` de propósito: no estúdio a loja é
+ * uma prévia dentro de uma página que tem interface própria. Pintar o
+ * documento inteiro deixava o editor escuro junto com a loja escura.
+ */
+export function aplicarTema(el: HTMLElement, temaCru: Tema) {
+  const tema = temaCompleto(temaCru);
+  const paleta = paletaDoPapel(tema.corPapel);
+
+  const escala = escalaDaMarca(tema.corMarca, tema.corPapel);
+  for (const [degrau, cor] of Object.entries(escala)) {
+    el.style.setProperty(`--marca-${degrau}`, cor);
+  }
+  el.style.setProperty("--marca", tema.corMarca);
+  el.style.setProperty("--sobre-marca", textoSobreMarca(tema.corMarca));
+
+  el.style.setProperty("--color-papel", paleta.papel);
+  el.style.setProperty("--color-papel-2", paleta.papel2);
+  el.style.setProperty("--color-papel-3", paleta.papel3);
+  el.style.setProperty("--color-borda", paleta.borda);
+  el.style.setProperty("--color-borda-forte", paleta.bordaForte);
+  for (const [nome, cor] of Object.entries(paleta.tintas)) {
+    el.style.setProperty(`--color-${nome}`, cor);
+  }
+  el.style.setProperty("--papel-escuro", paleta.escuro ? "1" : "0");
+
+  /**
+   * A cor herdada tem que sair daqui também.
+   *
+   * Quem não declara cor — título, nome de produto — herda do `body`, e o
+   * `body` está fora deste contêiner: ele resolveu `var(--color-tinta)` com
+   * o valor antigo. Sem esta linha, uma loja de papel escuro ficava com os
+   * títulos pretos no preto.
+   */
+  el.style.color = paleta.tintas.tinta;
 
   const d = DENSIDADE[tema.densidade];
   el.style.setProperty("--gap", d.gap);
@@ -264,10 +469,38 @@ export function aplicarTema(el: HTMLElement, tema: Tema) {
   el.style.setProperty("--altura-linha", d.linha);
   el.style.setProperty("--pad-cartao", d.cartao);
 
-  const c = CANTO[tema.canto];
+  const c = CANTO[tema.canto] ?? CANTO.suave;
   el.style.setProperty("--canto-p", c.p);
   el.style.setProperty("--canto-m", c.m);
   el.style.setProperty("--canto-g", c.g);
+
+  const s = SOMBRA[tema.sombra] ?? SOMBRA.suave;
+  el.style.setProperty("--sombra-1", s.s1);
+  el.style.setProperty("--sombra-2", s.s2);
+  el.style.setProperty("--sombra-3", s.s3);
+
+  const mult = ESCALA_TEXTO[tema.escalaTexto] ?? 1;
+  for (const [nome, px] of Object.entries(TIPOS)) {
+    el.style.setProperty(`--t-${nome}`, `${(px * mult).toFixed(2)}px`);
+  }
+
+  /**
+   * O botão principal em três roupas.
+   *
+   * Sai como variável e não como classe porque o botão é primitivo: quem
+   * decide a aparência é o tema, e nenhum componente precisa saber disso.
+   * Contorno e suave usam degraus já resolvidos por contraste, então
+   * continuam legíveis em papel claro e escuro.
+   */
+  const roupas: Record<EstiloBotao, [string, string, string]> = {
+    solido: [escala["500"], textoSobreMarca(tema.corMarca), "transparent"],
+    contorno: ["transparent", escala["700"], escala["500"]],
+    suave: [escala["100"], escala["800"], "transparent"],
+  };
+  const [bf, bt, bb] = roupas[tema.estiloBotao] ?? roupas.solido;
+  el.style.setProperty("--botao-fundo", bf);
+  el.style.setProperty("--botao-texto", bt);
+  el.style.setProperty("--botao-borda", bb);
 
   const f = PARES_DE_FONTE[tema.fontes];
   el.style.setProperty("--fonte-display", f.display);

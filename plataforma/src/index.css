@@ -46,6 +46,11 @@
   --marca-grafico: #dc1655;
   --sobre-marca: #ffffff;
 
+  /* A roupa do botão principal. O tema reescreve; isto é só o padrão. */
+  --botao-fundo: #f22e69;
+  --botao-texto: #ffffff;
+  --botao-borda: transparent;
+
   --gap: 0.9rem;
 
   /* A margem lateral da página. O carrossel usa ela invertida pra sangrar. */
@@ -126,6 +131,21 @@ button { -webkit-appearance: none; appearance: none; }
   outline: 2px solid var(--marca-500);
   outline-offset: 2px;
   border-radius: 3px;
+}
+
+/*
+  Papel carrega tinta.
+
+  Uma seção pintada de escuro passa `color: branco` pros filhos. Um cartão
+  branco dentro dela herdava esse branco e ficava com título invisível — foi
+  exatamente o que aconteceu com os selos numa faixa escura. Aqui a
+  superfície clara reafirma a tinta; como está na camada de componentes,
+  qualquer utilitário de cor (`text-white` e afins) continua ganhando.
+*/
+@layer components {
+  .bg-papel, .placa {
+    color: var(--color-tinta);
+  }
 }
 
 @utility sem-barra {

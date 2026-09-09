@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import {
   ArrowLeft,
   Check,
+  ChevronDown,
+  ChevronUp,
   Copy,
   Eye,
   EyeOff,
@@ -17,8 +19,8 @@ import {
 import type { BlocoNaPagina, DefinicaoBloco, Loja, TipoPagina } from "../nucleo/tipos";
 import { bloco as buscarDefinicao, propsPadrao } from "../nucleo/registro";
 import { publicar, salvarRascunho, temRascunho } from "../nucleo/loja";
+import { aplicarMarca } from "../nucleo/tema";
 import { ORDEM_PAGINAS, PAGINAS } from "../paginas/definicoes";
-import { aplicarTema, garantirFontes } from "../nucleo/tema";
 import { Botao } from "../design/Primitivos";
 import { Vitrine } from "../vitrine/Vitrine";
 import { CatalogoBlocos, FolhaPropriedades, FolhaTema } from "./Folhas";
@@ -48,9 +50,10 @@ export function Estudio({ lojaInicial }: { lojaInicial: Loja }) {
 
   const loja = historico[posicao];
 
+  // Só a marca: o papel da loja é pintado dentro da prévia, pela Vitrine.
+  // Se o editor herdasse o papel, uma loja escura apagava os controles.
   useEffect(() => {
-    aplicarTema(document.documentElement, loja.tema);
-    garantirFontes(loja.tema.fontes);
+    aplicarMarca(document.documentElement, loja.tema);
   }, [loja.tema]);
 
   /** Toda mudança entra no histórico e salva o rascunho — nunca publica. */
@@ -178,6 +181,9 @@ export function Estudio({ lojaInicial }: { lojaInicial: Loja }) {
           onMudar={(props) =>
             definirBlocos(blocosDaPagina.map((b) => (b.id === emEdicao.id ? { ...b, props } : b)))
           }
+          onMudarEstilo={(estilo) =>
+            definirBlocos(blocosDaPagina.map((b) => (b.id === emEdicao.id ? { ...b, estilo } : b)))
+          }
         />
       )}
 
@@ -226,6 +232,19 @@ function PreviaEditavel({
     [blocos, onDefinirBlocos],
   );
 
+  const moverBloco = useCallback(
+    (id: string, delta: number) => {
+      const de = blocos.findIndex((b) => b.id === id);
+      const para = de + delta;
+      if (de < 0 || para < 0 || para >= blocos.length) return;
+      const copia = [...blocos];
+      const [item] = copia.splice(de, 1);
+      copia.splice(para, 0, item);
+      onDefinirBlocos(copia);
+    },
+    [blocos, onDefinirBlocos],
+  );
+
   const ids = useMemo(() => blocos.map((b) => b.id), [blocos]);
   const { arrastandoId, alvoIndice, iniciar } = useReordenar({ ids, container, onSoltar: aoSoltar });
 
@@ -254,20 +273,46 @@ function PreviaEditavel({
               >
                 {/* Barra de controles do bloco. Âncora mostra cadeado em vez
                     de alça: ela existe, mas não sai do lugar. */}
-                <div className="mb-1 flex items-center gap-1">
+                <div className="mb-1 flex items-center gap-0.5">
                   {ehAncora ? (
                     <span className="flex items-center gap-1 bg-papel-3 px-2 py-1 text-[10.5px] font-bold uppercase tracking-wider text-tinta-45" style={{ borderRadius: "6px" }}>
                       <Lock size={10} />
                       fixo
                     </span>
                   ) : (
-                    <button
-                      onPointerDown={(e) => iniciar(e, b.id, indice)}
-                      aria-label="Arrastar pra reordenar"
-                      className="flex h-8 w-8 cursor-grab touch-none items-center justify-center text-tinta-25 active:cursor-grabbing"
-                    >
-                      <GripVertical size={16} />
-                    </button>
+                    <>
+                      {/* Alça de 44px, não de 32: alvo pequeno é metade do
+                          motivo de "arrastar às vezes não funciona". */}
+                      <button
+                        onPointerDown={(e) => iniciar(e, b.id, indice)}
+                        aria-label="Arrastar pra reordenar"
+                        className={`flex h-11 w-11 cursor-grab touch-none items-center justify-center active:cursor-grabbing ${
+                          arrastando ? "text-[var(--marca-grafico)]" : "text-tinta-25"
+                        }`}
+                      >
+                        <GripVertical size={18} />
+                      </button>
+
+                      {/* E as setas, que nunca falham. Arrastar é o caminho
+                          rápido; subir/descer é o caminho garantido — e num
+                          celular sacolejando no balcão, o garantido ganha. */}
+                      <button
+                        onClick={() => moverBloco(b.id, -1)}
+                        disabled={indice === 0}
+                        aria-label="Subir este bloco"
+                        className="flex h-11 w-9 items-center justify-center text-tinta-25 hover:text-tinta-70 disabled:opacity-30"
+                      >
+                        <ChevronUp size={17} />
+                      </button>
+                      <button
+                        onClick={() => moverBloco(b.id, 1)}
+                        disabled={indice === blocos.length - 1}
+                        aria-label="Descer este bloco"
+                        className="flex h-11 w-9 items-center justify-center text-tinta-25 hover:text-tinta-70 disabled:opacity-30"
+                      >
+                        <ChevronDown size={17} />
+                      </button>
+                    </>
                   )}
 
                   <div className="flex-1" />
@@ -279,23 +324,23 @@ function PreviaEditavel({
                           onDefinirBlocos(blocos.map((x) => (x.id === b.id ? { ...x, oculto: !x.oculto } : x)))
                         }
                         aria-label={b.oculto ? "Mostrar" : "Esconder"}
-                        className="flex h-8 w-8 items-center justify-center text-tinta-25 hover:text-tinta-70"
+                        className="flex h-11 w-9 items-center justify-center text-tinta-25 hover:text-tinta-70"
                       >
-                        {b.oculto ? <EyeOff size={14} /> : <Eye size={14} />}
+                        {b.oculto ? <EyeOff size={15} /> : <Eye size={15} />}
                       </button>
                       <button
                         onClick={() => onDuplicar(b.id)}
                         aria-label="Duplicar"
-                        className="flex h-8 w-8 items-center justify-center text-tinta-25 hover:text-tinta-70"
+                        className="flex h-11 w-9 items-center justify-center text-tinta-25 hover:text-tinta-70"
                       >
-                        <Copy size={14} />
+                        <Copy size={15} />
                       </button>
                       <button
                         onClick={() => onDefinirBlocos(blocos.filter((x) => x.id !== b.id))}
                         aria-label="Apagar"
-                        className="flex h-8 w-8 items-center justify-center text-tinta-25 hover:text-erro"
+                        className="flex h-11 w-9 items-center justify-center text-tinta-25 hover:text-erro"
                       >
-                        <Trash2 size={14} />
+                        <Trash2 size={15} />
                       </button>
                     </>
                   )}

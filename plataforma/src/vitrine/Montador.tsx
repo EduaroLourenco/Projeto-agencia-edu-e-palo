@@ -1,6 +1,7 @@
 import { bloco as buscarBloco, propsPadrao } from "../nucleo/registro";
 import { PAGINAS } from "../paginas/definicoes";
 import type { BlocoNaPagina, Loja, Oferta, TipoPagina } from "../nucleo/tipos";
+import { vestirBloco } from "./estiloDeBloco";
 
 /**
  * Monta uma página a partir da lista de blocos.
@@ -89,8 +90,22 @@ export function Montador({
           />
         );
 
+        // O estilo da seção (fundo, respiro, moldura) veste o conteúdo por
+        // fora. O invólucro de edição do estúdio vem depois, por cima — se
+        // fosse antes, a moldura de seleção herdava o fundo do bloco.
+        const vestido = vestirBloco(b.estilo);
+        const vestido_conteudo = vestido ? (
+          <div style={vestido.estilo}>
+            <div style={vestido.interno}>{conteudo}</div>
+          </div>
+        ) : (
+          conteudo
+        );
+
         return (
-          <div key={b.id}>{envolver ? envolver(b, conteudo, Boolean(def.ancora)) : conteudo}</div>
+          <div key={b.id}>
+            {envolver ? envolver(b, vestido_conteudo, Boolean(def.ancora)) : vestido_conteudo}
+          </div>
         );
       })}
     </div>

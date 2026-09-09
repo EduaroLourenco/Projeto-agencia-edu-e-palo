@@ -83,15 +83,15 @@ src/
 │   ├── resumo.ts      junta sacola + ofertas + módulos
 │   ├── checkout.ts    a esteira de passos
 │   ├── mensagem.ts    monta o texto do WhatsApp a partir dos passos
-│   ├── tema.ts        uma cor vira a escala inteira
+│   ├── tema.ts        marca e papel viram as escalas inteiras
 │   ├── loja.ts        rascunho, publicado, restaurar
 │   └── pedidos.ts     histórico (o que faz "repetir pedido" existir)
 │
-├── blocos/        13 blocos + as 6 âncoras
+├── blocos/        20 blocos + as 6 âncoras
 ├── paginas/       âncoras e espaços livres de cada página
 ├── modulos/       variantes · b2b · entrega · agendamento · pagamento
 ├── design/        primitivos (Folha, Stepper, Chip, Campo, Botao)
-├── vitrine/       a loja que o comprador usa
+├── vitrine/       a loja que o comprador usa (+ estilo por seção)
 ├── estudio/       o editor
 └── painel/        o backstage
 demos/             uma loja inteira por arquivo
@@ -146,10 +146,32 @@ não precisa saber que ele existe.
 - Pedido gravado **e** aberto no WhatsApp — é o histórico que faz "repetir
   último pedido" existir
 - Agenda com profissional, dia e horário, descontando o que já passou
-- Estúdio: arrastar, editar, ocultar, duplicar, apagar, desfazer/refazer, trocar
-  tema, ligar e desligar módulos, ver como cliente, publicar
-- Tema por loja: uma cor gera a escala com contraste calculado; densidade, canto
-  e par de fontes escolhidos numa lista curta
+- Estúdio: arrastar **ou** subir/descer pelas setas, editar, ocultar, duplicar,
+  apagar, desfazer/refazer, trocar tema, ligar e desligar módulos, ver como
+  cliente, publicar
+- **20 blocos**, incluindo selos de confiança, perguntas frequentes, galeria,
+  contagem regressiva, endereço com horários e botões de link
+- **Estilo por seção**: fundo (papel, marca, escuro ou cor livre), respiro,
+  cantos, sombra, contorno, alinhamento e sangria até a borda da tela. A cor do
+  texto não é oferecida — ela é derivada do fundo, medida
+- Tema por loja em sete eixos: cor da marca, **cor de fundo**, densidade,
+  cantos, fontes, **estilo do botão**, **tamanho do texto** e **profundidade**
+
+## As duas regras que sustentam a personalização
+
+**1. O lojista escolhe fundos, nunca cores de texto.** Toda tinta, borda e
+superfície nasce da cor do papel por busca binária de contraste. É o que
+permite abrir "pinta a seção da cor que quiser" sem abrir junto a porta pra
+loja ilegível. Escolher um papel escuro produz modo escuro inteiro — não há
+um caminho separado no código pra isso.
+
+Conferido no navegador em cinco combinações, incluindo amarelo sobre fundo
+escuro (a mais difícil): texto principal ≥13,8:1, secundário ≥4,5:1, links
+≥4,5:1, gráficos ≥3,0:1, texto do botão ≥4,6:1.
+
+**2. Arrastar é o caminho rápido; as setas são o caminho garantido.** No
+celular, no balcão, com a mão ocupada, o garantido ganha. As duas coisas
+existem lado a lado em cada bloco.
 
 ## O que falta
 

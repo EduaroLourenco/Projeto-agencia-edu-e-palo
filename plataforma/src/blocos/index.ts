@@ -21,6 +21,15 @@ import {
 } from "./ofertas";
 
 import {
+  blocoContagem,
+  blocoGaleria,
+  blocoLinks,
+  blocoLocal,
+  blocoPerguntas,
+  blocoSelos,
+} from "./extras";
+
+import {
   blocoCatalogoLista,
   blocoConfirmacaoRecibo,
   blocoOfertaCabecalho,
@@ -46,6 +55,12 @@ const TODOS = [
   blocoFaixaAviso,
   blocoTexto,
   blocoProvaSocial,
+  blocoSelos,
+  blocoPerguntas,
+  blocoGaleria,
+  blocoContagem,
+  blocoLocal,
+  blocoLinks,
   blocoVideo,
   blocoContato,
   blocoDivisor,
