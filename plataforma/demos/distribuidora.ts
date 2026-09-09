@@ -111,21 +111,61 @@ export const distribuidora: Loja = {
       { id: "b3", tipo: "barra-faixa-preco", props: { titulo: "Sua faixa de preço" } },
       { id: "b4", tipo: "faixa-categorias", props: { titulo: "", estilo: "pilulas" } },
       { id: "b5", tipo: "lista-rapida", props: { titulo: "Mais pedidos", regra: "destaques", categoria: "", limite: 6 } },
-      { id: "b6", tipo: "carrossel-ofertas", props: { titulo: "Bebidas", regra: "categoria", categoria: "Bebidas", limite: 8 } },
-      { id: "b7", tipo: "contato", props: { titulo: "Precisa de algo que não está aqui?", texto: "Chama o representante que a gente cota pra você.", rotuloBotao: "Falar com o representante" } },
+
+      // Faixa escura de ponta a ponta, quebrando a sequência de branco. É a
+      // seção que mais muda a cara da página, e é só estilo de bloco.
+      { id: "b6", tipo: "selos", props: { titulo: "Por que comprar com a gente", variante: "grade",
+        selos: [
+          { icone: "entrega", titulo: "Entrega em 48h", texto: "Rota própria em 14 cidades do interior." },
+          { icone: "pagamento", titulo: "Boleto 28 dias", texto: "Pra cliente com cadastro aprovado." },
+          { icone: "caixa", titulo: "Caixa fechada", texto: "Preço de atacado de verdade." },
+          { icone: "troca", titulo: "Avariou, repõe", texto: "Sem discussão e sem formulário." },
+        ] },
+        estilo: { fundo: "escuro", respiro: "g", sangrar: true, espacoDepois: "grande" } },
+
+      { id: "b7", tipo: "carrossel-ofertas", props: { titulo: "Bebidas", regra: "categoria", categoria: "Bebidas", limite: 8 } },
+
+      { id: "b8", tipo: "perguntas", props: { titulo: "Antes de fechar o pedido",
+        perguntas: [
+          { pergunta: "Qual o pedido mínimo?", resposta: "R$ 300 por pedido, misturando o que quiser do catálogo." },
+          { pergunta: "Em quanto tempo chega?", resposta: "Até 48h nas cidades da rota. Fora dela, a gente combina o frete no chat." },
+          { pergunta: "Preciso comprar caixa fechada?", resposta: "Nos itens marcados, sim — é o que segura o preço de atacado. A sacola avisa quando falta completar." },
+          { pergunta: "Dá pra pagar a prazo?", resposta: "Boleto de 7 ou 28 dias pra quem já tem cadastro aprovado. Na primeira compra, PIX ou boleto à vista." },
+        ] },
+        estilo: { fundo: "suave", respiro: "m" } },
+
+      { id: "b9", tipo: "local", props: { titulo: "Onde a gente fica",
+        endereco: "Av. Industrial, 1450 — Distrito\nGoiânia, GO",
+        linkMapa: "",
+        horarios: [
+          { dia: "Segunda a sexta", hora: "7h às 18h" },
+          { dia: "Sábado", hora: "7h às 12h" },
+          { dia: "Domingo", hora: "Fechado" },
+        ] } },
+
+      { id: "b10", tipo: "contato", props: { titulo: "Precisa de algo que não está aqui?", texto: "Chama o representante que a gente cota pra você.", rotuloBotao: "Falar com o representante", variante: "limpo" },
+        estilo: { fundo: "marca-suave", respiro: "g", canto: "redondo" } },
     ],
     catalogo: [
       { id: "c1", tipo: "barra-faixa-preco", props: { titulo: "Sua faixa de preço", __espaco: "antes" } },
     ],
     oferta: [
       { id: "o1", tipo: "carrossel-ofertas", props: { titulo: "Costumam levar junto", regra: "destaques", categoria: "", limite: 8, __espaco: "baixo" } },
+      { id: "o2", tipo: "selos", props: { titulo: "", variante: "fila", __espaco: "baixo",
+        selos: [
+          { icone: "entrega", titulo: "Entrega em 48h", texto: "Na rota da sua região." },
+          { icone: "caixa", titulo: "Caixa fechada", texto: "A sacola confere pra você." },
+          { icone: "pagamento", titulo: "Boleto a prazo", texto: "Pra cadastro aprovado." },
+        ] },
+        estilo: { fundo: "suave", respiro: "m" } },
     ],
     sacola: [
       { id: "s1", tipo: "barra-faixa-preco", props: { titulo: "Sua faixa de preço", __espaco: "antes" } },
       { id: "s2", tipo: "lista-rapida", props: { titulo: "Esqueceu algo?", regra: "todas", categoria: "", limite: 5, esconderNaSacola: true, __espaco: "depois" } },
     ],
     confirmacao: [
-      { id: "f1", tipo: "texto", props: { titulo: "O que acontece agora", corpo: "1. Conferimos estoque e confirmamos o pedido no WhatsApp.\n2. Enviamos o boleto ou a chave PIX.\n3. A entrega entra na próxima rota da sua região.", alinhamento: "esquerda", __espaco: "depois" } },
+      { id: "f1", tipo: "texto", props: { titulo: "O que acontece agora", corpo: "1. Conferimos estoque e confirmamos o pedido no WhatsApp.\n2. Enviamos o boleto ou a chave PIX.\n3. A entrega entra na próxima rota da sua região.", alinhamento: "esquerda", __espaco: "depois" },
+        estilo: { fundo: "marca-suave", respiro: "m" } },
     ],
   },
 

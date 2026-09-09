@@ -529,14 +529,24 @@ export const blocoVideo: DefinicaoBloco<{ titulo: string; url: string }> = {
    CONTATO
    ============================================================ */
 
-function Contato({ props, loja }: PropsBloco<{ titulo: string; texto: string; rotuloBotao: string }>) {
+function Contato({ props, loja }: PropsBloco<{ titulo: string; texto: string; rotuloBotao: string; variante: string }>) {
+  // Dentro de uma seção já pintada, o cartão vira cartão dentro de cartão.
+  // A variante limpa existe pra isso.
+  const limpo = props.variante === "limpo";
   return (
-    <div className="placa p-6 text-center" style={{ borderRadius: "var(--canto-g)" }}>
+    <div
+      className={`p-6 text-center ${limpo ? "" : "placa"}`}
+      style={{ borderRadius: "var(--canto-g)" }}
+    >
       <h2 className="font-display text-[length:var(--t-titulo)] font-bold leading-tight tracking-[var(--tr-titulo)]">
         {props.titulo}
       </h2>
       {props.texto && (
-        <p className="mx-auto mt-2 max-w-sm text-[length:var(--t-menor)] leading-relaxed text-tinta-70">{props.texto}</p>
+        <p
+          className={`mx-auto mt-2 max-w-sm text-[length:var(--t-menor)] leading-relaxed ${limpo ? "opacity-75" : "text-tinta-70"}`}
+        >
+          {props.texto}
+        </p>
       )}
       <a
         href={`https://wa.me/${loja.whatsapp.replace(/\D/g, "")}`}
@@ -552,12 +562,16 @@ function Contato({ props, loja }: PropsBloco<{ titulo: string; texto: string; ro
   );
 }
 
-export const blocoContato: DefinicaoBloco<{ titulo: string; texto: string; rotuloBotao: string }> = {
+export const blocoContato: DefinicaoBloco<{ titulo: string; texto: string; rotuloBotao: string; variante: string }> = {
   tipo: "contato",
   nome: "Contato",
   descricao: "Botão de WhatsApp com um recado.",
   paginas: ["inicio", "catalogo", "oferta", "sacola", "confirmacao"],
   icone: MessageCircle,
+  variantes: [
+    { valor: "cartao", nome: "Em cartão" },
+    { valor: "limpo", nome: "Sem cartão" },
+  ],
   campos: {
     titulo: { tipo: "texto", rotulo: "Título", padrao: "Ficou com dúvida?" },
     texto: { tipo: "texto", rotulo: "Texto", linhas: 2, padrao: "Chama no WhatsApp que a gente responde na hora." },

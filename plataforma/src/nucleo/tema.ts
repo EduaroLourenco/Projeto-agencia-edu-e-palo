@@ -454,6 +454,15 @@ export function aplicarTema(el: HTMLElement, temaCru: Tema) {
   el.style.setProperty("--papel-escuro", paleta.escuro ? "1" : "0");
 
   /**
+   * A superfície de um cartão sem contorno.
+   *
+   * No claro é o próprio papel, e o que separa é a sombra. No escuro sombra
+   * não separa nada — preto sobre preto — então o cartão sobe um degrau de
+   * luz. Sem isto, os depoimentos sumiam na loja escura.
+   */
+  el.style.setProperty("--superficie", paleta.escuro ? paleta.papel2 : paleta.papel);
+
+  /**
    * A cor herdada tem que sair daqui também.
    *
    * Quem não declara cor — título, nome de produto — herda do `body`, e o

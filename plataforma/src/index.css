@@ -45,6 +45,7 @@
   --marca-900: #5c0d29;
   --marca-grafico: #dc1655;
   --sobre-marca: #ffffff;
+  --superficie: #ffffff;
 
   /* A roupa do botão principal. O tema reescreve; isto é só o padrão. */
   --botao-fundo: #f22e69;
@@ -183,8 +184,9 @@ button { -webkit-appearance: none; appearance: none; }
 /* Cartão sem borda: separa por papel e sombra rasa, não por contorno.
    Contorno em tudo achata a hierarquia — todo elemento grita igual. */
 @utility placa {
-  background: var(--color-papel);
+  background: var(--superficie, var(--color-papel));
   box-shadow: var(--sombra-1);
+  color: var(--color-tinta);
 }
 
 @keyframes subir {

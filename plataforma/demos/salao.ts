@@ -75,7 +75,22 @@ export const salao: Loja = {
   whatsapp: "5516920093456",
   aberta: true,
 
-  tema: { corMarca: "#7b4bd8", densidade: "confortavel", canto: "redondo", fontes: "fraunces-inter" },
+  /**
+   * A loja que mostra o modo escuro.
+   *
+   * Nada aqui é "tema escuro": é só `corPapel` num tom baixo. As tintas, as
+   * bordas e a escala do roxo são recalculadas contra ele por contraste.
+   */
+  tema: {
+    corMarca: "#a882f5",
+    corPapel: "#17151d",
+    densidade: "confortavel",
+    canto: "redondo",
+    fontes: "fraunces-inter",
+    estiloBotao: "solido",
+    sombra: "plana",
+    escalaTexto: "normal",
+  },
 
   modulos: ["agendamento", "pagamento"],
 
@@ -107,12 +122,41 @@ export const salao: Loja = {
       { id: "b2", tipo: "proximos-horarios", props: { titulo: "Próximos horários" } },
       { id: "b3", tipo: "grade-ofertas", props: { titulo: "Mais agendados", regra: "destaques", categoria: "", limite: 4, colunas: "2" } },
       { id: "b4", tipo: "faixa-categorias", props: { titulo: "O que a gente faz", estilo: "pilulas" } },
-      { id: "b5", tipo: "carrossel-ofertas", props: { titulo: "Leve pra casa", regra: "produtos", categoria: "", limite: 6 } },
-      { id: "b6", tipo: "prova-social", props: { titulo: "", depoimentos: [
+
+      { id: "b5", tipo: "selos", props: { titulo: "Por que agendar aqui", variante: "grade",
+        selos: [
+          { icone: "prazo", titulo: "Confirmação na hora", texto: "Chega no seu WhatsApp." },
+          { icone: "troca", titulo: "Remarca fácil", texto: "Até 4h antes, sem multa." },
+          { icone: "qualidade", titulo: "Profissional fixa", texto: "Você escolhe quem te atende." },
+          { icone: "pagamento", titulo: "Cartão em 3x", texto: "Sem juros, no studio." },
+        ] },
+        estilo: { fundo: "marca-suave", respiro: "g", canto: "redondo", espacoDepois: "grande" } },
+
+      { id: "b6", tipo: "carrossel-ofertas", props: { titulo: "Leve pra casa", regra: "produtos", categoria: "", limite: 6 } },
+
+      { id: "b7", tipo: "prova-social", props: { titulo: "", depoimentos: [
         { texto: "Marquei às onze da noite, sem incomodar ninguém. No dia seguinte estava confirmado.", autor: "Letícia R." },
         { texto: "Adoro escolher com quem vou. A Rafa é sempre a minha.", autor: "Bruna T." },
       ] } },
-      { id: "b7", tipo: "contato", props: { titulo: "Prefere falar com a gente?", texto: "Chama que a gente encaixa.", rotuloBotao: "Chamar no WhatsApp" } },
+
+      { id: "b8", tipo: "perguntas", props: { titulo: "Antes de agendar",
+        perguntas: [
+          { pergunta: "Preciso pagar adiantado?", resposta: "Não. O pagamento é no dia, aqui no studio." },
+          { pergunta: "E se eu atrasar?", resposta: "Temos 15 minutos de tolerância. Passando disso, a gente remarca pro horário mais próximo." },
+          { pergunta: "Posso escolher a profissional?", resposta: "Pode. Nos serviços que têm equipe, você escolhe na hora de marcar." },
+        ] } },
+
+      { id: "b9", tipo: "local", props: { titulo: "Onde a gente fica",
+        endereco: "Rua das Paineiras, 210 — Setor Bueno\nGoiânia, GO",
+        linkMapa: "",
+        horarios: [
+          { dia: "Terça a sexta", hora: "9h às 19h" },
+          { dia: "Sábado", hora: "8h às 16h" },
+          { dia: "Domingo e segunda", hora: "Fechado" },
+        ] },
+        estilo: { fundo: "suave", respiro: "g", sangrar: true } },
+
+      { id: "b10", tipo: "contato", props: { titulo: "Prefere falar com a gente?", texto: "Chama que a gente encaixa.", rotuloBotao: "Chamar no WhatsApp" } },
     ],
     catalogo: [],
     oferta: [
@@ -121,7 +165,8 @@ export const salao: Loja = {
     ],
     sacola: [],
     confirmacao: [
-      { id: "f1", tipo: "texto", props: { titulo: "Anotado!", corpo: "Confirmamos seu horário no WhatsApp. Se precisar remarcar, é só chamar até 4 horas antes.", alinhamento: "centro", __espaco: "depois" } },
+      { id: "f1", tipo: "texto", props: { titulo: "Anotado!", corpo: "Confirmamos seu horário no WhatsApp. Se precisar remarcar, é só chamar até 4 horas antes.", alinhamento: "centro", __espaco: "depois" },
+        estilo: { fundo: "marca-suave", respiro: "g", alinhamento: "centro", canto: "redondo" } },
     ],
   },
 

@@ -11,6 +11,34 @@ import { DEMOS } from "../../demos/indice";
 
 const CHAVE_RASCUNHO = (slug: string) => `plataforma:rascunho:${slug}`;
 const CHAVE_PUBLICADO = (slug: string) => `plataforma:publicado:${slug}`;
+const CHAVE_VERSAO = "plataforma:versao-demos";
+
+/**
+ * Sobe quando as demos mudam de conteúdo.
+ *
+ * Sem isto, quem já tinha mexido no estúdio ficava preso na versão antiga
+ * pra sempre: o que estava salvo no navegador era mesclado POR CIMA da demo
+ * nova, e a atualização simplesmente não aparecia. Foi exatamente o que
+ * aconteceu — as lojas novas existiam no código e ninguém via.
+ *
+ * Numa versão nova, o que estava salvo é descartado uma vez só. É aceitável
+ * porque isto é demonstração; quando houver API, a migração é do servidor.
+ */
+const VERSAO_DEMOS = "2026-09-09-blocos-e-estilo";
+
+function limparSeVelho() {
+  try {
+    if (localStorage.getItem(CHAVE_VERSAO) === VERSAO_DEMOS) return;
+    for (const chave of Object.keys(localStorage)) {
+      if (chave.startsWith("plataforma:rascunho:") || chave.startsWith("plataforma:publicado:")) {
+        localStorage.removeItem(chave);
+      }
+    }
+    localStorage.setItem(CHAVE_VERSAO, VERSAO_DEMOS);
+  } catch {
+    /* navegador sem storage: segue com a demo de fábrica */
+  }
+}
 
 export function slugsDisponiveis(): string[] {
   return Object.keys(DEMOS);
@@ -24,6 +52,7 @@ function clonar<T>(v: T): T {
 export function carregarLoja(slug: string): Loja | null {
   const base = DEMOS[slug];
   if (!base) return null;
+  limparSeVelho();
   try {
     const publicado = localStorage.getItem(CHAVE_PUBLICADO(slug));
     if (publicado) return { ...clonar(base), ...(JSON.parse(publicado) as Partial<Loja>) };

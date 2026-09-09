@@ -91,14 +91,43 @@ export const moda: Loja = {
     inicio: [
       { id: "b1", tipo: "banner", props: { imagemCelular: urlFoto("hero-moda"), imagemDesktop: urlFoto("hero-moda-largo"), titulo: "Coleção que chegou", texto: "Peças novas toda semana, direto do showroom.", rotuloBotao: "", linkBotao: "", variante: "sobreposto", altura: "alta" } },
       { id: "b2", tipo: "faixa-aviso", props: { texto: "Atacado a partir de 6 peças · até 24% off", tom: "marca" } },
-      { id: "b3", tipo: "faixa-categorias", props: { titulo: "Categorias", estilo: "cartoes" } },
-      { id: "b4", tipo: "grade-ofertas", props: { titulo: "Queridinhas", regra: "destaques", categoria: "", limite: 4, colunas: "2" } },
-      { id: "b5", tipo: "barra-faixa-preco", props: { titulo: "Seu desconto" } },
-      { id: "b6", tipo: "prova-social", props: { titulo: "Quem já revende", depoimentos: [
+
+      // O relógio da promoção. Some sozinho quando a data passa.
+      { id: "b3", tipo: "contagem", props: { titulo: "A coleção nova sai com 24% até", ate: "2026-12-20T23:59", textoFim: "Promoção encerrada" } },
+
+      { id: "b4", tipo: "faixa-categorias", props: { titulo: "Categorias", estilo: "cartoes" } },
+      { id: "b5", tipo: "grade-ofertas", props: { titulo: "Queridinhas", regra: "destaques", categoria: "", limite: 4, colunas: "2" } },
+      { id: "b6", tipo: "barra-faixa-preco", props: { titulo: "Seu desconto" } },
+
+      { id: "b7", tipo: "selos", props: { titulo: "", variante: "grade",
+        selos: [
+          { icone: "brilho", titulo: "Peça nova toda semana", texto: "Direto do showroom." },
+          { icone: "atendimento", titulo: "Vídeo da peça", texto: "Mandamos antes de você fechar." },
+          { icone: "entrega", titulo: "Excursão e Correios", texto: "Você escolhe como recebe." },
+          { icone: "troca", titulo: "Peça com defeito", texto: "A gente troca, sem frete." },
+        ] },
+        estilo: { fundo: "marca-suave", respiro: "g", canto: "redondo", espacoDepois: "grande" } },
+
+      { id: "b8", tipo: "prova-social", props: { titulo: "Quem já revende", depoimentos: [
         { texto: "Peço na quinta e recebo na terça. Nunca veio peça trocada.", autor: "Juliana M.", papel: "Loja Encanto · Rio Verde" },
         { texto: "O catálogo no WhatsApp facilitou demais. Minhas clientes escolhem direto.", autor: "Patrícia S.", papel: "Revendedora · Anápolis" },
       ] } },
-      { id: "b7", tipo: "contato", props: { titulo: "Quer ver peça antes de fechar?", texto: "Mandamos vídeo da peça na hora.", rotuloBotao: "Chamar no WhatsApp" } },
+
+      { id: "b9", tipo: "perguntas", props: { titulo: "Dúvidas de quem revende",
+        perguntas: [
+          { pergunta: "Qual a quantidade mínima?", resposta: "6 peças no pedido, podendo misturar modelos, tamanhos e cores." },
+          { pergunta: "Posso escolher a grade?", resposta: "Pode. Você monta tamanho por tamanho na página da peça." },
+          { pergunta: "Como funciona a entrega na excursão?", resposta: "Você informa o guia e a placa do ônibus, e a gente entrega no ponto combinado." },
+        ] } },
+
+      { id: "b10", tipo: "links", props: { titulo: "",
+        links: [
+          { rotulo: "Nosso Instagram", url: "https://instagram.com" },
+          { rotulo: "Tabela de preços em PDF", url: "https://exemplo.com" },
+        ] } },
+
+      { id: "b11", tipo: "contato", props: { titulo: "Quer ver peça antes de fechar?", texto: "Mandamos vídeo da peça na hora.", rotuloBotao: "Chamar no WhatsApp", variante: "limpo" },
+        estilo: { fundo: "escuro", respiro: "g", sangrar: true } },
     ],
     catalogo: [
       { id: "c1", tipo: "barra-faixa-preco", props: { titulo: "Seu desconto", __espaco: "antes" } },
@@ -111,7 +140,8 @@ export const moda: Loja = {
       { id: "s1", tipo: "barra-faixa-preco", props: { titulo: "Seu desconto", __espaco: "antes" } },
     ],
     confirmacao: [
-      { id: "f1", tipo: "texto", props: { titulo: "", corpo: "Confirmamos as peças e o total no WhatsApp. Depois é só fazer o PIX que a gente separa e envia.", alinhamento: "centro", __espaco: "depois" } },
+      { id: "f1", tipo: "texto", props: { titulo: "", corpo: "Confirmamos as peças e o total no WhatsApp. Depois é só fazer o PIX que a gente separa e envia.", alinhamento: "centro", __espaco: "depois" },
+        estilo: { fundo: "marca-suave", respiro: "g", alinhamento: "centro", canto: "redondo" } },
     ],
   },
 
