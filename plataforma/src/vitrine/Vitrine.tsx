@@ -41,6 +41,19 @@ function VitrineInterna({
 }) {
   const { linhas, adicionar } = useSacola();
   const [pagina, setPagina] = useState<TipoPagina>(paginaInicial);
+
+  /**
+   * A página também vem de fora.
+   *
+   * `useState(paginaInicial)` só lê o valor uma vez. Na loja isso nunca
+   * apareceu, porque lá quem navega é o comprador — mas no estúdio quem
+   * navega é a barra de abas, por fora, e a prévia ficava presa no Início
+   * para sempre. Trocar de aba mudava o título e mais nada: catálogo,
+   * página do item, sacola e confirmação eram ineditáveis.
+   */
+  useEffect(() => {
+    setPagina(paginaInicial);
+  }, [paginaInicial]);
   const [ofertaAberta, setOfertaAberta] = useState<Oferta | null>(null);
   const [paraAdicionar, setParaAdicionar] = useState<Oferta | null>(null);
   const [checkoutAberto, setCheckoutAberto] = useState(false);
@@ -97,6 +110,14 @@ function VitrineInterna({
   );
 
   const ofertasAtivas = useMemo(() => loja.ofertas.filter((o) => o.ativa), [loja.ofertas]);
+
+  /**
+   * Editando a página do item, mostra o primeiro item do catálogo.
+   *
+   * Sem isso a tela fica vazia — as âncoras (foto, preço, botão de comprar)
+   * não têm o que mostrar e somem, e o lojista edita no escuro.
+   */
+  const ofertaDaTela = ofertaAberta ?? (editando && pagina === "oferta" ? ofertasAtivas[0] : undefined);
   const mostrarBarra = !editando && pagina !== "confirmacao" && resumo.totalItens > 0;
 
   return (
@@ -105,7 +126,7 @@ function VitrineInterna({
         <Cabecalho
           loja={loja}
           pagina={pagina}
-          oferta={ofertaAberta}
+          oferta={ofertaDaTela ?? null}
           totalItens={resumo.totalItens}
           irPara={irPara}
           fixo={!editando}
@@ -117,7 +138,7 @@ function VitrineInterna({
             blocos={loja.paginas[pagina] ?? []}
             loja={loja}
             ofertas={ofertasAtivas}
-            oferta={ofertaAberta ?? undefined}
+            oferta={ofertaDaTela}
             editando={editando}
             envolver={envolverBloco}
           />

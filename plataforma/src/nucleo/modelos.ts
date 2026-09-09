@@ -194,11 +194,44 @@ function paginas(modelo: IdModelo): Record<TipoPagina, BlocoNaPagina[]> {
     inicio.splice(1, 0, { id: "b0", tipo: "faixa-aviso", props: { texto: "Pedido mínimo R$ 300 · entrega em 48h", tom: "marca" } });
   }
 
+  // As outras páginas também nascem com conteúdo. Loja nova com catálogo e
+  // sacola em branco parece inacabada — e é onde o cliente mais desiste.
+  const garantias: BlocoNaPagina = {
+    id: "g1",
+    tipo: "selos",
+    props: {
+      titulo: "",
+      variante: "fila",
+      selos: [
+        { icone: "atendimento", titulo: "Dúvida? Chama no zap", texto: "A gente responde rápido." },
+        { icone: "qualidade", titulo: "Sua garantia aqui", texto: "Troque por uma promessa sua." },
+      ],
+    },
+    estilo: { fundo: "suave", respiro: "m" },
+  };
+
   return {
     inicio,
-    catalogo: [],
-    oferta: [{ id: "o1", tipo: "carrossel-ofertas", props: { titulo: "Veja também", regra: "todas", categoria: "", limite: 8, __espaco: "baixo" } }],
-    sacola: [],
+    catalogo: [
+      {
+        id: "c1",
+        tipo: "faixa-aviso",
+        props: { texto: "Escreva aqui a condição da semana · troque este texto", tom: "claro", __espaco: "antes" },
+      },
+      { ...garantias, id: "c2", props: { ...garantias.props, __espaco: "depois" } },
+    ],
+    oferta: [
+      { ...garantias, id: "o0", props: { ...garantias.props, __espaco: "meio" } },
+      { id: "o1", tipo: "carrossel-ofertas", props: { titulo: "Veja também", regra: "todas", categoria: "", limite: 8, __espaco: "baixo" } },
+    ],
+    sacola: [
+      { ...garantias, id: "s1", props: { ...garantias.props, __espaco: "antes" } },
+      {
+        id: "s2",
+        tipo: "lista-rapida",
+        props: { titulo: "Esqueceu algo?", regra: "todas", categoria: "", limite: 5, esconderNaSacola: true, __espaco: "depois" },
+      },
+    ],
     confirmacao: [
       {
         id: "f1",

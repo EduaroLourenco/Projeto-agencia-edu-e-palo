@@ -65,7 +65,14 @@ export function Montador({
   /** O estúdio usa pra pôr a moldura de edição em volta de cada bloco. */
   envolver?: (b: BlocoNaPagina, conteudo: React.ReactNode, ehAncora: boolean) => React.ReactNode;
 }) {
-  const lista = ordenarComAncoras(pagina, blocos.filter((b) => !b.oculto));
+  /**
+   * Bloco escondido some da loja — mas não do editor.
+   *
+   * Tirar ele daqui no modo de edição era um caminho sem volta: o lojista
+   * tocava no olho, o bloco desaparecia inteiro e não existia mais botão
+   * pra trazer de volta. No estúdio ele continua na lista, apagado.
+   */
+  const lista = ordenarComAncoras(pagina, editando ? blocos : blocos.filter((b) => !b.oculto));
 
   return (
     <div className="flex flex-col" style={{ gap: "var(--gap)" }}>
