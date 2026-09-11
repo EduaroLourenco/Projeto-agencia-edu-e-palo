@@ -1,0 +1,65 @@
+# Publica a plataforma no GitHub Pages.
+#
+# Todo push que mexe em plataforma/ reconstrói o site e troca o que está no
+# ar. Não tem passo manual: o link é sempre o mesmo e sempre a versão mais
+# nova. Quem abre não precisa de conta nenhuma.
+name: Publicar a plataforma
+
+on:
+  push:
+    branches:
+      - master
+      - claude/vercel-site-deployment-crv0xx
+    paths:
+      - "plataforma/**"
+      - ".github/workflows/pages.yml"
+  # Botão "Run workflow" na aba Actions, pra republicar sem commit novo.
+  workflow_dispatch:
+
+# O que o GitHub Pages exige pra aceitar uma publicação vinda daqui.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Dois pushes seguidos: o segundo espera o primeiro terminar em vez de
+# disputar com ele. Sem isto, dá pra publicar a versão antiga por último.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  construir:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: plataforma
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: plataforma/package-lock.json
+
+      - run: npm ci
+
+      - name: Construir
+        run: npm run build:pages
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: plataforma/dist
+
+  publicar:
+    needs: construir
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4
