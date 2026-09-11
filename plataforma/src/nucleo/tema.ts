@@ -454,6 +454,22 @@ export function aplicarTema(el: HTMLElement, temaCru: Tema) {
   el.style.setProperty("--papel-escuro", paleta.escuro ? "1" : "0");
 
   /**
+   * Uma cópia da escala do papel que ninguém sobrescreve.
+   *
+   * Uma seção pintada reescreve `--color-tinta*` pra que o texto secundário
+   * acompanhe a cor dela. Um cartão branco dentro dessa seção precisa VOLTAR
+   * pra escala do papel — e não tem como "voltar ao valor da raiz" em CSS.
+   * Então a raiz guarda esta cópia, e o cartão a restaura.
+   */
+  el.style.setProperty("--papel-tinta", paleta.tintas.tinta);
+  el.style.setProperty("--papel-tinta-70", paleta.tintas["tinta-70"]);
+  el.style.setProperty("--papel-tinta-45", paleta.tintas["tinta-45"]);
+  el.style.setProperty("--papel-tinta-25", paleta.tintas["tinta-25"]);
+  el.style.setProperty("--papel-tinta-12", paleta.tintas["tinta-12"]);
+  el.style.setProperty("--papel-borda", paleta.borda);
+  el.style.setProperty("--papel-borda-forte", paleta.bordaForte);
+
+  /**
    * A superfície de um cartão sem contorno.
    *
    * No claro é o próprio papel, e o que separa é a sombra. No escuro sombra

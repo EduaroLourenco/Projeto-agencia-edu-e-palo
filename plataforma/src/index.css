@@ -93,6 +93,108 @@
   --sombra-3: 0 2px 6px rgba(22, 19, 15, 0.06), 0 18px 40px -16px rgba(22, 19, 15, 0.22);
 }
 
+/* ============================================================
+   O PAINEL — a linguagem da ferramenta, não da loja
+
+   A loja é clara porque vende. O painel é escuro porque se passa o dia
+   dentro dele: é o padrão de Linear, Vercel e Supabase, e é o que separa
+   "ferramenta séria" de "admin template". Hierarquia sai de espaço e peso
+   de tipo, não de caixa em volta de tudo.
+
+   Tokens próprios, escopo próprio: o painel não empresta nada da loja e a
+   loja não herda nada dele.
+   ============================================================ */
+.painel {
+  --p-fundo: #08080b;
+  --p-superficie: #101016;
+  --p-superficie-2: #16161f;
+  --p-superficie-3: #1d1d28;
+  --p-borda: rgba(255, 255, 255, 0.07);
+  --p-borda-forte: rgba(255, 255, 255, 0.14);
+
+  --p-texto: #f2f2f5;
+  --p-texto-2: #a3a3b0;
+  --p-texto-3: #6b6b7a;
+
+  --p-acento: #7b5cff;
+  --p-acento-claro: #a48cff;
+  --p-acento-fundo: rgba(123, 92, 255, 0.14);
+
+  --p-ok: #34d399;
+  --p-atencao: #fbbf24;
+  --p-erro: #fb7185;
+
+  /* Luz de cima, como todo objeto físico. É o que faz a superfície
+     parecer material em vez de retângulo pintado. */
+  --p-brilho: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  --p-sombra: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px -12px rgba(0, 0, 0, 0.6);
+  --p-sombra-alta: 0 2px 8px rgba(0, 0, 0, 0.5), 0 24px 60px -20px rgba(0, 0, 0, 0.8);
+
+  background: var(--p-fundo);
+  color: var(--p-texto);
+  font-family: var(--fonte-corpo);
+  min-height: 100dvh;
+}
+
+/* Caixa do painel: superfície + luz em cima + borda quase invisível. */
+@utility placa-p {
+  background: var(--p-superficie);
+  border: 1px solid var(--p-borda);
+  box-shadow: var(--p-brilho);
+}
+
+/* Rótulo em caixa alta com entrelinha generosa — o detalhe que a pesquisa
+   aponta como o mais barato de fazer e o que mais lê como "caro". */
+@utility rotulo-p {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--p-texto-3);
+}
+
+/* Peças da loja reaproveitadas dentro do painel.
+   O cadastro de item e a ficha da loja foram escritos com os tokens da
+   vitrine (papel branco, tinta escura). Reescrever os dois em token de
+   painel seria manter duas versões do mesmo formulário pra sempre; aqui os
+   tokens da loja são reapontados pros do painel, uma vez só. */
+@utility no-painel {
+  --color-papel: var(--p-superficie);
+  --color-papel-2: var(--p-superficie-2);
+  --color-papel-3: var(--p-superficie-3);
+  --color-tinta: var(--p-texto);
+  --color-tinta-70: var(--p-texto-2);
+  --color-tinta-45: var(--p-texto-3);
+  --color-tinta-25: var(--p-texto-3);
+  --color-tinta-12: var(--p-borda-forte);
+  --color-borda: var(--p-borda);
+  --color-borda-forte: var(--p-borda-forte);
+  --color-erro: var(--p-erro);
+  --color-ok: var(--p-ok);
+  --color-atencao: var(--p-atencao);
+  --marca-500: var(--p-acento);
+  --marca-600: var(--p-acento-claro);
+  --marca-700: var(--p-acento-claro);
+  --superficie: var(--p-superficie);
+  color: var(--p-texto);
+}
+
+@keyframes brilhar {
+  from { background-position: -220% 0; }
+  to { background-position: 220% 0; }
+}
+@utility esqueleto-p {
+  background: linear-gradient(90deg, var(--p-superficie-2) 25%, var(--p-superficie-3) 50%, var(--p-superficie-2) 75%);
+  background-size: 220% 100%;
+  animation: brilhar 1.4s ease-in-out infinite;
+}
+
+@keyframes entrar-baixo {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+@utility anima-entrar { animation: entrar-baixo .42s cubic-bezier(.2,0,0,1) backwards; }
+
 * { box-sizing: border-box; }
 
 html, body, #root { height: 100%; }
@@ -145,6 +247,16 @@ button { -webkit-appearance: none; appearance: none; }
 */
 @layer components {
   .bg-papel, .placa {
+    /* Volta pra escala do papel: dentro de uma seção pintada, a escala de
+       tinta corrente é a DELA (clara, sobre a cor), e um cartão branco
+       herdando aquilo fica com o texto secundário invisível. */
+    --color-tinta: var(--papel-tinta, #16130f);
+    --color-tinta-70: var(--papel-tinta-70, #4d4740);
+    --color-tinta-45: var(--papel-tinta-45, #837b71);
+    --color-tinta-25: var(--papel-tinta-25, #b6afa5);
+    --color-tinta-12: var(--papel-tinta-12, #ddd8d1);
+    --color-borda: var(--papel-borda, #e9e5df);
+    --color-borda-forte: var(--papel-borda-forte, #d2ccc3);
     color: var(--color-tinta);
   }
 }

@@ -59,7 +59,7 @@ export function Painel({ loja: lojaInicial }: { loja: Loja }) {
     <div className="mx-auto min-h-dvh w-full max-w-lg bg-papel">
       <header className="sticky top-0 z-30 border-b border-borda bg-papel/95 backdrop-blur">
         <div className="flex items-center gap-1 px-2 py-2">
-          <Link to="/" aria-label="Voltar" className="flex h-10 w-10 items-center justify-center text-tinta-70">
+          <Link to="/app" aria-label="Voltar" className="flex h-10 w-10 items-center justify-center text-tinta-70">
             <ArrowLeft size={19} />
           </Link>
           <div className="min-w-0 flex-1">

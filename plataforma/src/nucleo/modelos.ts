@@ -1,4 +1,4 @@
-import type { Loja, Oferta, TipoPagina, BlocoNaPagina } from "./tipos";
+import type { Loja, Oferta, TipoPagina, BlocoNaPagina, EstiloBloco, Tema } from "./tipos";
 
 /**
  * De onde nasce uma loja nova.
@@ -7,9 +7,15 @@ import type { Loja, Oferta, TipoPagina, BlocoNaPagina } from "./tipos";
  * existe, e o lojista não sabe o que fazer com ela. Cada modelo já vem com
  * as páginas montadas, os recursos certos ligados e três itens de exemplo —
  * marcados como exemplo, pra ele trocar em vez de inventar do zero.
+ *
+ * MODELO e ESTILO são eixos separados, e isso é o ponto. O modelo decide o
+ * que a loja FAZ (agenda, caixa fechada, sacola); o estilo decide como ela
+ * PARECE. Cruzados, três modelos e seis estilos dão dezoito lojas que não se
+ * parecem — em vez de três demonstrações com a cor trocada, que era o que
+ * fazia tudo aqui ter cara de template barato.
  */
 
-export type IdModelo = "produtos" | "servicos" | "atacado";
+export type IdModelo = "produtos" | "servicos" | "atacado" | "zero";
 
 export const MODELOS: {
   id: IdModelo;
@@ -35,7 +41,198 @@ export const MODELOS: {
     descricao: "Caixa fechada, pedido mínimo e faixa de desconto por volume.",
     corMarca: "#1f7a4d",
   },
+  {
+    id: "zero",
+    nome: "Começar do zero",
+    descricao: "Uma página em branco. Você escolhe cada bloco.",
+    corMarca: "#3b3b46",
+  },
 ];
+
+/* ============================================================
+   ESTILOS — a mesma loja, seis caras
+   ============================================================ */
+
+export type IdEstilo = "essencial" | "elegante" | "corporativo" | "clinica" | "marketplace" | "noturno";
+
+export interface Estilo {
+  id: IdEstilo;
+  nome: string;
+  /** Uma frase que diz pra quem serve — não o que é. */
+  descricao: string;
+  /** O que muda no tema. `corMarca` ausente = mantém a cor do modelo. */
+  tema: Omit<Tema, "corMarca"> & { corMarca?: string };
+  /**
+   * Como as seções são vestidas.
+   *
+   * Trocar só a cor não muda a cara de um site: o que muda é onde tem caixa,
+   * onde tem borda, o que sangra até a borda da tela e quanto ar sobra. É
+   * isto aqui, e não a paleta, que separa "clínica" de "marketplace".
+   */
+  vestimenta: {
+    abertura: EstiloBloco;
+    secao: EstiloBloco;
+    fechamento: EstiloBloco;
+    /** O tom da faixinha de aviso. */
+    faixa: "claro" | "marca" | "escuro";
+    /** Grade do catálogo: estilo denso mostra três colunas. */
+    colunas: "2" | "3";
+    /** Como a faixa de categorias se apresenta. */
+    categorias: "pilulas" | "cartoes";
+  };
+}
+
+export const ESTILOS: Estilo[] = [
+  {
+    id: "essencial",
+    nome: "Essencial",
+    descricao: "Claro, direto, sem firula. Bom pra quase tudo.",
+    tema: {
+      corPapel: "#ffffff",
+      densidade: "media",
+      canto: "suave",
+      fontes: "sora-inter",
+      estiloBotao: "solido",
+      sombra: "suave",
+      escalaTexto: "normal",
+    },
+    vestimenta: {
+      abertura: { fundo: "marca-suave", respiro: "g", canto: "redondo", alinhamento: "centro" },
+      secao: { fundo: "suave", respiro: "g", sangrar: true },
+      fechamento: { fundo: "escuro", respiro: "g", sangrar: true },
+      faixa: "marca",
+      colunas: "2",
+      categorias: "pilulas",
+    },
+  },
+  {
+    id: "elegante",
+    nome: "Elegante",
+    descricao: "Serifa, muito ar, quase nenhuma caixa. Joalheria, ateliê, autoral.",
+    tema: {
+      corMarca: "#8a6236",
+      corPapel: "#faf7f2",
+      densidade: "confortavel",
+      canto: "reto",
+      fontes: "fraunces-inter",
+      estiloBotao: "contorno",
+      sombra: "plana",
+      escalaTexto: "grande",
+    },
+    vestimenta: {
+      // Sem fundo e sem caixa: o que faz um site parecer caro é o vazio em
+      // volta do texto, não a moldura. Cada caixa a menos aqui é dinheiro.
+      abertura: { fundo: "nenhum", respiro: "g", alinhamento: "centro", espacoDepois: "grande" },
+      secao: { fundo: "nenhum", respiro: "g", borda: true, canto: "reto" },
+      fechamento: { fundo: "escuro", respiro: "g", sangrar: true, alinhamento: "centro" },
+      faixa: "claro",
+      colunas: "2",
+      categorias: "pilulas",
+    },
+  },
+  {
+    id: "corporativo",
+    nome: "Corporativo",
+    descricao: "Estruturado, com bordas e hierarquia firme. Consultoria, indústria, B2B.",
+    tema: {
+      corMarca: "#14356b",
+      corPapel: "#ffffff",
+      densidade: "media",
+      canto: "reto",
+      fontes: "archivo-inter",
+      estiloBotao: "solido",
+      sombra: "plana",
+      escalaTexto: "normal",
+    },
+    vestimenta: {
+      // Alinhado à esquerda e com borda: relatório, não cartaz. É o que o
+      // comprador corporativo lê como "gente séria".
+      abertura: { fundo: "suave", respiro: "g", canto: "reto", borda: true, alinhamento: "esquerda" },
+      secao: { fundo: "nenhum", respiro: "g", borda: true, canto: "reto" },
+      fechamento: { fundo: "marca", respiro: "g", sangrar: true, alinhamento: "esquerda" },
+      faixa: "escuro",
+      colunas: "2",
+      categorias: "pilulas",
+    },
+  },
+  {
+    id: "clinica",
+    nome: "Clínica & saúde",
+    descricao: "Calmo, arredondado, sem aresta. Consultório, exame, bem-estar.",
+    tema: {
+      corMarca: "#0e7c86",
+      corPapel: "#f2f7f8",
+      densidade: "confortavel",
+      canto: "redondo",
+      fontes: "instrument-inter",
+      estiloBotao: "solido",
+      sombra: "suave",
+      escalaTexto: "normal",
+    },
+    vestimenta: {
+      // Tudo em cartão flutuando num papel levemente frio: é a linguagem de
+      // app de saúde, e ela comunica cuidado antes de qualquer texto.
+      abertura: { fundo: "papel", respiro: "g", canto: "redondo", sombra: "leve", alinhamento: "centro" },
+      secao: { fundo: "papel", respiro: "g", canto: "redondo", sombra: "leve" },
+      fechamento: { fundo: "marca-suave", respiro: "g", canto: "redondo", alinhamento: "centro" },
+      faixa: "claro",
+      colunas: "2",
+      categorias: "pilulas",
+    },
+  },
+  {
+    id: "marketplace",
+    nome: "Marketplace",
+    descricao: "Denso, três colunas, tudo à mão. Muitos itens e giro rápido.",
+    tema: {
+      corMarca: "#2f4bd6",
+      corPapel: "#f4f5f8",
+      densidade: "compacta",
+      canto: "suave",
+      fontes: "archivo-inter",
+      estiloBotao: "solido",
+      sombra: "suave",
+      escalaTexto: "pequeno",
+    },
+    vestimenta: {
+      // Faixa pintada no topo e produto imediatamente abaixo: no marketplace
+      // o herói é o catálogo, não o discurso.
+      abertura: { fundo: "marca", respiro: "m", canto: "suave", sangrar: true, alinhamento: "centro" },
+      secao: { fundo: "papel", respiro: "m", canto: "suave", borda: true },
+      fechamento: { fundo: "suave", respiro: "g", sangrar: true },
+      faixa: "marca",
+      colunas: "3",
+      categorias: "cartoes",
+    },
+  },
+  {
+    id: "noturno",
+    nome: "Noturno",
+    descricao: "Fundo escuro e detalhe dourado. Bar, estúdio, marca de noite.",
+    tema: {
+      corMarca: "#c9a227",
+      corPapel: "#141319",
+      densidade: "confortavel",
+      canto: "suave",
+      fontes: "instrument-inter",
+      estiloBotao: "contorno",
+      sombra: "plana",
+      escalaTexto: "normal",
+    },
+    vestimenta: {
+      abertura: { fundo: "marca-suave", respiro: "g", canto: "suave", alinhamento: "centro" },
+      secao: { fundo: "suave", respiro: "g", sangrar: true },
+      fechamento: { fundo: "marca-suave", respiro: "g", sangrar: true, alinhamento: "centro" },
+      faixa: "marca",
+      colunas: "2",
+      categorias: "pilulas",
+    },
+  },
+];
+
+export function estilo(id: IdEstilo): Estilo {
+  return ESTILOS.find((e) => e.id === id) ?? ESTILOS[0];
+}
 
 function item(
   id: string,
@@ -85,12 +282,14 @@ const EXEMPLOS: Record<IdModelo, Oferta[]> = {
     }),
     item("ex3", "produto", "Item de exemplo · unidade", "Vende avulso", 4.35, "Limpeza"),
   ],
+  zero: [],
 };
 
 const MODULOS: Record<IdModelo, string[]> = {
   produtos: ["variantes", "entrega", "pagamento"],
   servicos: ["agendamento", "pagamento"],
   atacado: ["b2b", "entrega", "pagamento"],
+  zero: ["pagamento"],
 };
 
 const CONFIG: Record<IdModelo, Record<string, unknown>> = {
@@ -128,11 +327,45 @@ const CONFIG: Record<IdModelo, Record<string, unknown>> = {
     },
     pagamento: { formas: [{ id: "pix", nome: "PIX" }, { id: "boleto", nome: "Boleto 28 dias" }] },
   },
+  zero: {
+    pagamento: { formas: [{ id: "pix", nome: "PIX" }] },
+  },
 };
 
-function paginas(modelo: IdModelo): Record<TipoPagina, BlocoNaPagina[]> {
+/**
+ * A loja em branco.
+ *
+ * Não é um arquivo vazio: é uma página com UM bloco de texto explicando o
+ * que fazer. Tela totalmente em branco não é liberdade, é paralisia — e o
+ * lojista fecha o estúdio achando que quebrou.
+ */
+function paginasVazias(e: Estilo): Record<TipoPagina, BlocoNaPagina[]> {
+  return {
+    inicio: [
+      {
+        id: "z1",
+        tipo: "texto",
+        props: {
+          titulo: "Sua página em branco",
+          corpo: "Toque no + aqui embaixo pra colocar o primeiro bloco: uma capa, uma vitrine de produtos, um texto. Toque na paleta pra trocar as cores e as fontes.",
+          alinhamento: "centro",
+        },
+        estilo: e.vestimenta.abertura,
+      },
+    ],
+    catalogo: [],
+    oferta: [],
+    sacola: [],
+    confirmacao: [],
+  };
+}
+
+function paginas(modelo: IdModelo, e: Estilo): Record<TipoPagina, BlocoNaPagina[]> {
+  if (modelo === "zero") return paginasVazias(e);
+
+  const v = e.vestimenta;
   const comum: BlocoNaPagina[] = [
-    { id: "p1", tipo: "faixa-categorias", props: { titulo: "", estilo: "pilulas" } },
+    { id: "p1", tipo: "faixa-categorias", props: { titulo: "", estilo: v.categorias } },
   ];
 
   const inicio: BlocoNaPagina[] = [
@@ -142,9 +375,9 @@ function paginas(modelo: IdModelo): Record<TipoPagina, BlocoNaPagina[]> {
       props: {
         titulo: "Bem-vindo à sua loja nova",
         corpo: "Toque em qualquer bloco pra editar. Use o + pra adicionar seções e a paleta pra trocar as cores.",
-        alinhamento: "centro",
+        alinhamento: v.abertura.alinhamento ?? "centro",
       },
-      estilo: { fundo: "marca-suave", respiro: "g", canto: "redondo", alinhamento: "centro" },
+      estilo: v.abertura,
     },
     ...comum,
     {
@@ -153,7 +386,13 @@ function paginas(modelo: IdModelo): Record<TipoPagina, BlocoNaPagina[]> {
       props:
         modelo === "atacado"
           ? { titulo: "Mais pedidos", regra: "todas", categoria: "", limite: 8 }
-          : { titulo: modelo === "servicos" ? "Nossos serviços" : "Destaques", regra: "todas", categoria: "", limite: 6, colunas: "2" },
+          : {
+              titulo: modelo === "servicos" ? "Nossos serviços" : "Destaques",
+              regra: "todas",
+              categoria: "",
+              limite: v.colunas === "3" ? 9 : 6,
+              colunas: v.colunas,
+            },
     },
     {
       id: "b3",
@@ -166,7 +405,7 @@ function paginas(modelo: IdModelo): Record<TipoPagina, BlocoNaPagina[]> {
           { icone: "qualidade", titulo: "Uma promessa sua", texto: "O que a sua loja garante." },
         ],
       },
-      estilo: { fundo: "suave", respiro: "g", sangrar: true },
+      estilo: v.secao,
     },
     {
       id: "b4",
@@ -183,7 +422,7 @@ function paginas(modelo: IdModelo): Record<TipoPagina, BlocoNaPagina[]> {
       id: "b5",
       tipo: "contato",
       props: { titulo: "Ficou com dúvida?", texto: "Chama que a gente responde.", rotuloBotao: "Chamar no WhatsApp", variante: "limpo" },
-      estilo: { fundo: "escuro", respiro: "g", sangrar: true },
+      estilo: v.fechamento,
     },
   ];
 
@@ -191,7 +430,7 @@ function paginas(modelo: IdModelo): Record<TipoPagina, BlocoNaPagina[]> {
     inicio.splice(1, 0, { id: "b0", tipo: "proximos-horarios", props: { titulo: "Próximos horários" } });
   }
   if (modelo === "atacado") {
-    inicio.splice(1, 0, { id: "b0", tipo: "faixa-aviso", props: { texto: "Pedido mínimo R$ 300 · entrega em 48h", tom: "marca" } });
+    inicio.splice(1, 0, { id: "b0", tipo: "faixa-aviso", props: { texto: "Pedido mínimo R$ 300 · entrega em 48h", tom: v.faixa } });
   }
 
   // As outras páginas também nascem com conteúdo. Loja nova com catálogo e
@@ -207,7 +446,7 @@ function paginas(modelo: IdModelo): Record<TipoPagina, BlocoNaPagina[]> {
         { icone: "qualidade", titulo: "Sua garantia aqui", texto: "Troque por uma promessa sua." },
       ],
     },
-    estilo: { fundo: "suave", respiro: "m" },
+    estilo: { ...v.secao, respiro: "m", sangrar: false },
   };
 
   return {
@@ -216,7 +455,7 @@ function paginas(modelo: IdModelo): Record<TipoPagina, BlocoNaPagina[]> {
       {
         id: "c1",
         tipo: "faixa-aviso",
-        props: { texto: "Escreva aqui a condição da semana · troque este texto", tom: "claro", __espaco: "antes" },
+        props: { texto: "Escreva aqui a condição da semana · troque este texto", tom: v.faixa, __espaco: "antes" },
       },
       { ...garantias, id: "c2", props: { ...garantias.props, __espaco: "depois" } },
     ],
@@ -237,7 +476,7 @@ function paginas(modelo: IdModelo): Record<TipoPagina, BlocoNaPagina[]> {
         id: "f1",
         tipo: "texto",
         props: { titulo: "Recebemos!", corpo: "Confirmamos tudo pelo WhatsApp. Escreva aqui o que acontece depois do pedido.", alinhamento: "centro", __espaco: "depois" },
-        estilo: { fundo: "marca-suave", respiro: "g", alinhamento: "centro", canto: "redondo" },
+        estilo: { ...v.abertura, alinhamento: "centro", sangrar: false },
       },
     ],
   };
@@ -261,13 +500,19 @@ export function montarLoja({
   slug,
   whatsapp,
   modelo,
+  estilo: idEstilo = "essencial",
+  corMarca,
 }: {
   nome: string;
   slug: string;
   whatsapp: string;
   modelo: IdModelo;
+  estilo?: IdEstilo;
+  /** Sobrepõe a cor do estilo — o lojista escolheu a cor da marca dele. */
+  corMarca?: string;
 }): Loja {
   const def = MODELOS.find((m) => m.id === modelo) ?? MODELOS[0];
+  const e = estilo(idEstilo);
   return {
     slug,
     nome,
@@ -275,17 +520,11 @@ export function montarLoja({
     whatsapp,
     aberta: true,
     tema: {
-      corMarca: def.corMarca,
-      corPapel: "#ffffff",
-      densidade: "media",
-      canto: "suave",
-      fontes: "sora-inter",
-      estiloBotao: "solido",
-      sombra: "suave",
-      escalaTexto: "normal",
+      ...e.tema,
+      corMarca: corMarca ?? e.tema.corMarca ?? def.corMarca,
     },
     modulos: MODULOS[modelo],
-    paginas: paginas(modelo),
+    paginas: paginas(modelo, e),
     ofertas: EXEMPLOS[modelo].map((o) => ({ ...o })),
     config: CONFIG[modelo],
   };

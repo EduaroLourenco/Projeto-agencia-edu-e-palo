@@ -1,4 +1,4 @@
-import type { DadosCheckout, LinhaResolvida, Pedido } from "./tipos";
+import type { DadosCheckout, LinhaResolvida, Pedido, StatusPedido } from "./tipos";
 
 /**
  * O pedido fica guardado E vai pro WhatsApp.
@@ -9,7 +9,7 @@ import type { DadosCheckout, LinhaResolvida, Pedido } from "./tipos";
  */
 
 const CHAVE = (slug: string) => `plataforma:pedidos:${slug}`;
-const LIMITE = 30;
+const LIMITE = 200;
 
 export function salvarPedido(params: {
   lojaSlug: string;
@@ -21,6 +21,8 @@ export function salvarPedido(params: {
   const pedido: Pedido = {
     id: `p_${Date.now().toString(36)}`,
     criadoEm: Date.now(),
+    status: "novo",
+    cliente: extrairCliente(params.passos),
     ...params,
   };
   try {
@@ -43,4 +45,40 @@ export function listarPedidos(slug: string): Pedido[] {
 
 export function ultimoPedido(slug: string): Pedido | null {
   return listarPedidos(slug)[0] ?? null;
+}
+
+/**
+ * Tira nome e telefone de onde o checkout tiver posto.
+ *
+ * Cada módulo nomeia os campos do seu jeito, e o núcleo não conhece módulo.
+ * Então aqui é uma varredura por nomes prováveis — feio, mas honesto: é o
+ * preço de não ter tabela de cliente ainda.
+ */
+function extrairCliente(passos: DadosCheckout): { nome?: string; telefone?: string } | undefined {
+  let nome: string | undefined;
+  let telefone: string | undefined;
+  for (const respostas of Object.values(passos ?? {})) {
+    for (const [chave, valor] of Object.entries(respostas ?? {})) {
+      if (typeof valor !== "string" || !valor.trim()) continue;
+      const c = chave.toLowerCase();
+      if (!nome && (c.includes("nome") || c.includes("razao"))) nome = valor.trim();
+      if (!telefone && (c.includes("tel") || c.includes("whats") || c.includes("celular"))) telefone = valor.trim();
+    }
+  }
+  return nome || telefone ? { nome, telefone } : undefined;
+}
+
+export function atualizarStatus(slug: string, id: string, status: StatusPedido) {
+  const lista = listarPedidos(slug).map((p) => (p.id === id ? { ...p, status } : p));
+  try {
+    localStorage.setItem(CHAVE(slug), JSON.stringify(lista));
+  } catch {
+    /* storage cheio: o status não grava, mas o pedido não se perde */
+  }
+  return lista;
+}
+
+/** Apaga tudo de uma loja. Usado ao restaurar a demo. */
+export function limparPedidos(slug: string) {
+  localStorage.removeItem(CHAVE(slug));
 }

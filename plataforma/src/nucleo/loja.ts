@@ -1,6 +1,6 @@
 import type { BlocoNaPagina, Loja, TipoPagina } from "./tipos";
 import { DEMOS } from "../../demos/indice";
-import { montarLoja, paraSlug, type IdModelo } from "./modelos";
+import { montarLoja, paraSlug, type IdEstilo, type IdModelo } from "./modelos";
 
 /**
  * De onde vem a loja.
@@ -25,7 +25,7 @@ const CHAVE_VERSAO = "plataforma:versao-demos";
  * Numa versão nova, o que estava salvo é descartado uma vez só. É aceitável
  * porque isto é demonstração; quando houver API, a migração é do servidor.
  */
-const VERSAO_DEMOS = "2026-09-09-blocos-e-estilo";
+const VERSAO_DEMOS = "2026-09-11-plataforma-e-estilos";
 
 function limparSeVelho() {
   try {
@@ -83,7 +83,13 @@ export function listarLojas(): { loja: Loja; propria: boolean }[] {
   ].filter((x) => x.loja);
 }
 
-export function criarLoja(dados: { nome: string; whatsapp: string; modelo: IdModelo }) {
+export function criarLoja(dados: {
+  nome: string;
+  whatsapp: string;
+  modelo: IdModelo;
+  estilo?: IdEstilo;
+  corMarca?: string;
+}) {
   const usados = new Set(slugsDisponiveis());
   let slug = paraSlug(dados.nome);
   let n = 2;

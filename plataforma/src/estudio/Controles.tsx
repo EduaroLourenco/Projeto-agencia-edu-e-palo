@@ -3,6 +3,7 @@ import { ChevronDown, ChevronUp, Plus, Trash2, Upload } from "lucide-react";
 import type { CampoBloco } from "../nucleo/tipos";
 import { Campo, Entrada, Selecao, Stepper } from "../design/Primitivos";
 import { pesoEmKB, prepararImagem } from "../nucleo/imagem";
+import { guardarFoto, urlsDoBanco } from "../nucleo/fotos";
 
 /**
  * Os controles se desenham sozinhos.
@@ -170,22 +171,40 @@ function ControleImagem({
 }) {
   const [ocupado, setOcupado] = useState(false);
   const [erro, setErro] = useState<string | null>(null);
+  const [banco, setBanco] = useState<string[]>(() => urlsDoBanco());
 
+  /**
+   * Subir guarda no banco de fotos além de usar aqui.
+   *
+   * É o que faz a mesma foto servir pra capa, pro produto e pra outra loja
+   * sem subir de novo. Se o banco estiver cheio, a foto ainda entra no
+   * bloco — só não fica guardada; travar a edição por causa do acervo seria
+   * punir a pessoa por uma limitação nossa.
+   */
   async function subir(arquivo: File | undefined) {
     if (!arquivo) return;
     setErro(null);
     setOcupado(true);
-    try {
-      const { url } = await prepararImagem(arquivo, { lado: 1000 });
-      onMudar(url);
-    } catch (e) {
-      setErro(e instanceof Error ? e.message : "Não consegui usar esta imagem.");
-    } finally {
-      setOcupado(false);
+    const r = await guardarFoto(arquivo, { lado: 1000 });
+    if (r.ok) {
+      onMudar(r.foto.url);
+      setBanco(urlsDoBanco());
+    } else {
+      try {
+        const { url } = await prepararImagem(arquivo, { lado: 1000 });
+        onMudar(url);
+        setErro(r.erro);
+      } catch (e) {
+        setErro(e instanceof Error ? e.message : "Não consegui usar esta imagem.");
+      }
     }
+    setOcupado(false);
   }
 
   const url = String(valor ?? "");
+  // O banco vem antes: é o acervo da pessoa. O catálogo é o que já está na
+  // loja e costuma repetir o que ela já viu.
+  const reaproveitar = [...banco, ...imagensDisponiveis.filter((u) => !banco.includes(u))];
 
   return (
     <Campo rotulo={campo.rotulo} dica={campo.dica}>
@@ -250,11 +269,13 @@ function ControleImagem({
             </label>
           )}
 
-          {imagensDisponiveis.length > 0 && (
+          {reaproveitar.length > 0 && (
             <>
-              <p className="mt-0.5 text-[11.5px] text-tinta-45">ou reaproveite uma do catálogo</p>
+              <p className="mt-0.5 text-[11.5px] text-tinta-45">
+                ou use uma do seu banco de fotos
+              </p>
               <div className="sem-barra -mx-1 flex gap-2 overflow-x-auto px-1">
-                {imagensDisponiveis.map((u) => (
+                {reaproveitar.map((u) => (
                   <button
                     key={u}
                     onClick={() => onMudar(u)}

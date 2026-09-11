@@ -372,6 +372,16 @@ export interface ResumoSacola {
   podeFechar: boolean;
 }
 
+/**
+ * Por onde o pedido passa.
+ *
+ * Cinco estados e nada de sub-estado: quem atende no balcão não vai
+ * aprender uma máquina de estados. "Separando" é o único que existe por
+ * pedido da vida real — é onde o pedido fica enquanto alguém junta as
+ * caixas.
+ */
+export type StatusPedido = "novo" | "confirmado" | "separando" | "entregue" | "cancelado";
+
 export interface Pedido {
   id: string;
   criadoEm: number;
@@ -380,6 +390,9 @@ export interface Pedido {
   total: number;
   passos: DadosCheckout;
   mensagem: string;
+  status?: StatusPedido;
+  /** Quem comprou, quando o checkout soube dizer. */
+  cliente?: { nome?: string; telefone?: string };
 }
 
 export type { ReactNode };

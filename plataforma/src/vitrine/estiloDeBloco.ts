@@ -46,7 +46,29 @@ export const ESPACO_DEPOIS: Record<string, string> = {
  * errado: o carrossel tem que vazar até a borda da SEÇÃO. Reescrever
  * `--pad-pagina` no invólucro resolve os dois casos com a mesma regra.
  */
-type ComVariavel = CSSProperties & { "--pad-pagina"?: string };
+type ComVariavel = CSSProperties & Record<`--${string}`, string | undefined>;
+
+/**
+ * Quando a seção pinta o fundo, a escala de tinta inteira tem que mudar.
+ *
+ * `color` sozinho só resolve o texto que herda. Título, resumo, preço e
+ * rótulo usam degraus (`text-tinta-70`, `text-tinta-45`) que apontam pra
+ * escala do PAPEL — e num fundo azul eles continuavam cinza-escuro, isto é,
+ * ilegíveis. Aqui a escala é redesenhada por transparência sobre a cor do
+ * texto da seção, que já foi resolvida por contraste contra o fundo.
+ */
+function escalaSobre(cor: string): Record<string, string> {
+  const mistura = (pct: number) => `color-mix(in oklab, ${cor} ${pct}%, transparent)`;
+  return {
+    "--color-tinta": cor,
+    "--color-tinta-70": mistura(80),
+    "--color-tinta-45": mistura(62),
+    "--color-tinta-25": mistura(40),
+    "--color-tinta-12": mistura(22),
+    "--color-borda": mistura(20),
+    "--color-borda-forte": mistura(34),
+  };
+}
 
 export interface Vestido {
   /** Fundo, respiro e moldura. Vai no invólucro de fora. */
@@ -81,19 +103,27 @@ export function vestirBloco(e: EstiloBloco | undefined): Vestido | null {
     case "marca-suave":
       estilo.background = "var(--marca-50)";
       estilo.color = "var(--marca-900)";
+      Object.assign(estilo, escalaSobre("var(--marca-900)"));
       break;
     case "marca":
       estilo.background = "var(--marca-500)";
       estilo.color = "var(--sobre-marca)";
+      Object.assign(estilo, escalaSobre("var(--sobre-marca)"));
       break;
     case "escuro":
-      estilo.background = "var(--color-tinta)";
+      // A cor de fundo é lida ANTES de a escala ser reescrita: dentro do
+      // mesmo elemento a propriedade nova já vale, e o fundo viraria a cor
+      // do próprio texto.
+      estilo.background = "var(--papel-tinta, var(--color-tinta))";
       estilo.color = "var(--color-papel)";
+      Object.assign(estilo, escalaSobre("var(--color-papel)"));
       break;
     case "propria": {
       const cor = e.corFundo || "#ffffff";
       estilo.background = cor;
-      estilo.color = textoSobre(cor);
+      const texto = textoSobre(cor);
+      estilo.color = texto;
+      Object.assign(estilo, escalaSobre(texto));
       break;
     }
   }
