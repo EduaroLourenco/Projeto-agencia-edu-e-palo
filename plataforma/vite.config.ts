@@ -4,29 +4,22 @@ import tailwindcss from "@tailwindcss/vite";
 import { paginaUnica } from "./scripts/pagina-unica.ts";
 
 /**
- * Três alvos.
+ * Dois alvos.
  *
- * O normal é o de sempre: arquivos separados, com hash, pra hospedar.
+ * O normal (`npm run build`) é o site que vai pra Vercel: arquivos
+ * separados, com hash no nome, pro navegador guardar em cache e a segunda
+ * visita ser instantânea. O endereço das páginas é limpo — /vale-verde —
+ * porque o `vercel.json` manda qualquer caminho cair no index.html.
  *
  * O modo "demo" (`npm run demo`) monta a plataforma inteira num HTML só —
  * CSS, JS e as fotos em base64 — pra mandar por link e o cliente abrir no
  * celular sem servidor nenhum atrás. É o que a gente entrega numa reunião.
- *
- * O modo "pages" (`npm run build:pages`) é o site público no GitHub Pages:
- * arquivos separados, porque aí o navegador guarda cada um em cache e a
- * segunda visita é instantânea, mas servido de dentro de uma subpasta
- * (`/nome-do-repositorio/`). Daí o `base` — sem ele, a página procura o JS
- * na raiz do domínio e abre em branco.
  */
-const REPOSITORIO = "Projeto-agencia-edu-e-palo";
-
 export default defineConfig(({ mode }) => {
   const demo = mode === "demo";
-  const pages = mode === "pages";
   return {
     plugins: [react(), tailwindcss(), ...(demo ? [paginaUnica()] : [])],
     server: { port: 5180 },
-    base: pages ? `/${REPOSITORIO}/` : "/",
     build: demo
       ? {
           cssCodeSplit: false,
