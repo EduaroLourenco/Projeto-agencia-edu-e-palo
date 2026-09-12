@@ -1,0 +1,339 @@
+@import "tailwindcss";
+@import "./fontes.css";
+
+/*
+  Tokens fixos da plataforma. O que muda por loja (cor da marca, densidade,
+  canto, fontes) é escrito em runtime por `nucleo/tema.ts` como custom
+  properties — por isso aqui só ficam os valores neutros e os padrões.
+*/
+@theme {
+  /* Neutros mornos, não cinza puro. Cinza neutro em tela lê como
+     "não escolhido"; um desvio quente de poucos graus faz a mesma
+     interface parecer decidida. */
+  --color-tinta: #16130f;
+  --color-tinta-70: #4d4740;
+  --color-tinta-45: #837b71;
+  --color-tinta-25: #b6afa5;
+  --color-tinta-12: #ddd8d1;
+
+  --color-papel: #ffffff;
+  --color-papel-2: #f7f5f2;
+  --color-papel-3: #efece7;
+  --color-borda: #e9e5df;
+  --color-borda-forte: #d2ccc3;
+
+  --color-ok: #147a4d;
+  --color-ok-fraco: #e5f6ed;
+  --color-atencao: #9a5b06;
+  --color-atencao-fraco: #fdf1de;
+  --color-erro: #b32626;
+  --color-erro-fraco: #fdeaea;
+}
+
+:root {
+  /* Padrões, caso a loja não tenha aplicado tema ainda. */
+  --marca: #f22e69;
+  --marca-50: #fff1f4;
+  --marca-100: #ffe1e8;
+  --marca-200: #ffc2d1;
+  --marca-300: #ff97b0;
+  --marca-400: #fc5f89;
+  --marca-500: #f22e69;
+  --marca-600: #dc1655;
+  --marca-700: #b90f47;
+  --marca-800: #8f0f3c;
+  --marca-900: #5c0d29;
+  --marca-grafico: #dc1655;
+  --sobre-marca: #ffffff;
+  --superficie: #ffffff;
+
+  /* A roupa do botão principal. O tema reescreve; isto é só o padrão. */
+  --botao-fundo: #f22e69;
+  --botao-texto: #ffffff;
+  --botao-borda: transparent;
+
+  --gap: 0.9rem;
+
+  /* A margem lateral da página. O carrossel usa ela invertida pra sangrar. */
+  --pad-pagina: 1rem;
+  --pad-y: 0.85rem;
+  --pad-cartao: 0.9rem;
+  --altura-linha: 1.6;
+
+  --canto-p: 8px;
+  --canto-m: 12px;
+  --canto-g: 18px;
+
+  --fonte-display: "Sora", ui-sans-serif, system-ui, sans-serif;
+  --fonte-corpo: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  /* ESCALA TIPOGRÁFICA
+     Antes tudo vivia entre 12 e 17px, quase tudo em semibold — é o que faz
+     uma tela parecer sem hierarquia, por mais caprichada que esteja. Aqui a
+     escala tem alcance de verdade, e o peso varia junto com o tamanho. */
+  --t-micro: 10.5px;   /* rótulo em caixa alta */
+  --t-mini: 12px;      /* meta, legenda */
+  --t-menor: 13px;
+  --t-corpo: 14.5px;   /* texto corrido */
+  --t-medio: 16px;
+  --t-titulo: 19px;    /* título de bloco */
+  --t-secao: 23px;     /* nome do item */
+  --t-display: 30px;   /* número grande, cabeçalho */
+
+  /* Quanto maior o texto, mais apertado o tracking. */
+  --tr-display: -0.032em;
+  --tr-secao: -0.026em;
+  --tr-titulo: -0.018em;
+  --tr-corpo: -0.006em;
+  --tr-caixa-alta: 0.09em;
+
+  /* Elevação por papel, não por borda em tudo. */
+  --sombra-1: 0 1px 2px rgba(22, 19, 15, 0.04);
+  --sombra-2: 0 1px 3px rgba(22, 19, 15, 0.05), 0 6px 16px -8px rgba(22, 19, 15, 0.12);
+  --sombra-3: 0 2px 6px rgba(22, 19, 15, 0.06), 0 18px 40px -16px rgba(22, 19, 15, 0.22);
+}
+
+/* ============================================================
+   O PAINEL — a linguagem da ferramenta, não da loja
+
+   A loja é clara porque vende. O painel é escuro porque se passa o dia
+   dentro dele: é o padrão de Linear, Vercel e Supabase, e é o que separa
+   "ferramenta séria" de "admin template". Hierarquia sai de espaço e peso
+   de tipo, não de caixa em volta de tudo.
+
+   Tokens próprios, escopo próprio: o painel não empresta nada da loja e a
+   loja não herda nada dele.
+   ============================================================ */
+.painel {
+  --p-fundo: #08080b;
+  --p-superficie: #101016;
+  --p-superficie-2: #16161f;
+  --p-superficie-3: #1d1d28;
+  --p-borda: rgba(255, 255, 255, 0.07);
+  --p-borda-forte: rgba(255, 255, 255, 0.14);
+
+  --p-texto: #f2f2f5;
+  --p-texto-2: #a3a3b0;
+  --p-texto-3: #6b6b7a;
+
+  --p-acento: #7b5cff;
+  --p-acento-claro: #a48cff;
+  --p-acento-fundo: rgba(123, 92, 255, 0.14);
+
+  --p-ok: #34d399;
+  --p-atencao: #fbbf24;
+  --p-erro: #fb7185;
+
+  /* Luz de cima, como todo objeto físico. É o que faz a superfície
+     parecer material em vez de retângulo pintado. */
+  --p-brilho: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  --p-sombra: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px -12px rgba(0, 0, 0, 0.6);
+  --p-sombra-alta: 0 2px 8px rgba(0, 0, 0, 0.5), 0 24px 60px -20px rgba(0, 0, 0, 0.8);
+
+  background: var(--p-fundo);
+  color: var(--p-texto);
+  font-family: var(--fonte-corpo);
+  min-height: 100dvh;
+}
+
+/* Caixa do painel: superfície + luz em cima + borda quase invisível. */
+@utility placa-p {
+  background: var(--p-superficie);
+  border: 1px solid var(--p-borda);
+  box-shadow: var(--p-brilho);
+}
+
+/* Rótulo em caixa alta com entrelinha generosa — o detalhe que a pesquisa
+   aponta como o mais barato de fazer e o que mais lê como "caro". */
+@utility rotulo-p {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--p-texto-3);
+}
+
+/* Peças da loja reaproveitadas dentro do painel.
+   O cadastro de item e a ficha da loja foram escritos com os tokens da
+   vitrine (papel branco, tinta escura). Reescrever os dois em token de
+   painel seria manter duas versões do mesmo formulário pra sempre; aqui os
+   tokens da loja são reapontados pros do painel, uma vez só. */
+@utility no-painel {
+  --color-papel: var(--p-superficie);
+  --color-papel-2: var(--p-superficie-2);
+  --color-papel-3: var(--p-superficie-3);
+  --color-tinta: var(--p-texto);
+  --color-tinta-70: var(--p-texto-2);
+  --color-tinta-45: var(--p-texto-3);
+  --color-tinta-25: var(--p-texto-3);
+  --color-tinta-12: var(--p-borda-forte);
+  --color-borda: var(--p-borda);
+  --color-borda-forte: var(--p-borda-forte);
+  --color-erro: var(--p-erro);
+  --color-ok: var(--p-ok);
+  --color-atencao: var(--p-atencao);
+  --marca-500: var(--p-acento);
+  --marca-600: var(--p-acento-claro);
+  --marca-700: var(--p-acento-claro);
+  --superficie: var(--p-superficie);
+  color: var(--p-texto);
+}
+
+@keyframes brilhar {
+  from { background-position: -220% 0; }
+  to { background-position: 220% 0; }
+}
+@utility esqueleto-p {
+  background: linear-gradient(90deg, var(--p-superficie-2) 25%, var(--p-superficie-3) 50%, var(--p-superficie-2) 75%);
+  background-size: 220% 100%;
+  animation: brilhar 1.4s ease-in-out infinite;
+}
+
+@keyframes entrar-baixo {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+@utility anima-entrar { animation: entrar-baixo .42s cubic-bezier(.2,0,0,1) backwards; }
+
+* { box-sizing: border-box; }
+
+html, body, #root { height: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--fonte-corpo);
+  background: var(--color-papel-2);
+  color: var(--color-tinta);
+  line-height: var(--altura-linha);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: none;
+}
+
+h1, h2, h3, h4 { font-family: var(--fonte-display); margin: 0; text-wrap: balance; }
+p { text-wrap: pretty; }
+
+/* Tudo que se toca responde ao toque. Sem isso a interface parece uma
+   fotografia de app, não um app. */
+button, a, [role="button"] {
+  -webkit-touch-callout: none;
+}
+button:active:not(:disabled), [role="button"]:active {
+  transform: scale(0.978);
+}
+button, [role="button"] {
+  transition: transform 0.12s cubic-bezier(0.2, 0, 0, 1), background-color 0.15s, border-color 0.15s, color 0.15s;
+}
+
+/* iOS dá zoom em campo com fonte menor que 16px. Nunca abaixo disso. */
+input, select, textarea, button { font: inherit; font-size: max(16px, 1em); }
+
+button { -webkit-appearance: none; appearance: none; }
+
+:focus-visible {
+  outline: 2px solid var(--marca-500);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+/*
+  Papel carrega tinta.
+
+  Uma seção pintada de escuro passa `color: branco` pros filhos. Um cartão
+  branco dentro dela herdava esse branco e ficava com título invisível — foi
+  exatamente o que aconteceu com os selos numa faixa escura. Aqui a
+  superfície clara reafirma a tinta; como está na camada de componentes,
+  qualquer utilitário de cor (`text-white` e afins) continua ganhando.
+*/
+@layer components {
+  .bg-papel, .placa {
+    /* Volta pra escala do papel: dentro de uma seção pintada, a escala de
+       tinta corrente é a DELA (clara, sobre a cor), e um cartão branco
+       herdando aquilo fica com o texto secundário invisível. */
+    --color-tinta: var(--papel-tinta, #16130f);
+    --color-tinta-70: var(--papel-tinta-70, #4d4740);
+    --color-tinta-45: var(--papel-tinta-45, #837b71);
+    --color-tinta-25: var(--papel-tinta-25, #b6afa5);
+    --color-tinta-12: var(--papel-tinta-12, #ddd8d1);
+    --color-borda: var(--papel-borda, #e9e5df);
+    --color-borda-forte: var(--papel-borda-forte, #d2ccc3);
+    color: var(--color-tinta);
+  }
+}
+
+@utility sem-barra {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+/*
+  Carrossel que vaza até a borda da tela.
+
+  Um carrossel cortado 16px antes da borda parece quebrado; cortado na borda
+  parece que tem mais coisa pra arrastar. É a mesma peça, muda só onde a
+  faca cai — e é o detalhe que separa app nativo de site espremido.
+*/
+@utility sangra {
+  margin-inline: calc(var(--pad-pagina) * -1);
+  padding-inline: var(--pad-pagina);
+  scroll-padding-inline: var(--pad-pagina);
+}
+
+@utility num-tab {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "ss01" 1;
+}
+
+/* Rótulo em caixa alta: sem tracking extra ele fica ilegível pequeno. */
+@utility rotulo {
+  font-size: var(--t-micro);
+  font-weight: 700;
+  letter-spacing: var(--tr-caixa-alta);
+  text-transform: uppercase;
+}
+
+/* Cartão sem borda: separa por papel e sombra rasa, não por contorno.
+   Contorno em tudo achata a hierarquia — todo elemento grita igual. */
+@utility placa {
+  background: var(--superficie, var(--color-papel));
+  box-shadow: var(--sombra-1);
+  color: var(--color-tinta);
+}
+
+@keyframes subir {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+@keyframes surgir {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes pulsar {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .45; }
+}
+@keyframes revelar {
+  from { opacity: 0; transform: scale(1.015); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes pipoca {
+  0% { transform: scale(1); }
+  45% { transform: scale(1.28); }
+  100% { transform: scale(1); }
+}
+
+@utility anima-subir { animation: subir .28s cubic-bezier(.32, .72, 0, 1); }
+@utility anima-surgir { animation: surgir .2s ease-out; }
+@utility anima-pulsar { animation: pulsar 1.4s ease-in-out infinite; }
+@utility anima-revelar { animation: revelar .45s cubic-bezier(.2,0,0,1); }
+@utility anima-pipoca { animation: pipoca .34s cubic-bezier(.2,0,0,1); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
