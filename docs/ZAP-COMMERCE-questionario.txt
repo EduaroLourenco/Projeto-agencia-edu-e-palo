@@ -1,0 +1,458 @@
+===============================================================================
+                              ZAP COMMERCE
+              Questionário para você me corrigir e completar
+
+                         16 de setembro de 2026
+                    Para: Eduardo Lourenço
+===============================================================================
+
+COMO RESPONDER
+
+São 64 perguntas, em 9 blocos. Cada uma já vem com a MINHA SUPOSIÇÃO — que é
+o que eu entendi ou o que eu decidi sozinho enquanto construía.
+
+Você não precisa escrever nada onde eu acertei. O jeito mais rápido:
+
+    - Acertei?          escreva  OK
+    - Errei?            escreva  NÃO + a resposta certa
+    - Não sabe ainda?   escreva  NÃO SEI
+    - Não importa?      escreva  TANTO FAZ
+
+"NÃO SEI" é resposta legítima e útil: me diz onde eu não devo decidir
+sozinho.
+
+As perguntas marcadas com [!] são as que mais mudam o produto. Se você só
+tiver 15 minutos, responda só essas — são 12.
+
+===============================================================================
+BLOCO 1 — O NEGÓCIO DE VOCÊS
+===============================================================================
+
+1.1 [!] O Zap Commerce é um produto para vender por assinatura, ou é uma
+    ferramenta interna para a agência atender clientes mais rápido?
+    MINHA SUPOSIÇÃO: os dois, e é por isso que existe o plano "Estúdio" de
+    R$ 349 para agência. Mas eu construí mirando o produto de assinatura.
+    SUA RESPOSTA: ______________________________________________________
+
+1.2 [!] A agência monta a loja PARA o cliente, ou o cliente monta sozinho?
+    MINHA SUPOSIÇÃO: o cliente monta sozinho, com o estúdio. Vocês montam só
+    para os clientes maiores.
+    POR QUE IMPORTA: se quem monta é sempre vocês, o estúdio não precisa ser
+    tão à prova de erro, e o painel do cliente fica bem mais simples. Muda
+    meses de trabalho.
+    SUA RESPOSTA: ______________________________________________________
+
+1.3 Quem faz o quê entre você, a Paloma e a Bárbara?
+    MINHA SUPOSIÇÃO: não sei. Nunca me disseram.
+    SUA RESPOSTA: ______________________________________________________
+
+1.4 A agência continua fazendo outros serviços, ou o Zap Commerce vira o
+    negócio principal?
+    MINHA SUPOSIÇÃO: continua fazendo outros; o Zap é a aposta nova.
+    SUA RESPOSTA: ______________________________________________________
+
+1.5 Quanto vocês querem faturar com ele, e até quando?
+    MINHA SUPOSIÇÃO: não sei. Sem isso eu não consigo dizer se o preço faz
+    sentido.
+    SUA RESPOSTA: ______________________________________________________
+
+1.6 Tem dinheiro para investir (anúncio, domínio, ferramenta paga), ou tudo
+    precisa sair do próprio faturamento?
+    MINHA SUPOSIÇÃO: orçamento apertado. Por isso escolhi Supabase e Vercel,
+    que têm plano gratuito que aguenta o começo.
+    SUA RESPOSTA: ______________________________________________________
+
+1.7 Vocês já venderam isso para alguém, mesmo informalmente?
+    MINHA SUPOSIÇÃO: ainda não.
+    SUA RESPOSTA: ______________________________________________________
+
+
+===============================================================================
+BLOCO 2 — O CLIENTE QUE PAGA
+===============================================================================
+
+2.1 [!] Quem é o primeiro cliente real? Nome e ramo.
+    MINHA SUPOSIÇÃO: não sei. É a lacuna que mais me atrapalha.
+    SUA RESPOSTA: ______________________________________________________
+
+2.2 [!] Qual é o ramo PRINCIPAL? Se você só pudesse atender um.
+    MINHA SUPOSIÇÃO: distribuidora/atacado — é a demo mais completa e onde o
+    ganho é mais claro (pedido mínimo, caixa fechada, repetir pedido).
+    SUA RESPOSTA: ______________________________________________________
+
+2.3 Ele é de Ribeirão Preto e região, ou o Brasil todo?
+    MINHA SUPOSIÇÃO: começa na região, onde vocês têm contato.
+    SUA RESPOSTA: ______________________________________________________
+
+2.4 Tamanho: quantos funcionários, quanto fatura por mês?
+    MINHA SUPOSIÇÃO: de 1 a 10 pessoas, faturando entre R$ 20 mil e
+    R$ 200 mil por mês.
+    SUA RESPOSTA: ______________________________________________________
+
+2.5 Ele tem computador, ou só celular?
+    MINHA SUPOSIÇÃO: tem computador no balcão, mas vive no celular. Por isso
+    fiz mobile-first. Você me pediu desktop agora, então talvez eu tenha
+    subestimado o computador.
+    SUA RESPOSTA: ______________________________________________________
+
+2.6 O que ele usa HOJE para vender?
+    MINHA SUPOSIÇÃO: WhatsApp + fotos no celular + caderno ou planilha.
+    Talvez um catálogo em PDF antigo.
+    SUA RESPOSTA: ______________________________________________________
+
+2.7 Ele já paga por alguma ferramenta? Qual, quanto?
+    MINHA SUPOSIÇÃO: talvez um sistema de PDV ou emissor de nota. Uns
+    R$ 50 a R$ 150 por mês.
+    SUA RESPOSTA: ______________________________________________________
+
+2.8 Qual é a dor número 1 dele, na boca dele?
+    MINHA SUPOSIÇÃO: "eu perco venda porque demoro para responder" ou
+    "o pedido chega errado".
+    SUA RESPOSTA: ______________________________________________________
+
+2.9 [!] O que faria ele DESISTIR nos 5 primeiros minutos?
+    MINHA SUPOSIÇÃO: ter que cadastrar 200 produtos antes de ver qualquer
+    coisa. Por isso a loja nasce com exemplos prontos.
+    SUA RESPOSTA: ______________________________________________________
+
+2.10 Quem decide a compra: o dono, ou o filho/sobrinho que "mexe com
+     computador"?
+     MINHA SUPOSIÇÃO: o dono decide, mas o filho testa e opina.
+     SUA RESPOSTA: ______________________________________________________
+
+
+===============================================================================
+BLOCO 3 — PREÇO E MODELO DE COBRANÇA
+===============================================================================
+
+3.1 [!] Os preços 79 / 149 / 349 fazem sentido?
+     MINHA SUPOSIÇÃO: foram chute meu. Você nunca me deu preço.
+     SUA RESPOSTA: ______________________________________________________
+
+3.2 [!] O que diferencia um plano do outro deve ser o número de LOJAS?
+     MINHA SUPOSIÇÃO: hoje é isso. Mas para um lojista comum, ter 3 lojas
+     não vale nada — ele tem uma só. O degrau talvez devesse ser por
+     recurso (agenda, atacado, domínio próprio) ou por volume de pedidos.
+     SUA RESPOSTA: ______________________________________________________
+
+3.3 Tem taxa de instalação / montagem da loja?
+     MINHA SUPOSIÇÃO: não construí nenhuma. Mas se a agência monta, isso é
+     um serviço que vale cobrar à parte — e é dinheiro na entrada.
+     SUA RESPOSTA: ______________________________________________________
+
+3.4 Cobra por pedido ou por venda (comissão)?
+     MINHA SUPOSIÇÃO: não. Só mensalidade. Comissão exigiria saber o valor
+     real recebido, e o pagamento acontece fora do sistema, no WhatsApp.
+     SUA RESPOSTA: ______________________________________________________
+
+3.5 Tem plano anual com desconto?
+     MINHA SUPOSIÇÃO: não construí. Vale muito a pena — reduz cancelamento
+     e adianta caixa.
+     SUA RESPOSTA: ______________________________________________________
+
+3.6 Teste grátis de quantos dias? Pede cartão na entrada?
+     MINHA SUPOSIÇÃO: 14 dias, SEM cartão. Recomendei inverter a ordem
+     atual, que pede pagamento antes de a pessoa ver a loja dela.
+     SUA RESPOSTA: ______________________________________________________
+
+3.7 Tem plano gratuito para sempre?
+     MINHA SUPOSIÇÃO: não. Grátis para sempre enche o sistema de loja
+     abandonada e custo de suporte.
+     SUA RESPOSTA: ______________________________________________________
+
+3.8 Quem atrasa o pagamento: a loja dele sai do ar?
+     MINHA SUPOSIÇÃO: NÃO. O painel trava, a loja continua no ar. Derrubar
+     a vitrine é punir o cliente DELE, que não tem culpa.
+     SUA RESPOSTA: ______________________________________________________
+
+3.9 Qual gateway de pagamento?
+     MINHA SUPOSIÇÃO: Asaas — fala PIX e boleto bem, que é como o pequeno
+     negócio brasileiro paga.
+     SUA RESPOSTA: ______________________________________________________
+
+
+===============================================================================
+BLOCO 4 — O PRODUTO: A LOJA
+===============================================================================
+
+4.1 [!] O pedido terminar no WhatsApp (e não num pagamento online) é
+     definitivo, ou é só por enquanto?
+     MINHA SUPOSIÇÃO: é a tese central do produto, e é o que o diferencia.
+     Mas eu preciso saber se um dia vai ter pagamento dentro da loja,
+     porque isso muda o banco de dados inteiro.
+     SUA RESPOSTA: ______________________________________________________
+
+4.2 Falta algum ramo importante nos 4 modelos?
+     Hoje: produtos / serviços com agenda / atacado / começar do zero.
+     MINHA SUPOSIÇÃO: faltam RESTAURANTE (cardápio, adicionais, taxa de
+     entrega por bairro) e INFOPRODUTO/CURSO. Restaurante é o maior volume
+     de pequeno negócio do Brasil.
+     SUA RESPOSTA: ______________________________________________________
+
+4.3 Os 6 estilos cobrem o que você queria?
+     Essencial, Elegante, Corporativo, Clínica, Marketplace, Noturno.
+     MINHA SUPOSIÇÃO: cobrem o que você pediu. Faltaria talvez um
+     "Artesanal/Feira" e um "Moda/Editorial" com foto grande.
+     SUA RESPOSTA: ______________________________________________________
+
+4.4 As 5 páginas bastam?
+     Hoje: início, catálogo, página do item, sacola, depois do pedido.
+     MINHA SUPOSIÇÃO: falta uma página livre ("Sobre nós", "Onde estamos",
+     "Como comprar") que o lojista possa criar quantas quiser.
+     SUA RESPOSTA: ______________________________________________________
+
+4.5 A loja precisa aparecer no Google?
+     MINHA SUPOSIÇÃO: precisa, e HOJE NÃO APARECE — o site é montado pelo
+     navegador, e o Google vê pouco. Isso é trabalho técnico sério e eu não
+     incluí no plano. Se for importante, muda a arquitetura.
+     SUA RESPOSTA: ______________________________________________________
+
+4.6 O comprador precisa ter conta na loja?
+     MINHA SUPOSIÇÃO: não. Compra sem cadastro, dá o telefone no checkout.
+     Cadastro obrigatório derruba a conversão.
+     SUA RESPOSTA: ______________________________________________________
+
+4.7 A loja precisa de controle de estoque?
+     MINHA SUPOSIÇÃO: opcional. Deixei a coluna no banco, mas sem uso: quem
+     não quiser controlar não vê nada. Obrigar a controlar estoque faz o
+     lojista desistir na primeira semana.
+     SUA RESPOSTA: ______________________________________________________
+
+4.8 Precisa emitir nota fiscal?
+     MINHA SUPOSIÇÃO: não agora. É projeto próprio e grande.
+     SUA RESPOSTA: ______________________________________________________
+
+4.9 Precisa de cupom de desconto?
+     MINHA SUPOSIÇÃO: vai precisar, mas não construí ainda. A estrutura de
+     preço aguenta.
+     SUA RESPOSTA: ______________________________________________________
+
+4.10 Precisa calcular frete de verdade (Correios, transportadora)?
+     MINHA SUPOSIÇÃO: não. Hoje é "frete a combinar" ou valor fixo, que é
+     como o pequeno negócio realmente faz.
+     SUA RESPOSTA: ______________________________________________________
+
+4.11 Uma loja pode ter mais de um WhatsApp (vendedor A, vendedor B)?
+     MINHA SUPOSIÇÃO: não construí. Mas distribuidora costuma ter equipe de
+     vendas, e cada vendedor quer os pedidos dele.
+     SUA RESPOSTA: ______________________________________________________
+
+
+===============================================================================
+BLOCO 5 — O ESTÚDIO
+===============================================================================
+
+5.1 [!] O estúdio está no nível que você queria, ou ainda falta?
+     MINHA SUPOSIÇÃO: falta. Você já reclamou duas vezes da personalização
+     e uma da estética. Hoje dá para mudar cor, papel, fonte, densidade,
+     cantos, botão, sombra, texto — e por bloco: fundo, respiro, cantos,
+     borda, sombra, sangrar, alinhamento.
+     SUA RESPOSTA: ______________________________________________________
+
+5.2 O que mais te incomoda no estúdio hoje?
+     MINHA SUPOSIÇÃO: que ele é uma coluna de celular mesmo no computador,
+     e que editar é por folhas que sobem de baixo em vez de um painel ao
+     lado.
+     SUA RESPOSTA: ______________________________________________________
+
+5.3 O lojista deveria poder mexer em espaçamento e tamanho livremente, ou
+     só escolher entre opções prontas?
+     MINHA SUPOSIÇÃO: só opções prontas. Liberdade total faz loja feia, e
+     loja feia do cliente vira reputação ruim do Zap Commerce.
+     SUA RESPOSTA: ______________________________________________________
+
+5.4 Precisa de desfazer/refazer em tudo?
+     MINHA SUPOSIÇÃO: precisa. Hoje tem no estúdio (40 passos), mas não no
+     cadastro de produto nem em apagar loja.
+     SUA RESPOSTA: ______________________________________________________
+
+5.5 O lojista pode subir a logo dele e a fonte da marca dele?
+     MINHA SUPOSIÇÃO: logo sim (já existe o campo). Fonte própria não.
+     SUA RESPOSTA: ______________________________________________________
+
+5.6 Vale ter "temas prontos" além dos 6 estilos — tipo pacotes por ramo
+     (padaria, pet shop, ótica) com foto e texto já escritos?
+     MINHA SUPOSIÇÃO: vale muito, e seria o maior atalho de venda. Um
+     dono de pet shop ver uma loja de pet shop pronta converte muito mais
+     que "escolha um estilo".
+     SUA RESPOSTA: ______________________________________________________
+
+
+===============================================================================
+BLOCO 6 — A OPERAÇÃO DO LOJISTA
+===============================================================================
+
+6.1 Os 5 status de pedido bastam?
+     Hoje: novo, confirmado, separando, entregue, cancelado.
+     MINHA SUPOSIÇÃO: bastam. Mais que isso vira máquina de estado que
+     ninguém aprende.
+     SUA RESPOSTA: ______________________________________________________
+
+6.2 Ele precisa imprimir o pedido?
+     MINHA SUPOSIÇÃO: precisa — distribuidora separa mercadoria com papel
+     na mão. Não construí.
+     SUA RESPOSTA: ______________________________________________________
+
+6.3 Precisa exportar para Excel?
+     MINHA SUPOSIÇÃO: precisa, e cedo. O contador vai pedir.
+     SUA RESPOSTA: ______________________________________________________
+
+6.4 Precisa cadastrar produto em massa (planilha)?
+     MINHA SUPOSIÇÃO: precisa. Distribuidora com 500 itens não cadastra um
+     por um — esse é o motivo número 1 de abandono.
+     SUA RESPOSTA: ______________________________________________________
+
+6.5 Precisa de mais de um usuário por loja (funcionário)?
+     MINHA SUPOSIÇÃO: precisa. Já deixei a estrutura pronta no banco
+     (dono, gerente, operador), mas sem tela.
+     SUA RESPOSTA: ______________________________________________________
+
+6.6 Que métricas ele realmente olha?
+     Hoje: faturado em 7 dias, pedidos, ticket médio, itens ativos.
+     MINHA SUPOSIÇÃO: ele olha "quanto entrou hoje" e "o que mais vendeu".
+     Falta o produto mais vendido, que é o que ele usa para comprar.
+     SUA RESPOSTA: ______________________________________________________
+
+6.7 Precisa de notificação quando chega pedido?
+     MINHA SUPOSIÇÃO: precisa. Hoje ele só descobre se abrir o painel. O
+     pedido chega no WhatsApp dele, então talvez baste — mas se ele tiver
+     equipe, não basta.
+     SUA RESPOSTA: ______________________________________________________
+
+
+===============================================================================
+BLOCO 7 — O LINK E A MARCA
+===============================================================================
+
+7.1 [!] Qual domínio comprar?
+     MINHA SUPOSIÇÃO: nenhum ainda. Recomendei subdomínio por loja:
+     valeverde.SEUDOMINIO.com.br
+     SUA RESPOSTA: ______________________________________________________
+
+7.2 [!] O nome é mesmo "Zap Commerce"?
+     MINHA SUPOSIÇÃO: é o que está no código. MAS: "Zap" é apelido do
+     WhatsApp, que é marca da Meta. Usar comercialmente é risco jurídico
+     real, e já derrubou produto no Brasil. Isso me preocupa e eu nunca
+     tinha levantado.
+     SUA RESPOSTA: ______________________________________________________
+
+7.3 A loja do cliente leva marca do Zap Commerce ("feito com...")?
+     MINHA SUPOSIÇÃO: não construí. Vale nos planos baratos — é
+     propaganda grátis — e tirar vira vantagem do plano de cima.
+     SUA RESPOSTA: ______________________________________________________
+
+7.4 Domínio próprio a partir de qual plano?
+     MINHA SUPOSIÇÃO: Profissional para cima.
+     SUA RESPOSTA: ______________________________________________________
+
+7.5 O painel pode levar a marca da agência (white label)?
+     MINHA SUPOSIÇÃO: está escrito no plano Estúdio ("marca própria no
+     painel") mas não existe.
+     SUA RESPOSTA: ______________________________________________________
+
+
+===============================================================================
+BLOCO 8 — CRM E IA (o que você marcou como futuro)
+===============================================================================
+
+8.1 O que você imagina no CRM?
+     MINHA SUPOSIÇÃO: quem comprou, o que comprou, quando, quanto gastou,
+     aniversário, quem sumiu há 60 dias, e um botão de chamar no WhatsApp.
+     A base já está no banco e se preenche sozinha a cada pedido.
+     SUA RESPOSTA: ______________________________________________________
+
+8.2 O que você imagina na Ajuda com IA?
+     MINHA SUPOSIÇÃO: (a) escrever descrição de produto a partir da foto,
+     (b) montar a loja inteira a partir de uma frase ("sou pet shop em
+     Ribeirão"), (c) sugerir resposta para o cliente no WhatsApp.
+     SUA RESPOSTA: ______________________________________________________
+
+8.3 Qual das três acima é a mais valiosa?
+     MINHA SUPOSIÇÃO: (b) — montar a loja a partir de uma frase. É a que
+     mata o abandono no cadastro e a que impressiona na demonstração.
+     SUA RESPOSTA: ______________________________________________________
+
+8.4 A IA é do plano mais caro ou de todos?
+     MINHA SUPOSIÇÃO: tem custo por uso, então: limitada no barato,
+     liberada no caro.
+     SUA RESPOSTA: ______________________________________________________
+
+
+===============================================================================
+BLOCO 9 — RISCOS E PRIORIDADE
+===============================================================================
+
+9.1 [!] Se o sistema pudesse fazer só UMA coisa muito bem, qual seria?
+     MINHA SUPOSIÇÃO: transformar uma conversa de WhatsApp num pedido
+     certo, com o preço certo, sem ida e volta.
+     SUA RESPOSTA: ______________________________________________________
+
+9.2 Qual concorrente você quer superar?
+     MINHA SUPOSIÇÃO: não sei. Suspeito de Nuvemshop, Loja Integrada e
+     catálogos de WhatsApp. Sem saber, eu comparo com o vazio.
+     SUA RESPOSTA: ______________________________________________________
+
+9.3 O que aconteceria se um cliente perdesse a loja dele?
+     MINHA SUPOSIÇÃO: hoje isso PODE acontecer — basta limpar o navegador.
+     É o motivo de a Fase 1 ser o banco de dados.
+     SUA RESPOSTA: ______________________________________________________
+
+9.4 Quem responde o suporte? Em que horário?
+     MINHA SUPOSIÇÃO: você, no WhatsApp, a qualquer hora. Não é sustentável
+     depois de uns 20 clientes.
+     SUA RESPOSTA: ______________________________________________________
+
+9.5 Quantos clientes vocês aguentam atender hoje, na mão?
+     MINHA SUPOSIÇÃO: uns 10 a 20.
+     SUA RESPOSTA: ______________________________________________________
+
+9.6 [!] Se eu pudesse trabalhar em UMA coisa nas próximas 2 semanas, qual
+     seria?
+     MINHA SUPOSIÇÃO: o banco de dados (Fase 1), porque sem ele nada mais
+     se sustenta e o cliente pode perder o trabalho dele. Mas você reclamou
+     do desktop, então talvez você prefira a Fase 2.
+     SUA RESPOSTA: ______________________________________________________
+
+9.7 Tem prazo? Alguma data que não pode passar?
+     MINHA SUPOSIÇÃO: não sei de nenhuma.
+     SUA RESPOSTA: ______________________________________________________
+
+9.8 O que você vê hoje no sistema que te dá VERGONHA de mostrar?
+     MINHA SUPOSIÇÃO: o desktop, que usa 36% da tela. E o fato de que, se a
+     pessoa perguntar "meus dados ficam onde?", a resposta hoje é ruim.
+     SUA RESPOSTA: ______________________________________________________
+
+9.9 E o que te deixa ORGULHOSO?
+     MINHA SUPOSIÇÃO: o estúdio com os 6 estilos, e as artes das três lojas
+     de demonstração.
+     SUA RESPOSTA: ______________________________________________________
+
+9.10 Tem alguma coisa importante sobre o Zap Commerce que eu nunca
+     perguntei e você nunca contou?
+     MINHA SUPOSIÇÃO: tem, e é por isso que esta pergunta existe.
+     SUA RESPOSTA: ______________________________________________________
+
+
+===============================================================================
+AS 12 PERGUNTAS MARCADAS COM [!], SE VOCÊ TIVER PRESSA
+===============================================================================
+
+     1.1   produto de assinatura ou ferramenta da agência?
+     1.2   quem monta a loja: vocês ou o cliente?
+     2.1   quem é o primeiro cliente real?
+     2.2   qual o ramo principal?
+     2.9   o que faria ele desistir nos 5 primeiros minutos?
+     3.1   os preços fazem sentido?
+     3.2   o degrau entre planos deve ser número de lojas?
+     4.1   o pedido no WhatsApp é definitivo?
+     5.1   o estúdio está no nível que você queria?
+     7.1   qual domínio comprar?
+     7.2   o nome é mesmo "Zap Commerce"?
+     9.6   em que eu trabalho nas próximas 2 semanas?
+
+
+===============================================================================
+                                  FIM
+   Responda do jeito que for mais fácil: aqui no arquivo, por áudio, ou
+   escrevendo direto na conversa. O que eu preciso é do conteúdo.
+===============================================================================

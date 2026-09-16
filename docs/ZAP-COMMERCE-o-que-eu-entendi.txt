@@ -1,0 +1,334 @@
+===============================================================================
+                              ZAP COMMERCE
+                  O que eu entendi do produto, até hoje
+
+                         16 de setembro de 2026
+                    Escrito por: Claude (Claude Code)
+                    Para: Eduardo Lourenço
+===============================================================================
+
+COMO LER ESTE DOCUMENTO
+
+Isto é a minha cabeça sobre o Zap Commerce, posta no papel. Escrevi tudo o
+que eu acho que sei — incluindo as coisas que eu deduzi sozinho e que você
+nunca me disse com todas as letras.
+
+Onde eu tiver deduzido, marquei assim:
+
+    [DEDUÇÃO] — foi conclusão minha, não coisa que você falou.
+    [VOCÊ DISSE] — isso eu tirei direto de uma frase sua.
+    [NO CÓDIGO] — isso está construído e funcionando.
+
+Se algo aqui estiver errado, é ótimo: é exatamente por isso que o documento
+existe. O questionário que vai junto serve para você me corrigir ponto a
+ponto.
+
+
+===============================================================================
+1. O QUE É, EM UMA FRASE
+===============================================================================
+
+O Zap Commerce é um estúdio de lojas online para pequenos negócios
+brasileiros que vendem pelo WhatsApp.
+
+Quem contrata monta a própria vitrine — escolhendo blocos, cores e fontes —
+e publica num link. O cliente final navega, monta a sacola e finaliza o
+pedido no WhatsApp do lojista, não num checkout com cartão.
+
+A frase-chave que eu uso comigo mesmo para decidir as coisas:
+
+    "O pedido termina no WhatsApp, não no cartão."
+
+[DEDUÇÃO] Você nunca disse isso nessas palavras, mas é o que está construído,
+e foi a decisão que organizou todo o resto.
+
+
+===============================================================================
+2. QUEM SÃO AS PESSOAS
+===============================================================================
+
+2.1 VOCÊS — A AGÊNCIA
+
+Eduardo Lourenço (você), Paloma Amaral e Bárbara Prata.
+[VOCÊ DISSE] — vocês aparecem no site institucional que está em agencia/.
+
+Vocês têm uma agência e o Zap Commerce é o produto próprio de vocês.
+Existe um plano chamado "Estúdio", de R$ 349, descrito como "pra agência
+que monta loja pra cliente" — ou seja, vocês são também o perfil de um dos
+planos.
+
+[DEDUÇÃO] Meu entendimento é que vocês querem duas coisas ao mesmo tempo:
+  (a) usar o Zap Commerce como ferramenta para atender clientes da agência,
+      montando lojas mais rápido do que fariam do zero; e
+  (b) vender o Zap Commerce como assinatura para o lojista se virar sozinho.
+
+Se for só (a) ou só (b), muita coisa no produto muda. Está no questionário.
+
+2.2 O CLIENTE CONTRATANTE — QUEM PAGA
+
+O dono do pequeno negócio. Pelas demonstrações que construímos, o perfil é:
+
+  - Distribuidora / atacado    (demo "Vale Verde Distribuidora")
+  - Moda no atacado            (demo "Bella Atacado")
+  - Salão / serviço com agenda (demo "Studio Nara")
+
+[DEDUÇÃO] Características que eu assumi sobre ele, e que guiaram o desenho:
+
+  - Vende pelo WhatsApp hoje, na mão, e se perde nos pedidos.
+  - Não é técnico. Não vai ler manual. Se travar, desiste.
+  - Vive no celular. O computador é do escritório, quando tem.
+  - Provavelmente já tentou o Instagram e algum catálogo pronto.
+  - Faixa de preço que ele aceita pagar: dezenas de reais por mês, não
+    centenas. Por isso os planos começam em R$ 79.
+
+2.3 O CLIENTE FINAL — QUEM COMPRA
+
+O comprador que abre o link da loja. Pode ser:
+
+  - consumidor comum (salão, produto);
+  - comprador profissional, dono de mercadinho comprando da distribuidora.
+
+[DEDUÇÃO] O segundo caso é o que explica coisas como pedido mínimo, caixa
+fechada e "repetir último pedido". Eu tratei o B2B como cidadão de primeira
+classe, não como exceção.
+
+
+===============================================================================
+3. O PROBLEMA QUE ELE RESOLVE
+===============================================================================
+
+[DEDUÇÃO] Esta é a minha leitura. Não é uma frase sua.
+
+O pequeno negócio brasileiro vende no WhatsApp e sofre três dores:
+
+  1. MANDA FOTO POR FOTO. O catálogo é um álbum no celular, ou um PDF
+     velho. Toda venda começa com "vou te mandar as fotos".
+
+  2. O PEDIDO CHEGA ERRADO. O cliente escreve o que quer em texto corrido.
+     Falta tamanho, falta quantidade, o preço estava desatualizado.
+
+  3. NÃO SABE O QUE VENDEU. Não existe histórico. "Quanto eu vendi esse
+     mês?" é uma pergunta sem resposta.
+
+O Zap Commerce ataca os três, nesta ordem: dá um catálogo com link, faz o
+pedido chegar formatado e certo, e guarda o histórico.
+
+O que ele DELIBERADAMENTE não faz: substituir o WhatsApp. A conversa
+continua lá. Nós entregamos o pedido pronto dentro dela.
+
+
+===============================================================================
+4. COMO O PRODUTO FUNCIONA HOJE
+===============================================================================
+
+4.1 A ENTRADA  [NO CÓDIGO]
+
+  - Tela de login em "/entrar", com um botão "Testar sem cadastrar" que
+    preenche a conta de demonstração.
+  - Cadastro em 4 passos: seus dados -> plano -> pagamento -> pronto.
+  - O pagamento é SIMULADO, com aviso em amarelo dizendo isso.
+  - As contas ficam em código, no navegador. Não há banco ainda.
+
+[VOCÊ DISSE] "o cliente cadastra na tela de login, preenche as informações,
+prossegue para pagamento, vou usar um gateway de pagamento mas vai ser
+depois, aí deixa simulado só".
+
+4.2 A PLATAFORMA — O PAINEL DO LOJISTA  [NO CÓDIGO]
+
+Cinco destinos numa barra embaixo (é mobile-first):
+
+  VISÃO    - faturado nos 7 dias com comparação da semana anterior,
+             número de pedidos, ticket médio, itens ativos, gráfico da
+             semana, últimos pedidos e atalhos.
+  ITENS    - cadastro de produto/serviço: nome, foto, preço, categoria,
+             e os campos específicos de cada módulo ligado.
+  PEDIDOS  - lista com status (novo, confirmado, separando, entregue,
+             cancelado). Um toque avança o status. A ficha mostra os itens,
+             a mensagem exata que foi para o WhatsApp e um botão de
+             responder.
+  ESTÚDIO  - onde a loja é criada e montada. É a parte mais importante.
+  MAIS     - conta, plano, dados da loja, sair. CRM e Ajuda com IA
+             aparecem aqui marcados como "em breve".
+
+Tem também um botão de dúvida fixo, com um passo a passo de seis etapas.
+
+[VOCÊ DISSE] a lista dessas telas foi praticamente ditada por você,
+incluindo "CRM (em desenvolvimento futuro)" e "Ajuda IA (em desenvolvimento
+futuro)".
+
+4.3 O ESTÚDIO  [NO CÓDIGO]
+
+Uma loja nasce do cruzamento de duas perguntas separadas:
+
+  MODELO — o que a loja FAZ:
+      Loja de produtos      (vitrine, sacola, pedido no WhatsApp)
+      Serviços com agenda   (dia, hora e profissional)
+      Atacado/distribuidora (caixa fechada, pedido mínimo, desconto por
+                             volume)
+      Começar do zero       (uma página em branco com um bloco que explica
+                             o que fazer)
+
+  ESTILO — a CARA que ela tem:
+      Essencial     claro e direto
+      Elegante      creme, serifa, quase nenhuma caixa
+      Corporativo   branco, azul-marinho, cantos retos, com bordas
+      Clínica       papel frio, tudo em cartão arredondado
+      Marketplace   denso, três colunas, faixa pintada no topo
+      Noturno       fundo escuro com dourado
+
+[VOCÊ DISSE] "ter um elegantes, um mais corporativos, um com cara de app de
+hospital, clínica, consultoria algum com cara de Marketplace" e "Caro é o
+objetivo de Estetica".
+
+[DEDUÇÃO] Separar MODELO de ESTILO foi decisão minha. A razão: 4 modelos x 6
+estilos dá 24 lojas que não se parecem, em vez de 3 demonstrações com a cor
+trocada — que era o que fazia tudo parecer template barato.
+
+Depois de criada, a loja se edita bloco a bloco. Cada pedaço da página é um
+bloco que se toca para editar, se arrasta para reordenar, se esconde ou se
+duplica. Existem cerca de 29 tipos de bloco (capa, vitrine, texto, selos,
+perguntas, galeria, vídeo, contato, depoimento, mapa...).
+
+Cada loja tem CINCO páginas, todas editáveis:
+    início, catálogo, página do item, sacola, depois do pedido.
+
+O que dá para personalizar: cor da marca, cor do papel (inclusive escuro, o
+que produz modo escuro inteiro), par de fontes, densidade, cantos, estilo de
+botão, nível de sombra, escala do texto. E, por bloco: fundo, respiro,
+cantos, borda, sombra, se sangra até a borda da tela, alinhamento.
+
+Tem ainda um BANCO DE FOTOS: sobe uma vez, usa em qualquer bloco de qualquer
+loja.
+
+[VOCÊ DISSE] "banco de fotos (conectar com galeria no futuro)".
+
+4.4 RASCUNHO E PUBLICADO  [NO CÓDIGO]
+
+O lojista mexe num rascunho. O comprador vê o publicado. Só quando ele
+aperta PUBLICAR o que ele montou vai para o ar.
+
+[DEDUÇÃO] Fiz assim para você poder montar a loja na frente do cliente, numa
+reunião, sem a loja no ar mudar enquanto isso.
+
+4.5 A LOJA — O QUE O COMPRADOR VÊ  [NO CÓDIGO]
+
+Navega, monta a sacola, passa por um checkout que muda conforme os módulos
+ligados (endereço se tem entrega, dia e hora se tem agenda, identificação se
+é atacado), e finaliza. O pedido vira uma mensagem formatada no WhatsApp do
+lojista E fica guardado no painel.
+
+4.6 OS MÓDULOS  [NO CÓDIGO]
+
+São os "poderes" que se ligam por loja:
+
+  variantes    tamanho, cor, sabor
+  b2b          pedido mínimo, caixa fechada, faixa de desconto por volume,
+               tabela de preço por cliente
+  entrega      retirada, entrega, frete, CEP
+  agendamento  dia, hora, duração, profissionais
+  pagamento    PIX, cartão, boleto — as formas que aparecem no checkout
+
+[DEDUÇÃO] Essa arquitetura foi escolha minha: ligar agendamento não toca em
+nenhum arquivo do núcleo. É o que permite crescer sem quebrar.
+
+4.7 OS PLANOS  [NO CÓDIGO]
+
+  Essencial     R$  79/mês   1 loja
+  Profissional  R$ 149/mês   3 lojas    (marcado como destaque)
+  Estúdio       R$ 349/mês   ilimitadas — "pra agência que monta loja pra
+                             cliente"
+
+[DEDUÇÃO] Os valores foram sugestão minha. Você nunca me deu preço.
+
+
+===============================================================================
+5. O QUE JÁ EXISTE E O QUE NÃO EXISTE
+===============================================================================
+
+EXISTE E FUNCIONA:
+  - Cadastro, login, e o caminho inteiro até dentro da plataforma
+  - As 5 telas do painel
+  - O estúdio completo: criar loja, editar bloco, arrastar, tema, publicar
+  - 4 modelos x 6 estilos
+  - 3 lojas de demonstração prontas, com arte desenhada à mão
+  - Checkout com módulos
+  - Pedido indo para o WhatsApp e ficando no histórico
+  - Banco de fotos
+  - Está no ar, publicado pela Vercel
+
+EXISTE MAS É DE MENTIRA:
+  - O pagamento (simulado, com aviso)
+  - As contas (ficam em código e no navegador)
+  - A senha (texto puro, sem proteção)
+
+NÃO EXISTE:
+  - Banco de dados de verdade  -> já desenhei, está em plataforma/banco/,
+                                  testado, esperando você criar no Supabase
+  - Cobrança de verdade
+  - CRM
+  - Ajuda com IA
+  - Layout de desktop          -> hoje usa 36% da tela num monitor comum
+  - Testes automáticos
+  - Domínio próprio por loja
+
+
+===============================================================================
+6. AS DECISÕES DE PRODUTO QUE EU TOMEI SOZINHO
+===============================================================================
+
+Estas são as que mais valem a sua revisão, porque foram minhas e você pode
+discordar de todas:
+
+  1. O pedido termina no WhatsApp, não num pagamento online.
+  2. Modelo e estilo são eixos separados.
+  3. Tudo é mobile-first — o painel foi desenhado para o polegar.
+  4. O painel é escuro e a loja é clara, para a ferramenta não se confundir
+     com o que está sendo editado.
+  5. Loja nova nasce com conteúdo de exemplo, nunca em branco.
+  6. Rascunho e publicado são coisas diferentes.
+  7. O que ainda não existe aparece escrito "em breve", em vez de não
+     aparecer.
+  8. B2B é cidadão de primeira classe, não exceção.
+  9. Preços 79 / 149 / 349.
+ 10. O limite de lojas é o que diferencia os planos.
+
+
+===============================================================================
+7. O QUE EU AINDA NÃO SEI SOBRE O NEGÓCIO
+===============================================================================
+
+Estas são as lacunas que mais me atrapalham para decidir sozinho:
+
+  - Quem é o primeiro cliente real, com nome.
+  - Se o preço está certo para o bolso dele.
+  - Se vocês vendem direto ou por indicação.
+  - Se a agência monta a loja para o cliente ou se o cliente monta sozinho.
+    (Isto muda MUITO o produto.)
+  - Quanto vocês querem faturar e em quanto tempo.
+  - Quem responde o suporte quando o lojista trava às 21h de um sábado.
+  - Se existe concorrente que vocês querem superar, e qual.
+  - Se o nome é mesmo "Zap Commerce" — WhatsApp é marca registrada da Meta,
+    e "Zap" é associado a ela.
+
+O questionário que vai junto cobre isso e mais.
+
+
+===============================================================================
+8. O ESTADO TÉCNICO, EM PORTUGUÊS
+===============================================================================
+
+  - O site é feito em React, e mora na pasta plataforma/ do repositório
+    EduaroLourenco/Projeto-agencia-edu-e-palo.
+  - Está publicado pela Vercel. Todo push no master republica sozinho.
+  - Os dados hoje ficam no navegador de cada pessoa. É a maior fragilidade:
+    se o cliente limpa o histórico, perde a loja.
+  - O banco de dados já está desenhado e testado (14 tabelas), pronto para
+    você criar no Supabase. O guia está em plataforma/banco/SUPABASE.md.
+  - Existe um plano de profissionalização em 5 fases, de 12 a 17 sessões de
+    trabalho, para o sistema ficar pronto para cobrar de estranho.
+
+
+===============================================================================
+                                  FIM
+   Se algo aqui estiver errado, o questionário ao lado é onde corrigir.
+===============================================================================
