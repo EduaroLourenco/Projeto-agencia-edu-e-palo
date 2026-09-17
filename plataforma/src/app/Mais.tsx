@@ -15,6 +15,7 @@ import type { Loja } from "../nucleo/tipos";
 import type { Conta } from "../conta/sessao";
 import { PLANOS, limiteDeLojas } from "../conta/sessao";
 import { Configuracoes } from "../painel/Configuracoes";
+import { modulosAtivos } from "../nucleo/registro";
 import { BotaoP, Etiqueta, Secao } from "./Pecas";
 import { PassoAPasso } from "./Ajuda";
 
@@ -27,7 +28,15 @@ import { PassoAPasso } from "./Ajuda";
  * que o produto acabou.
  */
 
-type Tela = "menu" | "loja" | "ajuda" | "plano";
+/** Uma frase do que se resolve em cada tela de recurso. */
+const DICAS: Record<string, string> = {
+  agenda: "Quem atende, que dias e que horas",
+  "entrega-cfg": "Retirada, entrega e o que perguntar",
+  "pagamento-cfg": "As formas que você aceita",
+  "atacado-cfg": "Pedido mínimo e desconto por quantidade",
+};
+
+type Tela = "menu" | "loja" | "ajuda" | "plano" | `modulo:${string}`;
 
 export function Mais({
   conta,
@@ -42,6 +51,10 @@ export function Mais({
 }) {
   const [tela, setTela] = useState<Tela>("menu");
 
+  // Só os recursos que ESTA loja tem ligados. Mostrar "Agenda" numa loja de
+  // produtos seria oferecer uma tela que não muda nada.
+  const telas = modulosAtivos(loja.modulos).flatMap((m) => m.telasPainel ?? []);
+
   if (tela !== "menu") {
     return (
       <div className="flex flex-col gap-5">
@@ -54,7 +67,13 @@ export function Mais({
             <ArrowLeft size={19} />
           </button>
           <h1 className="font-display text-[20px] font-bold tracking-[-0.028em]">
-            {tela === "loja" ? "Dados da loja" : tela === "ajuda" ? "Como funciona" : "Seu plano"}
+            {tela === "loja"
+              ? "Dados da loja"
+              : tela === "ajuda"
+                ? "Como funciona"
+                : tela === "plano"
+                  ? "Seu plano"
+                  : (telas.find((t) => `modulo:${t.id}` === tela)?.nome ?? "Recurso")}
           </h1>
         </header>
 
@@ -78,6 +97,19 @@ export function Mais({
           </>
         )}
         {tela === "plano" && <Planos conta={conta} />}
+
+        {/* A configuração de cada recurso ligado na loja: agenda, entrega,
+            pagamento, atacado. Antes só existia no painel antigo, então
+            quem entrava pela plataforma nova não tinha como mexer em nada
+            disso — o recurso estava ligado e mudo. */}
+        {telas.map(
+          (t) =>
+            `modulo:${t.id}` === tela && (
+              <div key={t.id} className="no-painel">
+                <t.Componente loja={loja} onMudar={onMudar} />
+              </div>
+            ),
+        )}
       </div>
     );
   }
@@ -120,6 +152,22 @@ export function Mais({
         </div>
       </Secao>
 
+      {telas.length > 0 && (
+        <Secao titulo="Recursos desta loja">
+          <div className="placa-p divide-y divide-[var(--p-borda)] overflow-hidden rounded-[16px]">
+            {telas.map((t) => (
+              <Linha
+                key={t.id}
+                icone={t.icone}
+                nome={t.nome}
+                texto={DICAS[t.id] ?? "Configurar"}
+                onClique={() => setTela(`modulo:${t.id}`)}
+              />
+            ))}
+          </div>
+        </Secao>
+      )}
+
       <Secao titulo="Em breve">
         <div className="flex flex-col gap-2.5">
           <EmBreve
@@ -155,7 +203,7 @@ function Linha({
   texto,
   onClique,
 }: {
-  icone: React.ComponentType<{ size?: number }>;
+  icone: React.ComponentType<{ size?: number | string }>;
   nome: string;
   texto: string;
   onClique: () => void;
@@ -188,7 +236,7 @@ function EmBreve({
   nome,
   texto,
 }: {
-  icone: React.ComponentType<{ size?: number }>;
+  icone: React.ComponentType<{ size?: number | string }>;
   nome: string;
   texto: string;
 }) {

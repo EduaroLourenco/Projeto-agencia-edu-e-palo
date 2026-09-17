@@ -11,6 +11,7 @@ import { formatarReal } from "../nucleo/preco";
 import { Campo, Entrada, Selecao, Sobrescrito } from "../design/Primitivos";
 import { useVitrine } from "../vitrine/contexto";
 import { VazioNoEstudio } from "../blocos/pecas";
+import { telaAtacado } from "./telaAtacado";
 
 /**
  * MÓDULO B2B — o diferencial de venda.
@@ -303,6 +304,7 @@ function validarSacola({ linhas, loja }: Parameters<NonNullable<Modulo["validarS
 
 export const moduloB2B: Modulo = {
   id: "b2b",
+  telasPainel: [telaAtacado],
   nome: "Atacado (B2B)",
   descricao: "Tabela por cliente, faixa de quantidade, mínimo e caixa fechada.",
   icone: Building2,

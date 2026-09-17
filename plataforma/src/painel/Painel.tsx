@@ -121,7 +121,7 @@ export function Painel({ loja: lojaInicial }: { loja: Loja }) {
         {aba === "itens" && <Catalogo loja={loja} onMudar={alterar} />}
         {aba === "loja" && <Configuracoes loja={loja} onMudar={alterar} />}
         {aba === "ajuda" && <Ajuda />}
-        {telasDeModulos.map((t) => aba === t.id && <t.Componente key={t.id} loja={loja} />)}
+        {telasDeModulos.map((t) => aba === t.id && <t.Componente key={t.id} loja={loja} onMudar={alterar} />)}
       </main>
     </div>
   );

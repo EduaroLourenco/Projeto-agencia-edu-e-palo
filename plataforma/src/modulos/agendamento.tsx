@@ -2,6 +2,7 @@ import { CalendarClock, Clock, UserRound } from "lucide-react";
 import type { DefinicaoBloco, Modulo, Oferta, PropsBloco } from "../nucleo/tipos";
 import { Sobrescrito } from "../design/Primitivos";
 import { VazioNoEstudio } from "../blocos/pecas";
+import { telaAgenda } from "./telaAgenda";
 
 /**
  * MÓDULO AGENDAMENTO — a prova de que o desenho aguenta.
@@ -160,6 +161,7 @@ const blocoProximosHorarios: DefinicaoBloco<{ titulo: string }> = {
 
 export const moduloAgendamento: Modulo = {
   id: "agendamento",
+  telasPainel: [telaAgenda],
   nome: "Agenda",
   descricao: "Data, hora e profissional. Liga o serviço no mesmo checkout.",
   icone: CalendarClock,

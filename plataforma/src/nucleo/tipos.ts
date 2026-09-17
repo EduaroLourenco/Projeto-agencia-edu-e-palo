@@ -263,7 +263,21 @@ export interface Modulo {
     resumir: (oferta: Oferta, selecao: Record<string, unknown>) => string;
   };
   /** Telas que o módulo acrescenta no painel do lojista. */
-  telasPainel?: { id: string; nome: string; icone: ComponentType<{ size?: number | string }>; Componente: ComponentType<{ loja: Loja }> }[];
+  /**
+   * Telas que o módulo acrescenta ao painel do lojista.
+   *
+   * `onMudar` não é opcional e não é detalhe: sem ele a tela consegue
+   * mostrar a configuração e não consegue salvar — que foi exatamente o
+   * que aconteceu aqui. O encaixe existia, o painel já o renderizava, e
+   * nenhum módulo podia usá-lo. Resultado: o dentista não conseguia dizer
+   * que horas atende, e todo salão ficava com "Profissional 1" pra sempre.
+   */
+  telasPainel?: {
+    id: string;
+    nome: string;
+    icone: ComponentType<{ size?: number | string }>;
+    Componente: ComponentType<{ loja: Loja; onMudar: (loja: Loja) => void }>;
+  }[];
 }
 
 /* ============================================================

@@ -295,7 +295,11 @@ const MODULOS: Record<IdModelo, string[]> = {
 const CONFIG: Record<IdModelo, Record<string, unknown>> = {
   produtos: {
     entrega: {
-      modos: [
+      // "metodos", não "modos": é o nome que o módulo de entrega lê. Escrever
+      // a chave errada aqui fazia toda loja NOVA nascer sem o passo de
+      // entrega no fechamento — e passou despercebido porque as três demos
+      // usam a chave certa, então tudo funcionava em teste.
+      metodos: [
         { id: "retirada", nome: "Retirar na loja", descricao: "Combinamos o horário no chat." },
         { id: "entrega", nome: "Entrega", descricao: "Frete a combinar.", pede: ["cep", "endereco"] },
       ],
@@ -323,7 +327,11 @@ const CONFIG: Record<IdModelo, Record<string, unknown>> = {
       ],
     },
     entrega: {
-      modos: [{ id: "rota", nome: "Entrega na rota", descricao: "Até 48h na sua região.", pede: ["endereco"] }],
+      // "metodos", não "modos": é o nome que o módulo de entrega lê. Escrever
+      // a chave errada aqui fazia toda loja NOVA nascer sem o passo de
+      // entrega no fechamento — e passou despercebido porque as três demos
+      // usam a chave certa, então tudo funcionava em teste.
+      metodos: [{ id: "rota", nome: "Entrega na rota", descricao: "Até 48h na sua região.", pede: ["endereco"] }],
     },
     pagamento: { formas: [{ id: "pix", nome: "PIX" }, { id: "boleto", nome: "Boleto 28 dias" }] },
   },

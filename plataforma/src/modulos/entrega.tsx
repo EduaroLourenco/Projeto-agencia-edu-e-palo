@@ -1,6 +1,7 @@
 import { Truck } from "lucide-react";
 import type { Modulo } from "../nucleo/tipos";
 import { Campo, Entrada, Sobrescrito } from "../design/Primitivos";
+import { telaEntrega } from "./telaVenda";
 
 /**
  * MÓDULO ENTREGA — os métodos deixam de ser cravados no código.
@@ -28,6 +29,7 @@ function metodosDa(loja: { config: Record<string, unknown> }): MetodoEntrega[] {
 
 export const moduloEntrega: Modulo = {
   id: "entrega",
+  telasPainel: [telaEntrega],
   nome: "Entrega",
   descricao: "Como o pedido chega. Cada loja define os métodos.",
   icone: Truck,

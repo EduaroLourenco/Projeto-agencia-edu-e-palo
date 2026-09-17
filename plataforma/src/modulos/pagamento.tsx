@@ -1,6 +1,7 @@
 import { CreditCard } from "lucide-react";
 import type { Modulo } from "../nucleo/tipos";
 import { Sobrescrito } from "../design/Primitivos";
+import { telaPagamento } from "./telaVenda";
 
 /**
  * MÓDULO PAGAMENTO — só a combinação, não a cobrança.
@@ -26,6 +27,7 @@ function formasDe(loja: { config: Record<string, unknown> }): FormaPagamento[] {
 
 export const moduloPagamento: Modulo = {
   id: "pagamento",
+  telasPainel: [telaPagamento],
   nome: "Pagamento",
   descricao: "PIX, boleto, prazo. Combina a forma; a cobrança segue no WhatsApp.",
   icone: CreditCard,
