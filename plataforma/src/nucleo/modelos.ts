@@ -260,9 +260,24 @@ function item(
 
 const EXEMPLOS: Record<IdModelo, Oferta[]> = {
   produtos: [
-    item("ex1", "produto", "Produto de exemplo 1", "Troque o nome, a foto e o preço", 49.9, "Destaques"),
-    item("ex2", "produto", "Produto de exemplo 2", "Este texto vira o resumo do item", 79.9, "Destaques"),
-    item("ex3", "produto", "Produto de exemplo 3", "Apague os exemplos quando terminar", 29.9, "Novidades"),
+    // O primeiro exemplo JÁ VEM com tamanho e cor.
+    //
+    // O módulo de variações nasce ligado neste modelo, e antes nenhum
+    // exemplo usava: quem abria uma loja de roupa via o recurso mais
+    // importante pra ela ligado e invisível, sem nada que mostrasse onde se
+    // mexe. Um exemplo que usa vale mais que uma tela de ajuda.
+    item("ex1", "produto", "Produto de exemplo 1", "Este já vem com tamanho e cor — veja em Editar", 49.9, "Destaques", {
+      variantes: {
+        eixos: [
+          { nome: "Tamanho", valores: ["P", "M", "G"] },
+          { nome: "Cor", valores: ["Preto", "Branco"] },
+        ],
+      },
+    }),
+    item("ex2", "produto", "Produto de exemplo 2", "Este texto vira o resumo do item", 79.9, "Destaques", {
+      variantes: { eixos: [{ nome: "Tamanho", valores: ["Único"] }] },
+    }),
+    item("ex3", "produto", "Produto de exemplo 3", "Sem variação: vende do jeito que está", 29.9, "Novidades"),
   ],
   servicos: [
     item("ex1", "servico", "Serviço de exemplo 1", "Troque o nome e o preço", 90, "Principais", {
