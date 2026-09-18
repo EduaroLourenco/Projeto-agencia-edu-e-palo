@@ -75,7 +75,7 @@ export function Visao({
         </h1>
       </header>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         <Indicador rotulo="7 dias" valor={formatarReal(faturadoSemana)} variacao={variacao} />
         <Indicador rotulo="Pedidos" valor={String(pedidosSemana)} sufixo="na semana" />
         <Indicador rotulo="Ticket médio" valor={formatarReal(ticket)} />
@@ -137,7 +137,7 @@ export function Visao({
       </Secao>
 
       <Secao titulo="Atalhos">
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
           {[
             { nome: "Montar a loja", texto: "Blocos, cores e telas", icone: Wand2, ir: "estudio" as const, destaque: true },
             { nome: "Cadastrar item", texto: "Produto ou serviço", icone: Package, ir: "produtos" as const },

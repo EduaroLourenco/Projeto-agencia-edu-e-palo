@@ -52,7 +52,7 @@ export function BotaoDuvida() {
         onClick={() => setAberto(true)}
         aria-label="Como funciona"
         className="fixed right-4 z-40 flex h-12 w-12 items-center justify-center rounded-full border border-[var(--p-borda-forte)] bg-[var(--p-superficie-2)]/92 text-[var(--p-texto-2)] shadow-[0_8px_24px_-8px_rgba(0,0,0,.7)] backdrop-blur-xl transition hover:text-[var(--p-texto)]"
-        style={{ bottom: "calc(env(safe-area-inset-bottom) + 5.6rem)" }}
+        style={{ bottom: "calc(env(safe-area-inset-bottom) + var(--folga-barra, 5.6rem))" }}
       >
         <CircleHelp size={21} />
       </button>

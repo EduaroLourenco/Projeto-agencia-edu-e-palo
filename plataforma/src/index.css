@@ -179,6 +179,12 @@
   color: var(--p-texto);
 }
 
+/* No computador não existe barra embaixo, então o botão de dúvida não
+   precisa desviar dela. */
+@media (min-width: 1024px) {
+  .painel { --folga-barra: 1.5rem; }
+}
+
 @keyframes brilhar {
   from { background-position: -220% 0; }
   to { background-position: 220% 0; }

@@ -122,7 +122,7 @@ function VitrineInterna({
 
   return (
     <ProvedorVitrine valor={valorVitrine}>
-      <div className={`mx-auto flex w-full max-w-lg flex-col bg-papel ${editando ? "" : "min-h-dvh"}`}>
+      <div className={`mx-auto flex w-full max-w-lg flex-col bg-papel ${editando ? "" : "min-h-dvh lg:max-w-3xl"}`}>
         <Cabecalho
           loja={loja}
           pagina={pagina}
@@ -275,7 +275,7 @@ function BarraInferior({
 
   return (
     <div
-      className="fixed inset-x-0 bottom-0 z-30 mx-auto w-full max-w-lg bg-papel/92 px-4 pt-3 shadow-[0_-1px_0_var(--color-borda),0_-12px_28px_-18px_rgba(22,19,15,0.25)] backdrop-blur-xl"
+      className="fixed inset-x-0 bottom-0 z-30 mx-auto w-full max-w-lg lg:max-w-3xl bg-papel/92 px-4 pt-3 shadow-[0_-1px_0_var(--color-borda),0_-12px_28px_-18px_rgba(22,19,15,0.25)] backdrop-blur-xl"
       style={{ paddingBottom: "max(0.85rem, env(safe-area-inset-bottom))" }}
     >
       <div className="flex items-center gap-3">

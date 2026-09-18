@@ -124,7 +124,7 @@ export function EstudioApp({
           </button>
         }
       >
-        <div className="flex flex-col gap-2.5">
+        <div className="flex flex-col gap-2.5 lg:grid lg:grid-cols-2">
           {lojas.map(({ loja, propria }) => (
             <FichaLoja
               key={loja.slug}
@@ -387,7 +387,7 @@ function Criar({
           <p className="text-[13px] leading-relaxed text-[var(--p-texto-2)]">
             Cada um é um jeito diferente de montar a página: quanto ar, onde tem caixa, que fonte. Toque pra ver.
           </p>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-3 lg:grid-cols-3">
             {ESTILOS.map((e) => (
               <button
                 key={e.id}
@@ -682,7 +682,7 @@ function BancoDeFotos({ onVoltar }: { onVoltar: () => void }) {
           em qualquer loja.
         </p>
       ) : (
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-3 gap-2 lg:grid-cols-6">
           {fotos.map((f) => (
             <div key={f.id} className="relative overflow-hidden rounded-[13px] bg-[var(--p-superficie-2)]">
               <img src={f.url} alt={f.nome} className="aspect-square w-full object-cover" />

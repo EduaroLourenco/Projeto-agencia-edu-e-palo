@@ -61,35 +61,91 @@ export function Plataforma() {
     { id: "mais", nome: "Mais", icone: LayoutGrid },
   ];
 
-  return (
-    <div className="painel flex min-h-dvh flex-col">
-      {/* ---------- topo: marca, loja atual, conta ---------- */}
-      <header className="sticky top-0 z-30 border-b border-[var(--p-borda)] bg-[var(--p-fundo)]/85 backdrop-blur-xl">
-        <div className="mx-auto flex w-full max-w-lg items-center gap-2 px-4 py-2.5">
-          <span
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[9px] text-white"
-            style={{ background: "linear-gradient(150deg,var(--p-acento-claro),var(--p-acento))" }}
-          >
-            <Sparkles size={15} strokeWidth={2.4} />
+  /** A marca e o seletor de loja, iguais no topo do celular e na coluna do computador. */
+  const identidade = (
+    <>
+      <span
+        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[9px] text-white"
+        style={{ background: "linear-gradient(150deg,var(--p-acento-claro),var(--p-acento))" }}
+      >
+        <Sparkles size={15} strokeWidth={2.4} />
+      </span>
+      {loja ? (
+        <button
+          onClick={() => setTrocando(true)}
+          className="flex min-w-0 flex-1 items-center gap-1.5 rounded-[10px] px-2 py-1.5 text-left transition hover:bg-[var(--p-superficie-2)]"
+        >
+          <span className="min-w-0 flex-1">
+            <span className="block truncate text-[14px] font-semibold leading-tight">{loja.nome}</span>
+            <span className="block text-[11px] text-[var(--p-texto-3)]">
+              {minhasLojas.length} {minhasLojas.length === 1 ? "loja" : "lojas"} · trocar
+            </span>
           </span>
+          <ChevronDown size={15} className="shrink-0 text-[var(--p-texto-3)]" />
+        </button>
+      ) : (
+        <span className="min-w-0 flex-1 truncate text-[14px] font-semibold">{conta.nome}</span>
+      )}
+    </>
+  );
 
-          {loja ? (
-            <button
-              onClick={() => setTrocando(true)}
-              className="flex min-w-0 flex-1 items-center gap-1.5 rounded-[10px] px-2 py-1.5 text-left transition hover:bg-[var(--p-superficie-2)]"
-            >
-              <span className="min-w-0">
-                <span className="block truncate text-[14px] font-semibold leading-tight">{loja.nome}</span>
-                <span className="block text-[11px] text-[var(--p-texto-3)]">
-                  {minhasLojas.length} {minhasLojas.length === 1 ? "loja" : "lojas"} · toque pra trocar
-                </span>
-              </span>
-              <ChevronDown size={15} className="shrink-0 text-[var(--p-texto-3)]" />
-            </button>
-          ) : (
-            <span className="min-w-0 flex-1 truncate text-[14px] font-semibold">{conta.nome}</span>
-          )}
+  return (
+    /**
+     * Duas cascas, uma estrutura.
+     *
+     * No celular a navegação é uma barra embaixo, onde o polegar alcança. No
+     * computador ela vira coluna à esquerda, que é onde o olho procura — e o
+     * conteúdo deixa de ser uma tira de 512px num monitor de 1440, que era a
+     * coisa que mais denunciava protótipo.
+     */
+    <div className="painel flex min-h-dvh flex-col lg:flex-row">
+      {/* ---------- coluna da esquerda: só no computador ---------- */}
+      <aside className="sticky top-0 hidden h-dvh w-[236px] shrink-0 flex-col gap-1 border-r border-[var(--p-borda)] bg-[var(--p-fundo)] px-3 py-4 lg:flex">
+        <div className="flex items-center gap-2 px-1 pb-3">{identidade}</div>
 
+        <nav className="flex flex-col gap-0.5">
+          {destinos.map((d) => {
+            const Icone = d.icone;
+            const ativo = aba === d.id;
+            return (
+              <button
+                key={d.id}
+                onClick={() => setAba(d.id)}
+                aria-current={ativo ? "page" : undefined}
+                className={`flex items-center gap-2.5 rounded-[10px] px-3 py-2.5 text-left text-[13.5px] font-semibold transition ${
+                  ativo
+                    ? "bg-[var(--p-superficie-2)] text-[var(--p-texto)]"
+                    : "text-[var(--p-texto-3)] hover:bg-[var(--p-superficie)] hover:text-[var(--p-texto-2)]"
+                }`}
+              >
+                <Icone size={17} strokeWidth={ativo ? 2.3 : 1.9} />
+                {d.nome}
+                {ativo && (
+                  <span
+                    aria-hidden
+                    className="ml-auto h-1.5 w-1.5 rounded-full"
+                    style={{ background: "var(--p-acento)" }}
+                  />
+                )}
+              </button>
+            );
+          })}
+        </nav>
+
+        <Link
+          to="/lojas"
+          className="mt-auto flex items-center gap-2.5 rounded-[10px] px-3 py-2.5 text-[13px] font-semibold text-[var(--p-texto-3)] transition hover:bg-[var(--p-superficie)] hover:text-[var(--p-texto-2)]"
+        >
+          <Store size={16} />
+          Lojas públicas
+        </Link>
+      </aside>
+
+      <div className="flex min-w-0 flex-1 flex-col">
+      {/* ---------- topo: só no celular ---------- */}
+      <header className="sticky top-0 z-30 border-b border-[var(--p-borda)] bg-[var(--p-fundo)]/85 backdrop-blur-xl lg:hidden">
+        <div className="mx-auto flex w-full max-w-lg items-center gap-2 px-4 py-2.5">
+          {identidade}
           <Link
             to="/lojas"
             title="Ver as lojas públicas"
@@ -101,7 +157,7 @@ export function Plataforma() {
       </header>
 
       {/* ---------- conteúdo ---------- */}
-      <main className="mx-auto w-full max-w-lg flex-1 px-4 pb-28 pt-5">
+      <main className="mx-auto w-full max-w-lg flex-1 px-4 pb-28 pt-5 lg:max-w-5xl lg:px-8 lg:pb-12 lg:pt-8">
         {/* Sem loja, o estúdio continua aberto — é justamente lá que se cria
             a primeira. Cobrir TODAS as abas com o convite deixava a conta
             nova sem nenhum caminho pra sair do lugar. */}
@@ -148,7 +204,7 @@ export function Plataforma() {
 
       {/* ---------- barra de baixo ---------- */}
       <nav
-        className="fixed inset-x-0 bottom-0 z-30 border-t border-[var(--p-borda)] bg-[var(--p-fundo)]/92 backdrop-blur-xl"
+        className="fixed inset-x-0 bottom-0 z-30 border-t border-[var(--p-borda)] bg-[var(--p-fundo)]/92 backdrop-blur-xl lg:hidden"
         style={{ paddingBottom: "max(0.5rem, env(safe-area-inset-bottom))" }}
       >
         <div className="mx-auto flex w-full max-w-lg items-stretch px-2 pt-1.5">
@@ -183,6 +239,8 @@ export function Plataforma() {
           })}
         </div>
       </nav>
+
+      </div>
 
       {/* ---------- troca de loja ---------- */}
       {trocando && (

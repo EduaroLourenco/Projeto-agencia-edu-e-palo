@@ -119,7 +119,7 @@ export function Estudio({ lojaInicial }: { lojaInicial: Loja }) {
   }
 
   return (
-    <div className="mx-auto flex min-h-dvh w-full max-w-lg flex-col bg-papel-2">
+    <div className="mx-auto flex min-h-dvh w-full max-w-lg flex-col bg-papel-2 lg:max-w-3xl">
       {!verComoCliente && (
         <BarraSuperior
           loja={loja}
@@ -461,7 +461,7 @@ function BarraInferior({
 }) {
   return (
     <div
-      className="fixed inset-x-0 bottom-0 z-40 mx-auto w-full max-w-lg border-t border-borda bg-papel/95 px-3 pt-2.5 backdrop-blur"
+      className="fixed inset-x-0 bottom-0 z-40 mx-auto w-full max-w-lg lg:max-w-3xl border-t border-borda bg-papel/95 px-3 pt-2.5 backdrop-blur"
       style={{ paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))" }}
     >
       <div className="flex items-center gap-2">

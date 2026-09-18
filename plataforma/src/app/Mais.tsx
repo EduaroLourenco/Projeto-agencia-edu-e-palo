@@ -169,7 +169,7 @@ export function Mais({
       )}
 
       <Secao titulo="Em breve">
-        <div className="flex flex-col gap-2.5">
+        <div className="flex flex-col gap-2.5 lg:grid lg:grid-cols-2">
           <EmBreve
             icone={Users}
             nome="CRM"
