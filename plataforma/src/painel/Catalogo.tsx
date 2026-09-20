@@ -1,8 +1,9 @@
 import { useMemo, useState } from "react";
-import { Check, Copy, Package, Plus, Search, Sparkles, Trash2, Wrench } from "lucide-react";
+import { Check, Copy, FileSpreadsheet, Package, Plus, Search, Sparkles, Trash2, Wrench } from "lucide-react";
 import type { Loja, Oferta, TipoOferta } from "../nucleo/tipos";
 import { modulosAtivos } from "../nucleo/registro";
 import { formatarReal } from "../nucleo/preco";
+import { ImportarPlanilha } from "./ImportarPlanilha";
 import { Botao, Campo, Entrada, Folha, Sobrescrito } from "../design/Primitivos";
 import { ControleCampo } from "../estudio/Controles";
 import { Foto } from "../blocos/pecas";
@@ -39,6 +40,7 @@ export function Catalogo({ loja, onMudar }: { loja: Loja; onMudar: (loja: Loja) 
   const [filtro, setFiltro] = useState<"todos" | "produto" | "servico" | "inativos">("todos");
   const [editando, setEditando] = useState<Oferta | null>(null);
   const [novo, setNovo] = useState(false);
+  const [importando, setImportando] = useState(false);
 
   const lista = useMemo(() => {
     const termo = busca.trim().toLowerCase();
@@ -76,12 +78,26 @@ export function Catalogo({ loja, onMudar }: { loja: Loja; onMudar: (loja: Loja) 
     ["inativos", "Desligados"],
   ] as const;
 
+  if (importando) {
+    return <ImportarPlanilha loja={loja} onMudar={onMudar} onVoltar={() => setImportando(false)} />;
+  }
+
   return (
     <div className="flex flex-col gap-3">
-      <Botao largo onClick={() => setNovo(true)}>
-        <Plus size={18} strokeWidth={2.6} />
-        Novo item
-      </Botao>
+      <div className="flex gap-2">
+        <div className="flex-1">
+          <Botao largo onClick={() => setNovo(true)}>
+            <Plus size={18} strokeWidth={2.6} />
+            Novo item
+          </Botao>
+        </div>
+        {/* Quem tem catálogo grande não cadastra um a um — e desiste se
+            for obrigado a isso. */}
+        <Botao tom="contorno" onClick={() => setImportando(true)}>
+          <FileSpreadsheet size={17} />
+          Planilha
+        </Botao>
+      </div>
 
       <div className="relative">
         <Search size={16} className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-tinta-25" />
