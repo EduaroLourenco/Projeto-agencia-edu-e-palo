@@ -1,38 +1,45 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
 import { ArrowUpRight, Menu, X } from "lucide-react";
-import { AGENCIA, linkWhatsApp } from "../data/content";
-import { MagneticButton } from "./MagneticButton";
+import { AGENCIA, SITRA_URL, linkWhatsApp } from "../data/content";
 import { rastrear } from "../lib/analytics";
 
-// Links simplificados — menos é mais. Sem dropdown "Mais".
 const LINKS = [
-  { href: "/#quem-somos", label: "Quem somos" },
   { href: "/#servicos", label: "Serviços" },
-  { href: "/servicos", label: "Todos os serviços" },
-  { href: "/#case", label: "Cases" },
+  { href: "/servicos", label: "Catálogo" },
+  { href: "/#cases", label: "Cases" },
   { href: "/#como-funciona", label: "Como funciona" },
+  { href: "/#quem-somos", label: "Quem somos" },
   { href: "/#faq", label: "FAQ" },
 ];
 
-// No desktop, os mais importantes.
-const LINKS_DESKTOP = [
-  { href: "/#quem-somos", label: "Quem somos" },
-  { href: "/#servicos", label: "Serviços" },
-  { href: "/servicos", label: "Catálogo completo" },
-  { href: "/#case", label: "Cases" },
-  { href: "/#como-funciona", label: "Como funciona" },
-  { href: "/#faq", label: "FAQ" },
-];
+// No desktop, "Como funciona" fica de fora para caber em 1024px.
+const LINKS_DESKTOP = LINKS.filter((l) => l.href !== "/#como-funciona");
 
 function isActiveLink(href: string, pathname: string, secaoAtiva: string) {
   if (!href.includes("#")) return pathname === href;
   return pathname === "/" && href.split("#")[1] === secaoAtiva;
 }
 
+export function Logo() {
+  return (
+    <Link to="/" className="flex min-h-[44px] shrink-0 items-center gap-2.5" aria-label="BEPA, página inicial">
+      <span className="flex h-8 w-8 items-center justify-center rounded-md bg-brand font-display text-sm font-bold text-white">
+        {AGENCIA.iniciais}
+      </span>
+      <span className="font-display text-lg font-bold tracking-[-0.02em] text-ink">{AGENCIA.nome}</span>
+    </Link>
+  );
+}
+
 export function Nav() {
   const [aberto, setAberto] = useState(false);
+  const botaoMenu = useRef<HTMLButtonElement>(null);
+  const fecharMenu = () => {
+    setAberto(false);
+    botaoMenu.current?.focus();
+  };
   const [secaoAtiva, setSecaoAtiva] = useState("");
   const { pathname } = useLocation();
 
@@ -48,31 +55,21 @@ export function Nav() {
     function calcular() {
       frame = 0;
       const linhaDeLeitura = window.innerHeight * 0.35;
-
       const fim = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2;
       if (fim) {
         setSecaoAtiva(ids[ids.length - 1]);
         return;
       }
-
-      const secoes = ids
-        .map((id) => {
-          const el = document.getElementById(id);
-          return el ? { id, topo: el.getBoundingClientRect().top } : null;
-        })
-        .filter((s): s is { id: string; topo: number } => s !== null)
-        .sort((a, b) => a.topo - b.topo);
-
       let ativa = "";
-      for (const secao of secoes) {
-        if (secao.topo <= linhaDeLeitura) ativa = secao.id;
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= linhaDeLeitura) ativa = id;
       }
       setSecaoAtiva(ativa);
     }
 
     function agendar() {
-      if (frame) return;
-      frame = requestAnimationFrame(calcular);
+      if (!frame) frame = requestAnimationFrame(calcular);
     }
 
     calcular();
@@ -87,91 +84,87 @@ export function Nav() {
 
   useEffect(() => {
     document.body.style.overflow = aberto ? "hidden" : "";
+    if (!aberto) return;
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") fecharMenu();
+    }
+    window.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKey);
     };
   }, [aberto]);
 
-  const rotuloDaSecaoAtiva =
-    pathname === "/" ? LINKS.find((l) => l.href === `/#${secaoAtiva}`)?.label : null;
-
   return (
     <>
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/5 bg-ink/70 backdrop-blur-lg">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4">
-        <Link to="/" className="flex min-h-[44px] shrink-0 items-center gap-2.5">
-          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 via-pink-500 to-blue-400 font-display text-sm font-bold text-white shadow-lg shadow-violet-500/25">
-            {AGENCIA.iniciais}
-          </span>
-          <span className="whitespace-nowrap font-display text-base font-bold tracking-tight text-white">
-            {AGENCIA.nome}
-          </span>
-        </Link>
+      <header className="fixed inset-x-0 top-0 z-50 border-b border-line bg-paper/90 backdrop-blur">
+        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-6 px-4 sm:px-6">
+          <Logo />
 
-        {/* "Você está aqui", só no celular. */}
-        {rotuloDaSecaoAtiva && (
-          <span
-            aria-live="polite"
-            className="ml-3 min-w-0 flex-1 truncate text-right text-xs font-semibold text-white/60 lg:hidden"
-          >
-            {rotuloDaSecaoAtiva}
-          </span>
-        )}
+          <nav aria-label="Principal" className="hidden items-center gap-6 lg:flex">
+            {LINKS_DESKTOP.map((l) => {
+              const ativo = isActiveLink(l.href, pathname, secaoAtiva);
+              return (
+                <a
+                  key={l.href}
+                  href={l.href}
+                  aria-current={ativo ? "page" : undefined}
+                  className={`whitespace-nowrap py-2 text-sm font-medium transition-colors ${
+                    ativo ? "text-brand" : "text-ink/75 hover:text-ink"
+                  }`}
+                >
+                  {l.label}
+                </a>
+              );
+            })}
+          </nav>
 
-        <nav className="hidden items-center gap-7 lg:flex">
-          {LINKS_DESKTOP.map((l) => {
-            const ativo = isActiveLink(l.href, pathname, secaoAtiva);
-            return (
-              <a
-                key={l.href}
-                href={l.href}
-                aria-current={ativo ? "page" : undefined}
-                className={`relative whitespace-nowrap text-sm font-medium transition-colors ${
-                  ativo ? "text-white" : "text-white/60 hover:text-white"
-                }`}
-              >
-                {l.label}
-                {ativo && (
-                  <span className="absolute -bottom-1.5 left-0 h-[2px] w-full rounded-full bg-gradient-to-r from-violet-400 via-pink-400 to-blue-400" />
-                )}
-              </a>
-            );
-          })}
-        </nav>
+          <div className="hidden items-center gap-3 lg:flex">
+            <a
+              href={SITRA_URL}
+              target="_blank"
+              rel="noopener"
+              onClick={() => rastrear("sitra_click", { origem: "nav_desktop" })}
+              className="inline-flex min-h-[40px] items-center gap-1.5 rounded-md border border-ink/20 px-4 text-sm font-semibold text-ink transition-colors hover:border-ink/50"
+            >
+              Sites com a Sitra
+              <ArrowUpRight size={15} aria-hidden />
+            </a>
+            <a
+              href={linkWhatsApp()}
+              target="_blank"
+              rel="noreferrer"
+              onClick={() => rastrear("whatsapp_click", { origem: "nav_desktop" })}
+              className="inline-flex min-h-[40px] items-center rounded-md bg-brand px-4 text-sm font-semibold text-white transition-colors hover:bg-brand-strong"
+            >
+              Falar no WhatsApp
+            </a>
+          </div>
+        </div>
+      </header>
 
-        <MagneticButton
-          href={linkWhatsApp()}
-          target="_blank"
-          rel="noreferrer"
-          onClick={() => rastrear("whatsapp_click", { origem: "nav_desktop" })}
-          className="hidden rounded-full bg-pink-400 px-5 py-2.5 text-sm font-bold text-ink transition-transform hover:scale-105 lg:block"
-        >
-          Falar no WhatsApp
-        </MagneticButton>
-
-      </div>
-    </header>
-
-      {/* Barra de ação inferior mobile */}
-      <div className="fixed inset-x-0 bottom-0 z-50 border-t border-white/[0.08] bg-ink/90 px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur-lg lg:hidden">
+      {/* Barra de ação inferior no celular: o contato fica sempre a um toque. */}
+      <div className="fixed inset-x-0 bottom-0 z-50 border-t border-line bg-paper/95 px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur lg:hidden">
         <div className="mx-auto flex max-w-md items-center gap-3">
           <button
+            ref={botaoMenu}
             onClick={() => setAberto(true)}
             aria-label="Abrir menu"
-            className="flex h-12 w-12 shrink-0 flex-col items-center justify-center gap-0.5 rounded-2xl border border-white/[0.08] bg-white/5 text-white"
+            aria-expanded={aberto}
+            className="flex h-12 shrink-0 items-center gap-2 rounded-md border border-ink/20 px-4 text-sm font-semibold text-ink"
           >
-            <Menu size={18} />
-            <span className="text-[9px] font-bold uppercase tracking-wider text-white/60">Menu</span>
+            <Menu size={18} aria-hidden />
+            Menu
           </button>
           <a
             href={linkWhatsApp()}
             target="_blank"
             rel="noreferrer"
             onClick={() => rastrear("whatsapp_click", { origem: "barra_inferior_mobile" })}
-            className="flex h-12 flex-1 items-center justify-center gap-2 rounded-2xl bg-pink-400 text-sm font-bold text-ink"
+            className="flex h-12 flex-1 items-center justify-center gap-2 rounded-md bg-brand text-sm font-semibold text-white"
           >
             Falar no WhatsApp
-            <ArrowUpRight size={16} />
+            <ArrowUpRight size={16} aria-hidden />
           </a>
         </div>
       </div>
@@ -184,29 +177,32 @@ export function Nav() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              onClick={() => setAberto(false)}
-              className="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm lg:hidden"
+              onClick={() => fecharMenu()}
+              className="fixed inset-0 z-[60] bg-ink/40 lg:hidden"
             />
             <motion.div
+              role="dialog"
+              aria-modal="true"
+              aria-label="Menu"
               initial={{ y: "100%" }}
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
-              transition={{ type: "spring", stiffness: 320, damping: 34 }}
-              className="fixed inset-x-0 bottom-0 z-[70] flex max-h-[82vh] flex-col rounded-t-3xl border-t border-white/[0.08] bg-surface px-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-4 lg:hidden"
+              transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
+              className="fixed inset-x-0 bottom-0 z-[70] flex max-h-[85vh] flex-col rounded-t-xl border-t border-line bg-paper px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-4 lg:hidden"
             >
-              <span className="mx-auto mb-4 h-1 w-10 shrink-0 rounded-full bg-white/15" />
               <div className="flex items-center justify-between">
-                <span className="font-display text-sm font-bold text-white">Menu</span>
+                <span className="font-display text-base font-bold text-ink">Menu</span>
                 <button
-                  onClick={() => setAberto(false)}
+                  onClick={() => fecharMenu()}
                   aria-label="Fechar menu"
-                  className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/5 text-white"
+                  autoFocus
+                  className="flex h-11 w-11 items-center justify-center rounded-md text-ink hover:bg-paper-2"
                 >
-                  <X size={18} />
+                  <X size={20} aria-hidden />
                 </button>
               </div>
 
-              <nav className="mt-4 flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto pb-2">
+              <nav aria-label="Principal" className="mt-2 flex min-h-0 flex-1 flex-col overflow-y-auto">
                 {LINKS.map((l) => {
                   const ativo = isActiveLink(l.href, pathname, secaoAtiva);
                   return (
@@ -215,8 +211,8 @@ export function Nav() {
                       href={l.href}
                       onClick={() => setAberto(false)}
                       aria-current={ativo ? "page" : undefined}
-                      className={`rounded-xl px-3 py-3.5 text-base font-medium ${
-                        ativo ? "bg-violet-500/15 text-white" : "text-white/70"
+                      className={`border-b border-line py-3.5 text-lg font-medium ${
+                        ativo ? "text-brand" : "text-ink"
                       }`}
                     >
                       {l.label}
@@ -224,6 +220,20 @@ export function Nav() {
                   );
                 })}
               </nav>
+
+              <a
+                href={SITRA_URL}
+                target="_blank"
+                rel="noopener"
+                onClick={() => rastrear("sitra_click", { origem: "nav_mobile" })}
+                className="mt-4 flex items-center justify-between rounded-md border border-ink/20 px-4 py-3.5"
+              >
+                <span>
+                  <span className="block text-sm font-semibold text-ink">Precisa de um site?</span>
+                  <span className="block text-sm text-muted">Conheça a Sitra, nossa frente de sites</span>
+                </span>
+                <ArrowUpRight size={18} className="shrink-0 text-ink" aria-hidden />
+              </a>
             </motion.div>
           </>
         )}

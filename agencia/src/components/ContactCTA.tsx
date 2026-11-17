@@ -1,10 +1,12 @@
-import { ArrowRight, Check, Send } from "lucide-react";
-import { useEffect, useState } from "react";
+import { ArrowRight, ArrowUpRight, Check } from "lucide-react";
+import { useState } from "react";
 import { AGENCIA, NICHOS, linkWhatsApp } from "../data/content";
 import { Reveal } from "./Reveal";
-import { MagneticButton } from "./MagneticButton";
 import { rastrear } from "../lib/analytics";
-import { setorLembrado } from "../lib/preferencias";
+import { BTN_PRIMARIO, BTN_SECUNDARIO } from "./ui";
+
+const CAMPO =
+  "min-h-[48px] w-full rounded-md border border-ink/20 bg-white px-4 py-3 text-base text-ink placeholder:text-muted/70 focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20";
 
 export function ContactCTA() {
   const [nome, setNome] = useState("");
@@ -12,14 +14,7 @@ export function ContactCTA() {
   const [problema, setProblema] = useState("");
   const [enviado, setEnviado] = useState(false);
 
-  // Se o visitante já escolheu o setor lá em cima (ou numa visita
-  // anterior), o campo chega preenchido. Um campo a menos pra responder.
-  useEffect(() => {
-    const salvo = setorLembrado();
-    if (salvo && NICHOS.some((n) => n.id === salvo)) setSetor(salvo);
-  }, []);
-
-  const nomeDoSetor = NICHOS.find((n) => n.id === setor)?.nome ?? "";
+  const nomeDoSetor = setor === "outro" ? "outro setor" : (NICHOS.find((n) => n.id === setor)?.nome ?? "");
 
   function mensagem() {
     const base = `Oi! Me chamo ${nome.trim()} e tenho um negócio de ${nomeDoSetor}.`;
@@ -30,168 +25,139 @@ export function ContactCTA() {
   const pronto = nome.trim().length > 1 && setor !== "";
 
   return (
-    <section className="relative overflow-hidden py-16 sm:py-28">
-      <div className="relative mx-auto max-w-5xl px-5">
-        <Reveal className="text-center">
-          <h2 className="font-display text-3xl font-extrabold tracking-tight sm:text-5xl">
-            Bora tirar sua ideia do papel?
-          </h2>
-          <p className="mx-auto mt-5 max-w-lg text-white/60">
-            Conta pra gente o que você vende e onde está travando. Em 2 minutos a gente já sabe se
-            consegue ajudar.
+    <section id="contato" className="bg-ink py-20 text-white sm:py-28">
+      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-12 px-4 sm:px-6 lg:grid-cols-12">
+        <Reveal className="lg:col-span-5">
+          <p className="text-sm font-semibold text-white/70">
+            <span className="tabular-nums text-brand-light">06</span>
+            <span className="mx-2" aria-hidden>
+              —
+            </span>
+            Contato
           </p>
+          <h2 className="mt-4 font-display text-4xl font-bold leading-[1.05] tracking-[-0.03em] sm:text-5xl">
+            Conte o que está travando.
+          </h2>
+          <p className="mt-5 max-w-md text-lg leading-relaxed text-white/70">
+            Em uma conversa a gente já sabe se consegue ajudar e por onde começar. Sem compromisso.
+          </p>
+
+          <ul className="mt-10 border-t border-line-dark">
+            <li className="border-b border-line-dark">
+              <a
+                href={linkWhatsApp()}
+                target="_blank"
+                rel="noreferrer"
+                onClick={() => rastrear("whatsapp_click", { origem: "cta_final" })}
+                className="flex items-center justify-between py-4 text-base font-semibold hover:text-brand-light"
+              >
+                WhatsApp, sem formulário
+                <ArrowUpRight size={18} aria-hidden />
+              </a>
+            </li>
+            <li className="border-b border-line-dark">
+              <a
+                href={`mailto:${AGENCIA.email}`}
+                className="flex items-center justify-between py-4 text-base font-semibold hover:text-brand-light"
+              >
+                {AGENCIA.email}
+                <ArrowUpRight size={18} aria-hidden />
+              </a>
+            </li>
+          </ul>
         </Reveal>
 
-        <Reveal delay={0.15}>
-          <div className="mx-auto mt-12 max-w-xl rounded-2xl border border-white/[0.08] bg-surface p-6 sm:p-8">
+        <Reveal className="lg:col-span-6 lg:col-start-7" delay={0.05}>
+          <div className="rounded-lg bg-paper p-6 text-ink sm:p-8">
             {enviado ? (
-              /* Confirmação: antes, clicar abria o WhatsApp e a página ficava
-                 exatamente igual. Quem tivesse o WhatsApp bloqueado ou numa
-                 outra aba não sabia se tinha funcionado. */
-              <div className="py-4 text-center">
-                <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-violet-500/15 text-violet-300">
-                  <Check size={22} />
+              <div className="py-6" role="status">
+                <span className="flex h-11 w-11 items-center justify-center rounded-md bg-brand-soft text-brand">
+                  <Check size={22} aria-hidden />
                 </span>
-                <p className="mt-4 font-display text-lg font-bold text-white">
-                  Abrimos o WhatsApp com sua mensagem pronta.
+                <p className="mt-5 font-display text-xl font-bold">Abrimos o WhatsApp com sua mensagem.</p>
+                <p className="mt-2 max-w-sm text-[15px] leading-relaxed text-muted">
+                  Se nada abriu, o navegador pode ter bloqueado a janela. Tente de novo ou ajuste os dados.
                 </p>
-                <p className="mx-auto mt-2 max-w-sm text-sm leading-relaxed text-white/60">
-                  Se nada abriu, o navegador pode ter bloqueado a janela. Dá pra tentar de novo
-                  ou copiar a mensagem.
-                </p>
-                <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
-                  <a
-                    href={linkWhatsApp(mensagem())}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex min-h-[44px] items-center justify-center gap-2 rounded-xl bg-pink-400 px-6 text-sm font-bold text-ink"
-                  >
+                <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                  <a href={linkWhatsApp(mensagem())} target="_blank" rel="noreferrer" className={BTN_PRIMARIO}>
                     Abrir de novo
-                    <ArrowRight size={15} />
+                    <ArrowRight size={16} aria-hidden />
                   </a>
-                  <button
-                    onClick={() => setEnviado(false)}
-                    className="min-h-[44px] rounded-xl border border-white/[0.12] px-6 text-sm font-bold text-white transition-colors hover:bg-white/5"
-                  >
+                  <button onClick={() => setEnviado(false)} className={BTN_SECUNDARIO}>
                     Corrigir os dados
                   </button>
                 </div>
               </div>
             ) : (
-              <>
-                <p className="mb-5 text-sm font-semibold text-white/60">Monte seu diagnóstico rápido:</p>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  if (!pronto) return;
+                  rastrear("whatsapp_click", { origem: "diagnostico", setor });
+                  window.open(linkWhatsApp(mensagem()), "_blank", "noreferrer");
+                  setEnviado(true);
+                }}
+                className="flex flex-col gap-5"
+              >
+                <p className="font-display text-lg font-bold">Diagnóstico rápido</p>
 
-                <div className="flex flex-col gap-5">
-                  {/* Rótulo visível, não só placeholder: placeholder some quando
-                      a pessoa começa a digitar, e aí ela não sabe mais o que é
-                      cada campo. text-base = 16px porque abaixo disso o Safari
-                      do iPhone dá zoom sozinho e desalinha a página. */}
-                  <label className="flex flex-col gap-1.5">
-                    <span className="text-xs font-semibold text-white/60">Seu nome</span>
-                    <input
-                      value={nome}
-                      onChange={(e) => setNome(e.target.value)}
-                      name="nome"
-                      autoComplete="name"
-                      enterKeyHint="next"
-                      placeholder="Como podemos te chamar?"
-                      className="min-h-[48px] w-full rounded-xl border border-white/[0.08] bg-white/5 px-4 py-3 text-base text-white transition-colors placeholder:text-white/30 focus:border-violet-500/50 focus:outline-none focus:ring-1 focus:ring-violet-500/30"
-                    />
-                  </label>
+                <label className="flex flex-col gap-1.5">
+                  <span className="text-sm font-semibold">Seu nome</span>
+                  <input
+                    value={nome}
+                    onChange={(e) => setNome(e.target.value)}
+                    name="nome"
+                    autoComplete="name"
+                    enterKeyHint="next"
+                    required
+                    minLength={2}
+                    placeholder="Como podemos te chamar?"
+                    className={CAMPO}
+                  />
+                </label>
 
-                  <label className="flex flex-col gap-1.5">
-                    <span className="text-xs font-semibold text-white/60">Seu setor</span>
-                    <select
-                      value={setor}
-                      onChange={(e) => setSetor(e.target.value)}
-                      name="setor"
-                      className="min-h-[48px] w-full appearance-none rounded-xl border border-white/[0.08] bg-white/5 px-4 py-3 text-base text-white transition-colors focus:border-violet-500/50 focus:outline-none focus:ring-1 focus:ring-violet-500/30"
-                      style={{ colorScheme: "dark" }}
-                    >
-                      <option value="" disabled>
-                        Escolha o seu setor
-                      </option>
-                      {NICHOS.map((n) => (
-                        <option key={n.id} value={n.id} className="bg-[#100a1d]">
-                          {n.nome}
-                        </option>
-                      ))}
-                      <option value="outro" className="bg-[#100a1d]">
-                        Outro
-                      </option>
-                    </select>
-                  </label>
-
-                  <label className="flex flex-col gap-1.5">
-                    <span className="text-xs font-semibold text-white/60">
-                      O que está travando hoje? <span className="text-white/55">(opcional)</span>
-                    </span>
-                    <textarea
-                      value={problema}
-                      onChange={(e) => setProblema(e.target.value)}
-                      name="problema"
-                      rows={3}
-                      placeholder="Ex: perco pedido no meio das mensagens do WhatsApp"
-                      className="w-full resize-none rounded-xl border border-white/[0.08] bg-white/5 px-4 py-3 text-base text-white transition-colors placeholder:text-white/30 focus:border-violet-500/50 focus:outline-none focus:ring-1 focus:ring-violet-500/30"
-                    />
-                  </label>
-
-                  <a
-                    href={pronto ? linkWhatsApp(mensagem()) : undefined}
-                    target={pronto ? "_blank" : undefined}
-                    rel="noreferrer"
-                    aria-disabled={!pronto}
-                    onClick={(e) => {
-                      if (!pronto) {
-                        e.preventDefault();
-                        return;
-                      }
-                      rastrear("whatsapp_click", { origem: "diagnostico", setor });
-                      setEnviado(true);
-                    }}
-                    className={`group flex min-h-[48px] items-center justify-center gap-2 rounded-xl text-sm font-bold transition-all ${
-                      pronto
-                        ? "cursor-pointer bg-pink-400 text-ink hover:brightness-110"
-                        : "cursor-not-allowed bg-white/10 text-white/35"
-                    }`}
+                <label className="flex flex-col gap-1.5">
+                  <span className="text-sm font-semibold">Seu setor</span>
+                  <select
+                    value={setor}
+                    onChange={(e) => setSetor(e.target.value)}
+                    name="setor"
+                    required
+                    className={CAMPO}
                   >
-                    <Send size={15} />
-                    Enviar diagnóstico pelo WhatsApp
-                    {pronto && (
-                      <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
-                    )}
-                  </a>
+                    <option value="" disabled>
+                      Escolha o seu setor
+                    </option>
+                    {NICHOS.map((n) => (
+                      <option key={n.id} value={n.id}>
+                        {n.nome}
+                      </option>
+                    ))}
+                    <option value="outro">Outro</option>
+                  </select>
+                </label>
 
-                  {!pronto && (
-                    <p className="text-center text-xs text-white/55">
-                      Preencha nome e setor para continuar
-                    </p>
-                  )}
-                </div>
-              </>
+                <label className="flex flex-col gap-1.5">
+                  <span className="text-sm font-semibold">
+                    O que está travando hoje? <span className="font-normal text-muted">(opcional)</span>
+                  </span>
+                  <textarea
+                    value={problema}
+                    onChange={(e) => setProblema(e.target.value)}
+                    name="problema"
+                    rows={3}
+                    placeholder="Ex.: perco pedido no meio das mensagens do WhatsApp"
+                    className={`${CAMPO} resize-none`}
+                  />
+                </label>
+
+                <button type="submit" disabled={!pronto} className={`${BTN_PRIMARIO} disabled:cursor-not-allowed disabled:bg-ink/15 disabled:text-ink/50`}>
+                  Enviar pelo WhatsApp
+                  <ArrowRight size={16} aria-hidden />
+                </button>
+                {!pronto && <p className="text-sm text-muted">Preencha nome e setor para continuar.</p>}
+              </form>
             )}
-          </div>
-        </Reveal>
-
-        <Reveal delay={0.2} className="mt-8 flex flex-col items-center gap-3">
-          <p className="text-xs text-white/55">Ou fale direto, sem formulário:</p>
-          <div className="flex flex-wrap items-center justify-center gap-3">
-            <MagneticButton
-              href={linkWhatsApp()}
-              target="_blank"
-              rel="noreferrer"
-              onClick={() => rastrear("whatsapp_click", { origem: "cta_final" })}
-              className="group flex min-h-[44px] items-center gap-2 rounded-full border border-white/[0.12] px-6 text-sm font-bold text-white transition-colors hover:bg-white/5"
-            >
-              Falar no WhatsApp
-              <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
-            </MagneticButton>
-            <a
-              href={`mailto:${AGENCIA.email}`}
-              className="flex min-h-[44px] items-center text-sm font-semibold text-white/50 underline decoration-white/20 underline-offset-4 transition-colors hover:text-white"
-            >
-              ou envie um e-mail
-            </a>
           </div>
         </Reveal>
       </div>

@@ -15,6 +15,9 @@ export const AGENCIA = {
   linkedin: "https://linkedin.com/company/bepa-consultoria",
 };
 
+// Frente da BEPA dedicada a sites, landing pages e sistemas.
+export const SITRA_URL = "https://sitra.agenciabepa.com.br/";
+
 // Em produção, defina VITE_ZAP_COMMERCE_URL no .env apontando para o domínio publicado do case.
 export const ZAP_COMMERCE_URL =
   import.meta.env.VITE_ZAP_COMMERCE_URL || "http://localhost:5173/bella-atacado";

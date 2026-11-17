@@ -1,59 +1,27 @@
-import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
 import { Plus } from "lucide-react";
 import { FAQ as PERGUNTAS } from "../data/content";
-import { Reveal } from "./Reveal";
+import { CabecalhoSecao } from "./ui";
 
 export function FAQ() {
-  const [aberta, setAberta] = useState<number | null>(0);
-
   return (
-    <section id="faq" className="relative border-y border-white/5 bg-surface/40 py-16 sm:py-28">
-      <div className="mx-auto max-w-3xl px-5">
-        <Reveal className="text-center">
-          <p className="text-xs font-bold uppercase tracking-widest text-violet-400">Perguntas frequentes</p>
-          <h2 className="mt-3 font-display text-3xl font-extrabold tracking-tight sm:text-4xl">
-            Tudo que você precisa saber antes de começar.
-          </h2>
-        </Reveal>
+    <section id="faq" className="py-20 sm:py-28">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <CabecalhoSecao numero="05" rotulo="Perguntas frequentes" titulo="Antes de começar." />
 
-        <div className="mt-12 flex flex-col divide-y divide-white/10 border-y border-white/[0.08]">
-          {PERGUNTAS.map((item, i) => {
-            const estaAberta = aberta === i;
-            return (
-              <div key={item.pergunta}>
-                <button
-                  onClick={() => setAberta(estaAberta ? null : i)}
-                  className="flex w-full items-center justify-between gap-4 py-5 text-left"
-                >
-                  <span className="font-display text-base font-semibold text-white sm:text-lg">
-                    {item.pergunta}
-                  </span>
-                  <motion.span
-                    animate={{ rotate: estaAberta ? 45 : 0 }}
-                    transition={{ duration: 0.25 }}
-                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/5 text-white"
-                  >
-                    <Plus size={16} />
-                  </motion.span>
-                </button>
-
-                <AnimatePresence initial={false}>
-                  {estaAberta && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                      className="overflow-hidden"
-                    >
-                      <p className="pb-6 pr-4 text-sm leading-relaxed text-white/60 sm:pr-10">{item.resposta}</p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            );
-          })}
+        <div className="mt-12 border-t border-line md:ml-[25%]">
+          {PERGUNTAS.map((item, i) => (
+            <details key={item.pergunta} open={i === 0} className="group border-b border-line">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-6 py-5 [&::-webkit-details-marker]:hidden">
+                <span className="font-display text-lg font-semibold text-ink sm:text-xl">{item.pergunta}</span>
+                <Plus
+                  size={20}
+                  aria-hidden
+                  className="shrink-0 text-ink transition-transform duration-200 group-open:rotate-45"
+                />
+              </summary>
+              <p className="max-w-2xl pb-6 text-base leading-relaxed text-muted">{item.resposta}</p>
+            </details>
+          ))}
         </div>
       </div>
     </section>

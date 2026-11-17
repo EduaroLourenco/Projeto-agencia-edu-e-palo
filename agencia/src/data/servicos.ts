@@ -1,3 +1,5 @@
+import { MODULOS } from "./content";
+
 // Conteúdo detalhado da página /servicos — complementa os módulos de MODULOS (content.ts)
 // com a esteira de serviços especializados de dados, marca, automação e sistemas.
 
@@ -611,3 +613,34 @@ export const GRUPOS_SERVICOS: GrupoServicos[] = [
     servicos: ["sites-sistemas", "sites-institucionais-hp", "marketing-digital", "auditoria-ga4"],
   },
 ];
+
+/* ------------------------------------------------------------------ */
+/* GRUPOS RESOLVIDOS — os ids viram os serviços de verdade              */
+/* ------------------------------------------------------------------ */
+
+export interface Servico {
+  id: string;
+  titulo: string;
+  resumo: string;
+  itens: string[];
+}
+
+/** Todos os serviços por id: MODULOS + categorias, sem duplicar. */
+const POR_ID: Record<string, Servico> = Object.fromEntries([
+  ...MODULOS.map((m) => [
+    m.id,
+    { id: m.id, titulo: m.titulo, resumo: RESUMOS_SERVICOS[m.id] ?? m.resumo, itens: m.itens },
+  ]),
+  ...CATEGORIAS_SERVICOS.flatMap((c) =>
+    c.servicos.map((s) => [s.id, { id: s.id, titulo: s.titulo, resumo: s.resumo, itens: s.itens }]),
+  ),
+]);
+
+export const GRUPOS = GRUPOS_SERVICOS.map((g) => ({
+  ...g,
+  itens: g.servicos.map((id) => POR_ID[id]).filter(Boolean),
+}));
+
+export type Grupo = (typeof GRUPOS)[number];
+
+export const TOTAL = GRUPOS.reduce((soma, g) => soma + g.itens.length, 0);
