@@ -134,3 +134,9 @@ body {
 .card-glow:hover::before {
   opacity: 1;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation: none;
+  }
+}

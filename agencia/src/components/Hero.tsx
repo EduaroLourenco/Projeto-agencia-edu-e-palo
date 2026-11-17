@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { linkWhatsApp } from "../data/content";
 import { PhoneMockup } from "./PhoneMockup";
@@ -12,9 +12,10 @@ import { rastrear } from "../lib/analytics";
  * Sem seletor de setor — os ServiceCards logo abaixo cumprem esse papel.
  */
 export function Hero() {
+  const reduceMotion = useReducedMotion();
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const opacityHero = useTransform(scrollYProgress, [0, 0.85], [1, 0.45]);
+  const opacityHero = useTransform(scrollYProgress, [0, 0.85], [1, reduceMotion ? 1 : 0.45]);
 
   return (
     <motion.section

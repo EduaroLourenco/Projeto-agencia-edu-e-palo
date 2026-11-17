@@ -39,12 +39,12 @@ export function Footer() {
               </span>
               <span className="font-display text-base font-bold text-white">{AGENCIA.nome}</span>
             </Link>
-            <p className="text-xs text-white/40">{AGENCIA.tagline}</p>
+            <p className="text-xs text-white/55">{AGENCIA.tagline}</p>
           </div>
 
           {/* Navegação */}
           <div className="flex flex-col gap-2">
-            <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-white/30">Navegação</p>
+            <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-white/50">Navegação</p>
             {LINKS_NAV.map((l) => (
               <a
                 key={l.href}
@@ -58,7 +58,7 @@ export function Footer() {
 
           {/* Redes sociais */}
           <div className="flex flex-col gap-3">
-            <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-white/30">Contato</p>
+            <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-white/50">Contato</p>
             {REDES.map((r) => (
               <a
                 key={r.label}
@@ -76,7 +76,7 @@ export function Footer() {
 
           {/* Quem somos — compacto */}
           <div className="flex flex-col gap-3">
-            <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-white/30">Quem somos</p>
+            <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-white/50">Quem somos</p>
             {TIME.map((pessoa) => (
               <div key={pessoa.nome} className="flex items-center gap-2.5">
                 <img
@@ -90,7 +90,7 @@ export function Footer() {
                 />
                 <div className="min-w-0">
                   <p className="text-sm font-medium text-white/70">{pessoa.nome}</p>
-                  <p className="truncate text-[11px] text-white/40">{pessoa.profissao}</p>
+                  <p className="truncate text-[11px] text-white/55">{pessoa.profissao}</p>
                 </div>
               </div>
             ))}
@@ -99,10 +99,10 @@ export function Footer() {
 
         {/* Linha de copyright */}
         <div className="mt-12 flex flex-col items-center gap-2 border-t border-white/5 pt-6 sm:flex-row sm:justify-between">
-          <p className="text-[11px] text-white/25">
+          <p className="text-[11px] text-white/50">
             © {new Date().getFullYear()} {AGENCIA.nome}. Todos os direitos reservados.
           </p>
-          <p className="text-[11px] text-white/20">
+          <p className="text-[11px] text-white/45">
             Tecnologia, estratégia e resultado
           </p>
         </div>

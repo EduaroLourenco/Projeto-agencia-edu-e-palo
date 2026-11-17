@@ -88,7 +88,7 @@ function PainelNicho({ nicho, onClose }: { nicho: Nicho; onClose: () => void }) 
         <h3 className="mt-4 font-display text-xl font-bold text-white">{nicho.nome}</h3>
 
         <div className="mt-4 rounded-2xl border border-white/8 bg-white/[0.03] p-4">
-          <p className="text-[11px] font-bold uppercase tracking-widest text-white/45">
+          <p className="text-[11px] font-bold uppercase tracking-widest text-white/60">
             Onde costuma travar
           </p>
           <p className="mt-2 text-sm leading-relaxed text-white/70">{nicho.dor}</p>

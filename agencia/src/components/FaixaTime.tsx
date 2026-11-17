@@ -15,7 +15,7 @@ const DEGRAU = ["translate-y-3", "translate-y-1.5", "translate-y-0"];
 export function FaixaTime() {
   return (
     <div className="mt-9 border-t border-white/[0.08] pt-6 lg:mt-10">
-      <p className="text-[10px] font-bold uppercase tracking-widest text-white/35">Quem faz</p>
+      <p className="text-[10px] font-bold uppercase tracking-widest text-white/55">Quem faz</p>
 
       <ul className="mt-4 grid grid-cols-3 items-end gap-2.5 sm:gap-4">
         {TIME.map((pessoa, i) => (
@@ -30,7 +30,7 @@ export function FaixaTime() {
             <p className="mt-2.5 text-xs font-bold leading-tight text-white sm:text-sm">
               {pessoa.nome}
             </p>
-            <p className="mt-1 text-[11px] leading-tight text-white/45">{pessoa.profissao}</p>
+            <p className="mt-1 text-[11px] leading-tight text-white/60">{pessoa.profissao}</p>
           </li>
         ))}
       </ul>

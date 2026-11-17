@@ -414,7 +414,7 @@ export function ServicosPage() {
                         </li>
                       ))}
                       {g.itens.length > 5 && (
-                        <li className="px-1 py-1 text-[11px] font-semibold text-white/40">
+                        <li className="px-1 py-1 text-[11px] font-semibold text-white/55">
                           +{g.itens.length - 5}
                         </li>
                       )}

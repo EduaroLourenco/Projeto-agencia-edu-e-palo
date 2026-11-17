@@ -124,7 +124,7 @@ export function ContactCTA() {
 
                   <label className="flex flex-col gap-1.5">
                     <span className="text-xs font-semibold text-white/60">
-                      O que está travando hoje? <span className="text-white/40">(opcional)</span>
+                      O que está travando hoje? <span className="text-white/55">(opcional)</span>
                     </span>
                     <textarea
                       value={problema}
@@ -163,7 +163,7 @@ export function ContactCTA() {
                   </a>
 
                   {!pronto && (
-                    <p className="text-center text-xs text-white/45">
+                    <p className="text-center text-xs text-white/55">
                       Preencha nome e setor para continuar
                     </p>
                   )}
@@ -174,7 +174,7 @@ export function ContactCTA() {
         </Reveal>
 
         <Reveal delay={0.2} className="mt-8 flex flex-col items-center gap-3">
-          <p className="text-xs text-white/45">Ou fale direto, sem formulário:</p>
+          <p className="text-xs text-white/55">Ou fale direto, sem formulário:</p>
           <div className="flex flex-wrap items-center justify-center gap-3">
             <MagneticButton
               href={linkWhatsApp()}

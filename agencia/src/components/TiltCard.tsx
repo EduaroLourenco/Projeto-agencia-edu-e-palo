@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion, useMotionValue, useReducedMotion, useSpring, useTransform } from "framer-motion";
 import type { ReactNode, MouseEvent } from "react";
 
 export function TiltCard({ children, className }: { children: ReactNode; className?: string }) {
+  const reduceMotion = useReducedMotion();
   const [ativo, setAtivo] = useState(false);
   const x = useMotionValue(0.5);
   const y = useMotionValue(0.5);
@@ -17,6 +18,7 @@ export function TiltCard({ children, className }: { children: ReactNode; classNa
   );
 
   function handleMouseMove(e: MouseEvent<HTMLDivElement>) {
+    if (reduceMotion) return;
     const rect = e.currentTarget.getBoundingClientRect();
     x.set((e.clientX - rect.left) / rect.width);
     y.set((e.clientY - rect.top) / rect.height);
@@ -31,7 +33,7 @@ export function TiltCard({ children, className }: { children: ReactNode; classNa
         x.set(0.5);
         y.set(0.5);
       }}
-      style={{ rotateX, rotateY, transformPerspective: 800 }}
+      style={reduceMotion ? undefined : { rotateX, rotateY, transformPerspective: 800 }}
       className={`relative ${className ?? ""}`}
     >
       <motion.div

@@ -6,7 +6,11 @@ export function CursorGlow() {
   const current = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
-    if (window.matchMedia("(pointer: coarse)").matches) return;
+    if (
+      window.matchMedia("(pointer: coarse)").matches ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    )
+      return;
 
     function handleMove(e: MouseEvent) {
       pos.current = { x: e.clientX, y: e.clientY };

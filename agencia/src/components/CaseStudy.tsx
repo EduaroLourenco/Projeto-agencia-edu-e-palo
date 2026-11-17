@@ -60,7 +60,7 @@ export function CaseStudy() {
                 Clique aqui e confira o case ao vivo
                 <ArrowUpRight size={18} />
               </MagneticButton>
-              <p className="mt-3 text-xs text-white/35">Sistema 100% funcional, livre pra você navegar.</p>
+              <p className="mt-3 text-xs text-white/55">Sistema 100% funcional, livre pra você navegar.</p>
             </Reveal>
           </div>
         </div>

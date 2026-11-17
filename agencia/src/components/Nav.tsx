@@ -112,7 +112,7 @@ export function Nav() {
         {rotuloDaSecaoAtiva && (
           <span
             aria-live="polite"
-            className="ml-3 min-w-0 flex-1 truncate text-right text-xs font-semibold text-white/45 lg:hidden"
+            className="ml-3 min-w-0 flex-1 truncate text-right text-xs font-semibold text-white/60 lg:hidden"
           >
             {rotuloDaSecaoAtiva}
           </span>
@@ -125,6 +125,7 @@ export function Nav() {
               <a
                 key={l.href}
                 href={l.href}
+                aria-current={ativo ? "page" : undefined}
                 className={`relative whitespace-nowrap text-sm font-medium transition-colors ${
                   ativo ? "text-white" : "text-white/60 hover:text-white"
                 }`}
@@ -213,6 +214,7 @@ export function Nav() {
                       key={l.href}
                       href={l.href}
                       onClick={() => setAberto(false)}
+                      aria-current={ativo ? "page" : undefined}
                       className={`rounded-xl px-3 py-3.5 text-base font-medium ${
                         ativo ? "bg-violet-500/15 text-white" : "text-white/70"
                       }`}

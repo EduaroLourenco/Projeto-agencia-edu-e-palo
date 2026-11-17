@@ -164,7 +164,7 @@ export function OutrosProjetos() {
                       <span className="h-2 w-2 rounded-full bg-white/15" />
                       <span className="h-2 w-2 rounded-full bg-white/15" />
                       <span className="h-2 w-2 rounded-full bg-white/15" />
-                      <span className="ml-2 truncate text-[10px] font-semibold text-white/35">{s.titulo}</span>
+                      <span className="ml-2 truncate text-[10px] font-semibold text-white/50">{s.titulo}</span>
                     </div>
 
                     <div
@@ -173,7 +173,7 @@ export function OutrosProjetos() {
                       }`}
                     >
                       {comErro[i] ? (
-                        <div className="flex flex-col items-center gap-2 text-white/25">
+                        <div className="flex flex-col items-center gap-2 text-white/50">
                           <ImageOff size={28} />
                           <span className="text-xs font-semibold">Captura em breve</span>
                         </div>
