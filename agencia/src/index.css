@@ -1,36 +1,26 @@
 @import "tailwindcss";
 
-/*
- * BEPA é a marca-mãe; a Sitra (sitra.agenciabepa.com.br) é a frente de sites.
- * As duas falam a mesma língua visual: papel claro, tinta quase preta, um
- * único acento. O da BEPA é o roxo; o índigo fica com a Sitra.
- *
- * Contraste conferido sobre --color-paper:
- *   ink    ≈ 17:1   texto principal
- *   muted  ≈ 6,9:1  texto de apoio (piso AA = 4,5:1)
- *   brand  ≈ 8,2:1  links e botões; texto branco sobre brand ≈ 9:1
- *   brand-light sobre ink ≈ 10:1
- */
+/* Mesmos valores da Sitra (sitra.agenciabepa.com.br): as duas marcas são uma empresa só. */
 @theme {
-  --font-display: "Sora", ui-sans-serif, system-ui, sans-serif;
-  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Instrument Sans Variable", "Segoe UI", Arial, sans-serif;
 
-  --color-paper: #f7f5f0;
-  --color-paper-2: #efebe3;
-  --color-ink: #17121f;
-  --color-ink-2: #231c2e;
-  --color-muted: #57516a;
-  --color-line: #ddd8cd;
-  --color-line-dark: #3a3245;
+  --color-paper: #f9f8f4;
+  --color-warm: #fffdf8;
+  --color-ink: #201b2d;
+  --color-muted: #524d5e;
+  --color-line: #d6d0dc;
 
-  --color-brand: #5b21b6;
-  --color-brand-strong: #4c1d95;
-  --color-brand-soft: #ebe5f7;
-  /* Roxo claro: só sobre fundo escuro (ink). */
-  --color-brand-light: #c9b8fb;
+  --color-brand: #4227bd;
+  --color-brand-strong: #321995;
+  --color-brand-line: #c4b8e9;
 
-  /* Cor da Sitra, usada apenas no bloco que apresenta a Sitra. */
-  --color-sitra: #4227bd;
+  --color-lilac-50: #eeebf5;
+  --color-lilac-100: #e6e1f2;
+  --color-lilac-200: #ded5f6;
+
+  --color-night: #211b31;
+  --color-night-line: #8a7b9c;
+  --color-night-muted: #e0d9eb;
 }
 
 html,
@@ -39,17 +29,17 @@ body,
   height: 100%;
 }
 
-/* Só no body (nunca em html junto): overflow-x em html faz o body virar um
-   scroller próprio e quebra window.scrollY (ScrollProgress, BackToTop). */
+/* Só no body: em html junto, o body vira um scroller próprio e quebra window.scrollY. */
 body {
   overflow-x: hidden;
 }
 
 @layer base {
   html {
-    font-family: var(--font-body);
     background: var(--color-paper);
     color: var(--color-ink);
+    font-family: var(--font-sans);
+    line-height: 1.55;
     scroll-behavior: smooth;
     -webkit-tap-highlight-color: transparent;
   }
@@ -58,22 +48,26 @@ body {
     margin: 0;
   }
 
-  h1,
-  h2,
-  h3,
-  h4 {
-    font-family: var(--font-display);
-    text-wrap: balance;
+  section[id] {
+    scroll-margin-top: 74px;
   }
 
-  /* O header é fixed: sem isso, o clique no menu esconde o título da seção. */
-  section[id] {
-    scroll-margin-top: 5rem;
+  summary {
+    cursor: pointer;
+    list-style: none;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
   }
 
   :focus-visible {
     outline: 2px solid var(--color-brand);
     outline-offset: 3px;
+  }
+
+  .bg-night :focus-visible {
+    outline-color: var(--color-warm);
   }
 
   ::selection {
@@ -82,8 +76,114 @@ body {
   }
 }
 
+@layer components {
+  .wrap {
+    width: min(calc(100% - 8vw), 1320px);
+    margin-inline: auto;
+  }
+
+  .titulo-hero {
+    font-size: clamp(3.2rem, 5.55vw, 5.8rem);
+    font-weight: 660;
+    letter-spacing: -0.045em;
+    line-height: 1.02;
+    text-wrap: balance;
+  }
+
+  .titulo-secao {
+    font-size: clamp(2.75rem, 5.9vw, 5.4rem);
+    font-weight: 650;
+    letter-spacing: -0.053em;
+    line-height: 0.98;
+    text-wrap: balance;
+  }
+
+  /* Título à esquerda, apoio à direita: o cabeçalho de seção da Sitra. */
+  .cabecalho {
+    display: grid;
+    gap: 1.25rem clamp(1.8rem, 5.3vw, 6rem);
+    align-items: end;
+  }
+
+  @media (min-width: 768px) {
+    .cabecalho {
+      grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.94fr);
+    }
+  }
+
+  .apoio {
+    color: var(--color-muted);
+    font-size: clamp(1.04rem, 1.5vw, 1.2rem);
+    line-height: 1.5;
+    max-width: 44ch;
+  }
+
+  .btn {
+    display: inline-flex;
+    min-height: 49px;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    background: var(--color-brand);
+    color: white;
+    font-weight: 650;
+    padding: 0.6rem 1.15rem;
+    transition: background-color 0.15s ease-out;
+  }
+
+  .btn:hover {
+    background: var(--color-brand-strong);
+  }
+
+  .btn-contorno {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    gap: 0.7rem;
+    border: 1px solid var(--color-brand-line);
+    color: var(--color-brand);
+    font-size: 0.92rem;
+    font-weight: 650;
+    padding: 0.45rem 0.85rem;
+    transition: background-color 0.15s ease-out;
+  }
+
+  .btn-contorno:hover {
+    background: var(--color-lilac-50);
+  }
+
+  .link-seta {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    gap: 0.55rem;
+    color: var(--color-brand);
+    font-weight: 650;
+  }
+
+  .link-seta:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* Prancheta: espaço reservado de quem ainda está em construção. */
+  .prancheta {
+    background-color: var(--color-lilac-50);
+    background-image:
+      linear-gradient(to right, rgb(66 39 189 / 0.11) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(66 39 189 / 0.11) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  *,
+  ::before,
+  ::after {
+    transition: none !important;
   }
 }
