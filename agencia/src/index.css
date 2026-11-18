@@ -1,26 +1,22 @@
 @import "tailwindcss";
 
-/* Mesmos valores da Sitra (sitra.agenciabepa.com.br): as duas marcas são uma empresa só. */
 @theme {
   --font-sans: "Instrument Sans Variable", "Segoe UI", Arial, sans-serif;
 
-  --color-paper: #f9f8f4;
-  --color-warm: #fffdf8;
-  --color-ink: #201b2d;
-  --color-muted: #524d5e;
-  --color-line: #d6d0dc;
+  --color-page: #ffffff;
+  --color-soft: #f5f4fb;
+  --color-soft-2: #ece9f9;
+  --color-ink: #12101c;
+  --color-body: #3e3a4c;
+  --color-line: #e3e0ee;
+  --color-line-strong: #c9c4dc;
 
   --color-brand: #4227bd;
-  --color-brand-strong: #321995;
-  --color-brand-line: #c4b8e9;
+  --color-brand-dark: #2f1a96;
+  --color-brand-soft: #ebe7fb;
 
-  --color-lilac-50: #eeebf5;
-  --color-lilac-100: #e6e1f2;
-  --color-lilac-200: #ded5f6;
-
-  --color-night: #211b31;
-  --color-night-line: #8a7b9c;
-  --color-night-muted: #e0d9eb;
+  --shadow-card: 0 1px 2px rgb(18 16 28 / 0.04), 0 8px 24px rgb(18 16 28 / 0.05);
+  --shadow-lift: 0 2px 4px rgb(18 16 28 / 0.05), 0 18px 44px rgb(66 39 189 / 0.14);
 }
 
 html,
@@ -34,9 +30,13 @@ body {
   overflow-x: hidden;
 }
 
+html:has(dialog[open]) {
+  overflow: hidden;
+}
+
 @layer base {
   html {
-    background: var(--color-paper);
+    background: var(--color-page);
     color: var(--color-ink);
     font-family: var(--font-sans);
     line-height: 1.55;
@@ -49,7 +49,11 @@ body {
   }
 
   section[id] {
-    scroll-margin-top: 74px;
+    scroll-margin-top: 96px;
+  }
+
+  button {
+    cursor: pointer;
   }
 
   summary {
@@ -62,12 +66,12 @@ body {
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-brand);
+    outline: 3px solid var(--color-brand);
     outline-offset: 3px;
   }
 
-  .bg-night :focus-visible {
-    outline-color: var(--color-warm);
+  .sobre-escuro :focus-visible {
+    outline-color: white;
   }
 
   ::selection {
@@ -78,102 +82,199 @@ body {
 
 @layer components {
   .wrap {
-    width: min(calc(100% - 8vw), 1320px);
+    width: min(100% - 2.5rem, 1240px);
     margin-inline: auto;
   }
 
-  .titulo-hero {
-    font-size: clamp(3.2rem, 5.55vw, 5.8rem);
-    font-weight: 660;
-    letter-spacing: -0.045em;
-    line-height: 1.02;
-    text-wrap: balance;
+  .secao {
+    padding-block: clamp(4rem, 8vw, 7rem);
   }
 
-  .titulo-secao {
-    font-size: clamp(2.75rem, 5.9vw, 5.4rem);
+  .titulo {
+    font-size: clamp(2.2rem, 4.6vw, 3.9rem);
     font-weight: 650;
-    letter-spacing: -0.053em;
-    line-height: 0.98;
+    letter-spacing: -0.035em;
+    line-height: 1.05;
     text-wrap: balance;
   }
 
-  /* Título à esquerda, apoio à direita: o cabeçalho de seção da Sitra. */
-  .cabecalho {
-    display: grid;
-    gap: 1.25rem clamp(1.8rem, 5.3vw, 6rem);
-    align-items: end;
+  .sub {
+    color: var(--color-body);
+    font-size: clamp(1.06rem, 1.5vw, 1.2rem);
+    line-height: 1.55;
+    max-width: 58ch;
   }
 
-  @media (min-width: 768px) {
-    .cabecalho {
-      grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.94fr);
-    }
-  }
-
-  .apoio {
-    color: var(--color-muted);
-    font-size: clamp(1.04rem, 1.5vw, 1.2rem);
-    line-height: 1.5;
-    max-width: 44ch;
+  .etiqueta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    border-radius: 999px;
+    background: var(--color-brand-soft);
+    color: var(--color-brand-dark);
+    font-size: 0.86rem;
+    font-weight: 620;
+    padding: 0.35rem 0.8rem;
   }
 
   .btn {
     display: inline-flex;
-    min-height: 49px;
+    min-height: 50px;
     align-items: center;
     justify-content: center;
-    gap: 0.75rem;
+    gap: 0.55rem;
+    border-radius: 999px;
     background: var(--color-brand);
     color: white;
-    font-weight: 650;
-    padding: 0.6rem 1.15rem;
-    transition: background-color 0.15s ease-out;
+    font-weight: 620;
+    padding: 0.65rem 1.5rem;
+    transition:
+      background-color 0.15s ease-out,
+      transform 0.15s ease-out,
+      box-shadow 0.15s ease-out;
   }
 
   .btn:hover {
-    background: var(--color-brand-strong);
+    background: var(--color-brand-dark);
+    box-shadow: var(--shadow-lift);
+    transform: translateY(-1px);
   }
 
-  .btn-contorno {
+  .btn:disabled {
+    background: var(--color-soft-2);
+    box-shadow: none;
+    color: var(--color-body);
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .btn-claro {
+    background: white;
+    color: var(--color-brand-dark);
+  }
+
+  .btn-claro:hover {
+    background: var(--color-brand-soft);
+  }
+
+  .btn-linha {
     display: inline-flex;
-    min-height: 44px;
+    min-height: 50px;
     align-items: center;
-    gap: 0.7rem;
-    border: 1px solid var(--color-brand-line);
-    color: var(--color-brand);
-    font-size: 0.92rem;
-    font-weight: 650;
-    padding: 0.45rem 0.85rem;
-    transition: background-color 0.15s ease-out;
-  }
-
-  .btn-contorno:hover {
-    background: var(--color-lilac-50);
-  }
-
-  .link-seta {
-    display: inline-flex;
-    min-height: 44px;
-    align-items: center;
+    justify-content: center;
     gap: 0.55rem;
-    color: var(--color-brand);
-    font-weight: 650;
+    border: 1.5px solid var(--color-line-strong);
+    border-radius: 999px;
+    color: var(--color-ink);
+    font-weight: 620;
+    padding: 0.6rem 1.4rem;
+    transition:
+      border-color 0.15s ease-out,
+      background-color 0.15s ease-out;
   }
 
-  .link-seta:hover {
-    text-decoration: underline;
-    text-underline-offset: 3px;
+  .btn-linha:hover {
+    background: var(--color-soft);
+    border-color: var(--color-brand);
   }
 
-  /* Prancheta: espaço reservado de quem ainda está em construção. */
-  .prancheta {
-    background-color: var(--color-lilac-50);
-    background-image:
-      linear-gradient(to right, rgb(66 39 189 / 0.11) 1px, transparent 1px),
-      linear-gradient(to bottom, rgb(66 39 189 / 0.11) 1px, transparent 1px);
-    background-size: 28px 28px;
+  .cartao {
+    border: 1px solid var(--color-line);
+    border-radius: 24px;
+    background: white;
+    box-shadow: var(--shadow-card);
   }
+
+  .campo {
+    min-height: 52px;
+    width: 100%;
+    border: 1.5px solid var(--color-line-strong);
+    border-radius: 16px;
+    background: white;
+    color: var(--color-ink);
+    font-size: 1rem;
+    padding: 0.75rem 1rem;
+    transition: border-color 0.15s ease-out;
+  }
+
+  .campo::placeholder {
+    color: #625d72;
+  }
+
+  .campo:focus {
+    border-color: var(--color-brand);
+    outline: 3px solid rgb(66 39 189 / 0.18);
+    outline-offset: 0;
+  }
+
+  .fundo-hero {
+    background:
+      radial-gradient(52rem 30rem at 88% -8%, #e4defb 0, transparent 68%),
+      radial-gradient(40rem 24rem at 0% 8%, #f4f1ff 0, transparent 70%);
+  }
+
+  .faixa-movel {
+    animation: faixa 60s linear infinite;
+  }
+
+  .faixa-movel:hover {
+    animation-play-state: paused;
+  }
+
+  .modal {
+    width: min(100% - 1.5rem, 640px);
+    max-height: min(88dvh, 760px);
+    margin: auto;
+    border: 0;
+    border-radius: 28px;
+    background: white;
+    color: var(--color-ink);
+    padding: 0;
+    box-shadow: 0 30px 80px rgb(18 16 28 / 0.28);
+  }
+
+  .modal[open] {
+    display: flex;
+    flex-direction: column;
+    animation: surgir 0.22s ease-out;
+  }
+
+  .modal::backdrop {
+    background: rgb(18 16 28 / 0.55);
+    backdrop-filter: blur(4px);
+  }
+
+  @media (max-width: 639px) {
+    .modal {
+      width: 100%;
+      max-width: 100%;
+      margin: auto 0 0;
+      border-radius: 28px 28px 0 0;
+    }
+  }
+}
+
+@keyframes faixa {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes surgir {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+@keyframes pulso {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.pulso {
+  animation: pulso 1.8s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -181,9 +282,15 @@ body {
     scroll-behavior: auto;
   }
 
-  *,
-  ::before,
-  ::after {
-    transition: none !important;
+  .faixa-movel,
+  .pulso,
+  .modal[open] {
+    animation: none;
+  }
+
+  .btn,
+  .btn:hover {
+    transition: none;
+    transform: none;
   }
 }

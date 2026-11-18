@@ -11,14 +11,14 @@ const ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
 </svg>`;
 
 const OG_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
-  <rect width="1200" height="630" fill="#f9f8f4"/>
+  <rect width="1200" height="630" fill="#ffffff"/>
   <rect x="80" y="76" width="64" height="64" rx="15" fill="#4227bd"/>
   <text x="112" y="124" font-family="Segoe UI, Arial, sans-serif" font-size="42" font-weight="700" fill="#fff" text-anchor="middle">B</text>
   <text x="150" y="126" font-family="Segoe UI, Arial, sans-serif" font-size="54" font-weight="600" fill="#201b2d">EPA</text>
   <text font-family="Segoe UI, Arial, sans-serif" font-size="88" font-weight="600" letter-spacing="-3" fill="#201b2d">
-    <tspan x="80" y="300">Colocamos </tspan><tspan fill="#4227bd">vendas,</tspan>
-    <tspan x="80" y="396" fill="#4227bd">números e equipe</tspan>
-    <tspan x="80" y="492">em ordem.</tspan>
+    <tspan x="80" y="300">Tecnologia e</tspan>
+    <tspan x="80" y="396">estratégia para</tspan>
+    <tspan x="80" y="492" fill="#4227bd">vender mais.</tspan>
   </text>
   <text x="80" y="562" font-family="Segoe UI, Arial, sans-serif" font-size="30" fill="#524d5e">Consultoria, Assessoria e Serviços</text>
 </svg>`;
@@ -43,11 +43,11 @@ writeFileSync(
     {
       name: "BEPA — Consultoria, Assessoria e Serviços",
       short_name: "BEPA",
-      description: "Vendas, números e equipe em ordem.",
+      description: "Tecnologia e estratégia para vender mais.",
       start_url: "/",
       display: "standalone",
-      background_color: "#f9f8f4",
-      theme_color: "#f9f8f4",
+      background_color: "#ffffff",
+      theme_color: "#ffffff",
       icons: [
         { src: "/icon-192.png", sizes: "192x192", type: "image/png", purpose: "any maskable" },
         { src: "/icon-512.png", sizes: "512x512", type: "image/png", purpose: "any maskable" },

@@ -16,7 +16,7 @@ export function ScrollToTop() {
     const id = hash.slice(1);
     const tentarScroll = () => {
       const el = document.getElementById(id);
-      if (el) el.scrollIntoView({ behavior: "instant" as ScrollBehavior });
+      if (el) el.scrollIntoView();
     };
     tentarScroll();
     const timeout = setTimeout(tentarScroll, 100);
