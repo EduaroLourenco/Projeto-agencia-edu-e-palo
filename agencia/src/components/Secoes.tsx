@@ -3,16 +3,54 @@ import { ArrowUpRight } from "lucide-react";
 import { AGENCIA, PRODUTOS, SITRA_URL, TIME, linkWhatsApp } from "../data/content";
 import { rastrear } from "../lib/analytics";
 
-const LINK_TOPO = "inline-flex min-h-[44px] items-center gap-0.5 font-medium underline-offset-4 hover:underline";
+const LINK_TOPO = "inline-flex min-h-[44px] items-center gap-0.5 text-[0.94rem] font-medium underline-offset-4 hover:underline";
+
+/** Some ao descer e volta ao subir. A folga de 16px ignora tremidas do dedo. */
+function useOcultoAoDescer() {
+  const [oculto, setOculto] = useState(false);
+
+  useEffect(() => {
+    let ultimo = window.scrollY;
+    let quadro = 0;
+
+    function medir() {
+      quadro = 0;
+      // Limita a posição para o efeito elástico do iPhone não contar como rolagem.
+      const fim = document.documentElement.scrollHeight - window.innerHeight;
+      const y = Math.min(Math.max(window.scrollY, 0), fim);
+      if (y < 64) {
+        ultimo = y;
+        setOculto(false);
+      } else if (Math.abs(y - ultimo) >= 16) {
+        setOculto(y > ultimo);
+        ultimo = y;
+      }
+    }
+
+    function aoRolar() {
+      quadro ||= requestAnimationFrame(medir);
+    }
+
+    window.addEventListener("scroll", aoRolar, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", aoRolar);
+      cancelAnimationFrame(quadro);
+    };
+  }, []);
+
+  return oculto;
+}
 
 export function Cabecalho() {
+  const oculto = useOcultoAoDescer();
+
   return (
-    <header className="sticky top-0 z-20 bg-white">
-      <div className="wrap flex h-16 items-center justify-between">
-        <a href="#inicio" aria-label={`${AGENCIA.nome}, início`} className="text-[1.65rem] font-bold leading-none tracking-[-0.04em]">
+    <header data-oculto={oculto} className="vidro vidro-topo sticky top-0 z-20">
+      <div className="wrap flex h-12 items-center justify-between">
+        <a href="#inicio" aria-label={`${AGENCIA.nome}, início`} className="text-[1.35rem] font-bold leading-none tracking-[-0.04em]">
           BEPA
         </a>
-        <nav aria-label="Principal" className="flex gap-5 sm:gap-8">
+        <nav aria-label="Principal" className="flex gap-5 sm:gap-7">
           <a href="#time" className={LINK_TOPO}>
             Time
           </a>

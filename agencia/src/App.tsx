@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Abertura } from "./components/Abertura";
 import { Mensagem } from "./components/Mensagem";
 import { ScrollDepthTracker } from "./components/ScrollDepthTracker";
 import { Cabecalho, Contato, Sitra, Time, Trabalho } from "./components/Secoes";
@@ -24,7 +25,8 @@ export default function App() {
         <Contato />
       </main>
       {/* Espaço para a barra de envio não cobrir o fim da página. */}
-      {ids.length > 0 && <div aria-hidden className="h-[72px] bg-marca" />}
+      {ids.length > 0 && <div aria-hidden className="h-12 bg-marca" />}
+      <Abertura />
     </>
   );
 }

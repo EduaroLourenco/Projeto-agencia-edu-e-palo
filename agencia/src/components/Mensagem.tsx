@@ -20,7 +20,8 @@ export function Mensagem({ ids, onIds }: { ids: string[]; onIds: (ids: string[])
 
   useEffect(() => {
     if (!botao.current) return;
-    const observador = new IntersectionObserver(([item]) => setBotaoVisivel(item.isIntersecting));
+    // A margem evita a barra piscar quando o botão fica bem na borda da tela.
+    const observador = new IntersectionObserver(([item]) => setBotaoVisivel(item.isIntersecting), { rootMargin: "96px 0px" });
     observador.observe(botao.current);
     return () => observador.disconnect();
   }, []);
@@ -39,7 +40,7 @@ export function Mensagem({ ids, onIds }: { ids: string[]; onIds: (ids: string[])
 
   return (
     <section id="inicio" className="wrap colunas !grid-cols-1 pb-16 pt-5 lg:!grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] lg:pb-24 lg:pt-10">
-      <div className="lg:sticky lg:top-24 lg:self-start">
+      <div className="lg:sticky lg:top-16 lg:self-start">
         <h1 className="max-w-[30rem] text-[1.15rem] font-medium leading-snug">
           BEPA é consultoria em vendas, sistemas e finanças.{" "}
           <span className="text-suave">Toque no que você precisa e a mensagem se escreve aqui.</span>
@@ -134,14 +135,21 @@ export function Mensagem({ ids, onIds }: { ids: string[]; onIds: (ids: string[])
         </ul>
       </div>
 
-      {ids.length > 0 && !botaoVisivel && (
-        <div className="sobre-escuro subir fixed inset-x-0 bottom-0 z-30 flex items-center gap-4 bg-tinta px-5 py-3 text-white">
-          <p className="min-w-0 flex-1 truncate">{texto.replace("Olá, BEPA. ", "")}</p>
-          <a href={link} target="_blank" rel="noreferrer" onClick={enviar} className="btn btn-marca !min-h-[48px] shrink-0 !px-5">
-            Enviar
-          </a>
-        </div>
-      )}
+      <div
+        data-oculto={ids.length === 0 || botaoVisivel}
+        className="vidro vidro-base fixed inset-x-0 bottom-0 z-30 flex h-12 items-center gap-4 pl-5 pr-2 text-[0.94rem]"
+      >
+        <p className="min-w-0 flex-1 truncate">{texto.replace("Olá, BEPA. ", "")}</p>
+        <a
+          href={link}
+          target="_blank"
+          rel="noreferrer"
+          onClick={enviar}
+          className="inline-flex min-h-[44px] shrink-0 items-center px-3 font-bold underline underline-offset-4"
+        >
+          Enviar
+        </a>
+      </div>
     </section>
   );
 }

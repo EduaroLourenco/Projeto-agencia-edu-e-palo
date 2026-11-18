@@ -10,9 +10,9 @@
   --color-marca: #ffe100;
 }
 
-/* Só no body: em html junto, o body vira um scroller próprio e quebra window.scrollY. */
+/* clip não cria área de rolagem: mantém o menu fixo estável no Safari do celular. */
 body {
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 @layer base {
@@ -31,7 +31,7 @@ body {
   }
 
   section[id] {
-    scroll-margin-top: 72px;
+    scroll-margin-top: 56px;
   }
 
   button {
@@ -130,8 +130,47 @@ body {
     animation: revelar 0.32s cubic-bezier(0.2, 0.7, 0.2, 1);
   }
 
-  .subir {
-    animation: subir 0.18s ease-out;
+  /* Menu e barra de envio: só transform, para não mexer no layout durante a rolagem. */
+  .vidro {
+    background: rgb(255 255 255 / 0.68);
+    -webkit-backdrop-filter: blur(18px) saturate(1.5);
+    backdrop-filter: blur(18px) saturate(1.5);
+    transition:
+      transform 0.22s cubic-bezier(0.2, 0.7, 0.2, 1),
+      visibility 0.22s;
+    will-change: transform;
+  }
+
+  .vidro[data-oculto="true"] {
+    visibility: hidden;
+  }
+
+  .vidro-topo[data-oculto="true"] {
+    transform: translate3d(0, -100%, 0);
+  }
+
+  .vidro-base[data-oculto="true"] {
+    transform: translate3d(0, 100%, 0);
+  }
+
+  /* Quem navega pelo teclado nunca fica com o foco num menu escondido. */
+  .vidro:has(:focus-visible) {
+    visibility: visible;
+    transform: none;
+  }
+
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .vidro {
+      background: rgb(255 255 255 / 0.94);
+    }
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .vidro {
+      background: white;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
   }
 }
 
@@ -163,12 +202,6 @@ body {
   }
 }
 
-@keyframes subir {
-  from {
-    transform: translateY(100%);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -177,9 +210,12 @@ body {
   .marca,
   .lacuna,
   .entrar,
-  .revelar,
-  .subir {
+  .revelar {
     animation: none;
+  }
+
+  .vidro {
+    transition: none;
   }
 
   .btn,
