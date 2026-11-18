@@ -1,3 +1,4 @@
 {
+  "redirects": [{ "source": "/servicos", "destination": "/", "permanent": true }],
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }

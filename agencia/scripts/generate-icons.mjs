@@ -6,21 +6,19 @@ import { dirname, join } from "path";
 const PUBLIC_DIR = join(dirname(fileURLToPath(import.meta.url)), "..", "public");
 
 const ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="15" fill="#4227bd"/>
-  <text x="32" y="46" font-family="Segoe UI, Arial, sans-serif" font-size="40" font-weight="700" fill="#fff" text-anchor="middle">B</text>
+  <rect width="64" height="64" rx="13" fill="#ffe100"/>
+  <text x="32" y="47" font-family="Segoe UI, Arial, sans-serif" font-size="42" font-weight="700" fill="#11110f" text-anchor="middle">B</text>
 </svg>`;
 
 const OG_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
   <rect width="1200" height="630" fill="#ffffff"/>
-  <rect x="80" y="76" width="64" height="64" rx="15" fill="#4227bd"/>
-  <text x="112" y="124" font-family="Segoe UI, Arial, sans-serif" font-size="42" font-weight="700" fill="#fff" text-anchor="middle">B</text>
-  <text x="150" y="126" font-family="Segoe UI, Arial, sans-serif" font-size="54" font-weight="600" fill="#201b2d">EPA</text>
-  <text font-family="Segoe UI, Arial, sans-serif" font-size="88" font-weight="600" letter-spacing="-3" fill="#201b2d">
-    <tspan x="80" y="300">Tecnologia e</tspan>
-    <tspan x="80" y="396">estratégia para</tspan>
-    <tspan x="80" y="492" fill="#4227bd">vender mais.</tspan>
+  <rect x="70" y="330" width="530" height="118" rx="10" fill="#ffe100"/>
+  <text font-family="Segoe UI, Arial, sans-serif" font-size="100" font-weight="600" letter-spacing="-3" fill="#11110f">
+    <tspan x="80" y="190">Olá, BEPA.</tspan>
+    <tspan x="80" y="300">Quero</tspan>
+    <tspan x="80" y="420">vender mais.</tspan>
   </text>
-  <text x="80" y="562" font-family="Segoe UI, Arial, sans-serif" font-size="30" fill="#524d5e">Consultoria, Assessoria e Serviços</text>
+  <text x="80" y="550" font-family="Segoe UI, Arial, sans-serif" font-size="30" fill="#55544d">Consultoria em vendas, sistemas e finanças</text>
 </svg>`;
 
 const icone = Buffer.from(ICON_SVG);

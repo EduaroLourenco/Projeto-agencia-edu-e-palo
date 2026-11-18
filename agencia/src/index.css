@@ -1,28 +1,13 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Instrument Sans Variable", "Segoe UI", Arial, sans-serif;
+  --font-sans: "Familjen Grotesk Variable", "Segoe UI", Arial, sans-serif;
 
-  --color-page: #ffffff;
-  --color-soft: #f5f4fb;
-  --color-soft-2: #ece9f9;
-  --color-ink: #12101c;
-  --color-body: #3e3a4c;
-  --color-line: #e3e0ee;
-  --color-line-strong: #c9c4dc;
-
-  --color-brand: #4227bd;
-  --color-brand-dark: #2f1a96;
-  --color-brand-soft: #ebe7fb;
-
-  --shadow-card: 0 1px 2px rgb(18 16 28 / 0.04), 0 8px 24px rgb(18 16 28 / 0.05);
-  --shadow-lift: 0 2px 4px rgb(18 16 28 / 0.05), 0 18px 44px rgb(66 39 189 / 0.14);
-}
-
-html,
-body,
-#root {
-  height: 100%;
+  --color-tinta: #11110f;
+  --color-suave: #55544d;
+  --color-apagado: #85847a;
+  --color-areia: #f1f0ea;
+  --color-marca: #ffe100;
 }
 
 /* Só no body: em html junto, o body vira um scroller próprio e quebra window.scrollY. */
@@ -30,16 +15,13 @@ body {
   overflow-x: hidden;
 }
 
-html:has(dialog[open]) {
-  overflow: hidden;
-}
-
 @layer base {
   html {
-    background: var(--color-page);
-    color: var(--color-ink);
+    background: white;
+    color: var(--color-tinta);
     font-family: var(--font-sans);
-    line-height: 1.55;
+    font-size: 106.25%;
+    line-height: 1.4;
     scroll-behavior: smooth;
     -webkit-tap-highlight-color: transparent;
   }
@@ -49,232 +31,142 @@ html:has(dialog[open]) {
   }
 
   section[id] {
-    scroll-margin-top: 96px;
+    scroll-margin-top: 72px;
   }
 
   button {
     cursor: pointer;
   }
 
-  summary {
-    cursor: pointer;
-    list-style: none;
-  }
-
-  summary::-webkit-details-marker {
-    display: none;
-  }
-
   :focus-visible {
-    outline: 3px solid var(--color-brand);
+    outline: 3px solid var(--color-tinta);
     outline-offset: 3px;
   }
 
   .sobre-escuro :focus-visible {
-    outline-color: white;
-  }
-
-  ::selection {
-    background: var(--color-brand);
-    color: white;
+    outline-color: var(--color-marca);
   }
 }
 
 @layer components {
   .wrap {
-    width: min(100% - 2.5rem, 1240px);
+    max-width: 1760px;
     margin-inline: auto;
+    padding-inline: clamp(1.25rem, 4vw, 3.5rem);
   }
 
-  .secao {
-    padding-block: clamp(4rem, 8vw, 7rem);
+  /* Mesma divisão nos blocos de texto, para as margens conversarem ao longo da página. */
+  .colunas {
+    display: grid;
+    gap: 2.5rem;
   }
 
-  .titulo {
-    font-size: clamp(2.2rem, 4.6vw, 3.9rem);
-    font-weight: 650;
-    letter-spacing: -0.035em;
-    line-height: 1.05;
-    text-wrap: balance;
+  @media (min-width: 1024px) {
+    .colunas {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      gap: 5rem;
+    }
   }
 
-  .sub {
-    color: var(--color-body);
-    font-size: clamp(1.06rem, 1.5vw, 1.2rem);
-    line-height: 1.55;
-    max-width: 58ch;
-  }
-
-  .etiqueta {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    border-radius: 999px;
-    background: var(--color-brand-soft);
-    color: var(--color-brand-dark);
-    font-size: 0.86rem;
-    font-weight: 620;
-    padding: 0.35rem 0.8rem;
+  .texto-grande {
+    font-size: clamp(1.9rem, 3.5vw, 3.35rem);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.12;
+    text-wrap: pretty;
   }
 
   .btn {
     display: inline-flex;
-    min-height: 50px;
+    min-height: 56px;
     align-items: center;
     justify-content: center;
-    gap: 0.55rem;
-    border-radius: 999px;
-    background: var(--color-brand);
+    border-radius: 12px;
+    background: var(--color-tinta);
     color: white;
-    font-weight: 620;
-    padding: 0.65rem 1.5rem;
-    transition:
-      background-color 0.15s ease-out,
-      transform 0.15s ease-out,
-      box-shadow 0.15s ease-out;
+    font-weight: 600;
+    padding: 0.6rem 1.6rem;
+    transition: transform 0.12s ease-out;
   }
 
   .btn:hover {
-    background: var(--color-brand-dark);
-    box-shadow: var(--shadow-lift);
-    transform: translateY(-1px);
+    transform: translateY(-2px);
   }
 
-  .btn:disabled {
-    background: var(--color-soft-2);
-    box-shadow: none;
-    color: var(--color-body);
-    cursor: not-allowed;
-    transform: none;
+  .btn:active {
+    transform: translateY(0);
   }
 
-  .btn-claro {
-    background: white;
-    color: var(--color-brand-dark);
+  .btn-marca {
+    background: var(--color-marca);
+    color: var(--color-tinta);
   }
 
-  .btn-claro:hover {
-    background: var(--color-brand-soft);
+  /* O amarelo só significa uma coisa no site: o que a pessoa escolheu. */
+  .marca {
+    background: linear-gradient(var(--color-marca), var(--color-marca)) no-repeat 0 0 / 100% 100%;
+    border-radius: 0.1em;
+    color: inherit;
+    padding-inline: 0.07em;
+    margin-inline: -0.07em;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+    animation: marcar 0.26s cubic-bezier(0.2, 0.7, 0.2, 1);
   }
 
-  .btn-linha {
-    display: inline-flex;
-    min-height: 50px;
-    align-items: center;
-    justify-content: center;
-    gap: 0.55rem;
-    border: 1.5px solid var(--color-line-strong);
-    border-radius: 999px;
-    color: var(--color-ink);
-    font-weight: 620;
-    padding: 0.6rem 1.4rem;
-    transition:
-      border-color 0.15s ease-out,
-      background-color 0.15s ease-out;
+  .lacuna {
+    display: inline-block;
+    width: 2em;
+    height: 0.09em;
+    background: currentColor;
+    animation: piscar 1.1s steps(2, jump-none) infinite;
   }
 
-  .btn-linha:hover {
-    background: var(--color-soft);
-    border-color: var(--color-brand);
+  .entrar {
+    animation: entrar 0.2s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
   }
 
-  .cartao {
-    border: 1px solid var(--color-line);
-    border-radius: 24px;
-    background: white;
-    box-shadow: var(--shadow-card);
+  .revelar {
+    animation: revelar 0.32s cubic-bezier(0.2, 0.7, 0.2, 1);
   }
 
-  .campo {
-    min-height: 52px;
-    width: 100%;
-    border: 1.5px solid var(--color-line-strong);
-    border-radius: 16px;
-    background: white;
-    color: var(--color-ink);
-    font-size: 1rem;
-    padding: 0.75rem 1rem;
-    transition: border-color 0.15s ease-out;
-  }
-
-  .campo::placeholder {
-    color: #625d72;
-  }
-
-  .campo:focus {
-    border-color: var(--color-brand);
-    outline: 3px solid rgb(66 39 189 / 0.18);
-    outline-offset: 0;
-  }
-
-  .fundo-hero {
-    background:
-      radial-gradient(52rem 30rem at 88% -8%, #e4defb 0, transparent 68%),
-      radial-gradient(40rem 24rem at 0% 8%, #f4f1ff 0, transparent 70%);
-  }
-
-  .faixa-movel {
-    animation: faixa 60s linear infinite;
-  }
-
-  .faixa-movel:hover {
-    animation-play-state: paused;
-  }
-
-  .modal {
-    width: min(100% - 1.5rem, 640px);
-    max-height: min(88dvh, 760px);
-    margin: auto;
-    border: 0;
-    border-radius: 28px;
-    background: white;
-    color: var(--color-ink);
-    padding: 0;
-    box-shadow: 0 30px 80px rgb(18 16 28 / 0.28);
-  }
-
-  .modal[open] {
-    display: flex;
-    flex-direction: column;
-    animation: surgir 0.22s ease-out;
-  }
-
-  .modal::backdrop {
-    background: rgb(18 16 28 / 0.55);
-    backdrop-filter: blur(4px);
-  }
-
-  @media (max-width: 639px) {
-    .modal {
-      width: 100%;
-      max-width: 100%;
-      margin: auto 0 0;
-      border-radius: 28px 28px 0 0;
-    }
+  .subir {
+    animation: subir 0.18s ease-out;
   }
 }
 
-@keyframes faixa {
+@keyframes marcar {
+  from {
+    background-size: 0 100%;
+  }
+}
+
+@keyframes piscar {
   to {
-    transform: translateX(-50%);
+    opacity: 0.15;
   }
 }
 
-@keyframes surgir {
+@keyframes entrar {
   from {
     opacity: 0;
-    transform: translateY(16px);
+    transform: translateX(10px);
   }
 }
 
-@keyframes pulso {
-  50% {
-    opacity: 0.35;
+@keyframes revelar {
+  from {
+    clip-path: inset(0 0 100% 0 round 20px);
+  }
+  to {
+    clip-path: inset(0 0 0 0 round 20px);
   }
 }
 
-.pulso {
-  animation: pulso 1.8s ease-in-out infinite;
+@keyframes subir {
+  from {
+    transform: translateY(100%);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -282,9 +174,11 @@ html:has(dialog[open]) {
     scroll-behavior: auto;
   }
 
-  .faixa-movel,
-  .pulso,
-  .modal[open] {
+  .marca,
+  .lacuna,
+  .entrar,
+  .revelar,
+  .subir {
     animation: none;
   }
 
